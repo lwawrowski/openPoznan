@@ -31,3 +31,6 @@ getDydacticPaths <- function(coords = F){
 
 paths <- getDydacticPaths()
 paths_coords <- getDydacticPaths(coords=TRUE)
+
+ggplot(paths_coords$coords, aes(V1, V2)) +
+  geom_path(aes(colour=as.factor(id)))
