@@ -1,6 +1,6 @@
 
 
-getTVM <- function (coords=F) {
+getTVM <- function () {
 
 #Wstepna analiza
 
@@ -37,13 +37,14 @@ colnames(TVM_basic_info)[(names(TVM_basic_info) == "X6")] <- "TVM_Description"
 TVM_final <- cbind(TVM_basic_info,TVM_coord)
 
 
-if(coords = T) {
-  result <- list(paths=TVM_features[,-1],
-                 coords=TVM_final)
-} else {
-  result <- TVM_features
-}
-
-return(result)
+return(TVM_final)
 
 }
+
+
+#examples 
+
+
+TVMs <- getTVM()
+
+
