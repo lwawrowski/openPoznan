@@ -1,0 +1,9 @@
+Package: openPoznan
+Title: Download open data from Poznań
+Version: 0.0.0.9000
+Authors@R: person("Łukasz", "Wawrowski", email = "lukasz.wawrowski@ue.poznan.pl", role = c("aut", "cre")), person("Kamil", "Nowak", role = c("aut", "cre")), person("Konrad", "Jadwiżyc", role = c("aut", "cre")), person("Wojciech", "Dopieralski", role = c("aut", "cre"))
+Description: Download open data from Poznań
+Depends: R (>= 3.5.0)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
