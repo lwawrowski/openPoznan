@@ -1,6 +1,0 @@
-isFreePlace <- function(coords = F){
-  
-
-
-  
-}
