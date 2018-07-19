@@ -1,4 +1,5 @@
 library(jsonlite)
+get_property_cto <- function(coords = F){
 
 property_cto <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=properties_for_sale&co=wgn&type=4')
 
@@ -25,4 +26,17 @@ colnames(property_cto_final)<-c("id",
                           "comment",
                           "url_bip")
 
+result <- property_cto_final
 
+if(arg == TRUE){
+  
+  result <- TRUE
+  
+} else {
+  
+  result <- FALSE
+}
+
+return(result)
+
+}
