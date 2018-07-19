@@ -1,6 +1,6 @@
 #Rejony szkol
 
-getArea <- function (coords = F) {
+area <- function (coords = F) {
 
   #Rejony szkol
   
@@ -62,7 +62,8 @@ getArea <- function (coords = F) {
                            ~mutate(.x, id=.y))
   
   colnames(Area_coord_id) <- c("Longitude",
-                               "Latitude")
+                               "Latitude",
+                               "ID")
 
 if (coords == T) {
   result <- list(Areas=Areas_basic_info,
@@ -76,7 +77,7 @@ if (coords == T) {
 
 #example 
 
-Area_basic <- getArea () 
+Area_basic <- area () 
 
-Area_with_coord <- getArea (TRUE)
+Area_with_coord <- area (TRUE)
 
