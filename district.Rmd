@@ -1,0 +1,59 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+library(RCurl)
+```
+
+```{r}
+# samorządy pomocnicze 
+getDistrict <- function(arg = TRUE){
+
+s <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=local_gov&co=osiedla")
+district <- s$features
+
+district_coord <- data.frame(matrix(unlist(s$features$geometry$coordinates),
+                                   nrow = nrow(s$features), byrow = T))
+colnames(district_coord)[(names(district_coord)=="X1")] <- "Longitude"
+colnames(district_coord)[(names(district_coord)=="X2")] <- "Latitude"
+
+district_basic_info <- data.frame(cbind(district$id,
+                                        district$properties$name,
+                                        district$type))
+colnames(ticket_basic_info)<-c("ID","Name","Type")
+
+# złączenie wszystkich kolumn
+
+district_final <- cbind(district_basic_info)
+
+districtcoord <- district$geometry$coordinates
+
+  districtcoord2d <- map(districtcoord, drop)
+  
+  districtcoord_df <- map(districtcoord2d, as.data.frame)
+  
+  districtcoord_id <- map2_df(districtcoord_df, district$id, ~mutate(.x, id=.y))
+# rysowanie wykresu 
+ ggplot(districtcoord_id, aes(x= V1, y= V2, group=id), col = "red") +
+    geom_polygon(colour = "blue")+
+    labs(title='mapa osiedli',x='X', y='Y')+
+   theme_bw()
+ 
+ result <- district_final
+ 
+ if(arg == TRUE){
+    result <- TRUE
+  } else {
+    result <- FALSE
+  }
+  
+  return(district_final)
+}
+```
+
