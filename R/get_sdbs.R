@@ -47,23 +47,23 @@ colnames(bike_station_dist) <- c(colnames(bike_station),
 bike_station_dist_2 <- sqldf("select * from bike_station_dist order by straight_distance")
 
 
-sdbs_final <- data.frame(cbind(bike_station_dist_2$lon,
+sdbs_final <- data.frame(cbind(bike_station_dist_2$label,
+                               bike_station_dist_2$lon,
                                bike_station_dist_2$lat,
-                               bike_station_dist_2$label,
+                               bike_station_dist_2$n_label,
                                bike_station_dist_2$n_lon,
                                bike_station_dist_2$n_lat,
-                               bike_station_dist_2$n_label,
                                bike_station_dist_2$straight_distance,
                                bike_station_dist_2$updated))
 
-colnames(sdbs_final)<-c("longitude",
-                            "latitude",
-                            "station",
-                            "longitude",
-                            "latitude",
-                            "station",
-                            "straight_distance",
-                            "updated")
+colnames(sdbs_final)<-c("station",
+                        "longitude",
+                        "latitude",
+                        "station",
+                        "longitude",
+                        "latitude",
+                        "straight_distance",
+                        "updated")
 
 result <- sdbs_final
 

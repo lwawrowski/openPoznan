@@ -2,7 +2,7 @@ library(jsonlite)
 library(dplyr)
 library(ggplot2)
 library(purrr)
-getAddress <- function(coords = F){
+get_address <- function(coords = F){
   
 search <- fromJSON('http://www.poznan.pl/featureserver/featureserver.cgi/ulice_wgs/')
 

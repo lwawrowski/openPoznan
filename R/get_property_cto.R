@@ -18,13 +18,13 @@ property_cto_final <- data.frame(cbind(property_cto_features$id,
                                        property_cto_features$properties$url_bip))
 
 colnames(property_cto_final)<-c("id", 
-                          "longitude",
-                          "latitude",
-                          "plot_number",
-                          "plot_of_land",
-                          "description",
-                          "comment",
-                          "url_bip")
+                                "longitude",
+                                "latitude",
+                                "plot_number",
+                                "plot_of_land",
+                                "description",
+                                "comment",
+                                "url_bip")
 
 result <- property_cto_final
 

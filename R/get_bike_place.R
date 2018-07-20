@@ -25,7 +25,7 @@ get_bike_place <- function(coords = F){
                               "bike_racks",
                               "free_racks",
                               "bikes",
-                              "nb_updated")
+                              "updated")
   
   result <- NextBike_final
   
