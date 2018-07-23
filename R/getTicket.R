@@ -1,3 +1,7 @@
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
 
 getTicket <- function(Coord = F) {
   # sprzeda biletow
