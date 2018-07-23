@@ -1,3 +1,7 @@
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
 
 getCircle <- function(Coord = F){
   # okragi wyborow rad osiedli
