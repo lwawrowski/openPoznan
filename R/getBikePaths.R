@@ -1,4 +1,10 @@
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+
 getBikePaths <- function(Coord = F){
+  
   # szlaki rowerowe 
   
   b <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=tourism&co=cycling_routes")
