@@ -1,4 +1,9 @@
 
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+
 getRelict <- function(Coord = F){
   # turystyka 
   # zabytki
