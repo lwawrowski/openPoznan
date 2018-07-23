@@ -1,3 +1,7 @@
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
 
 get_local_government <- function(Coord = F){
   # dane wyborzcze samorzadowe 
