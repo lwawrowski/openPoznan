@@ -1,5 +1,10 @@
-# dane wybory samorzadowe obwody wyborcze 
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+
 getArea_electoral <- function(Coord = F){
+  # dane wybory samorzadowe obwody wyborcze 
   
   # wczytanie danych o wyborach samorzadowych
   
