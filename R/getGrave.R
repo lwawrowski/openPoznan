@@ -1,5 +1,11 @@
-# wczytanie danych groboW 
+
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+
 getGrave <- function(Coord = F){ 
+  # wczytanie danych groboW
   
   cementary_final <- getCemetery()
   
