@@ -1,3 +1,7 @@
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
 
 getEstate <- function(Coord = F) {
   # dane wyborcze rad osiedli 
