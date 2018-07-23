@@ -1,4 +1,10 @@
 
+
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+
 getPaths <- function(Coord = F){
   # szlaki turystyczne 
   
