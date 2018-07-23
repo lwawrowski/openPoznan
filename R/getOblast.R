@@ -1,5 +1,11 @@
-# obwody rad osiedli
+
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+
 getOblast <- function(Coord = F){
+  # obwody rad osiedli
   
   # wczytanie obwod?w rad osiedli
   ob <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
