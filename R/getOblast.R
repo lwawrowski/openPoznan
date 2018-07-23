@@ -1,0 +1,30 @@
+# obwody rad osiedli
+getOblast <- function(Coord = F){
+  
+  # wczytanie obwod?w rad osiedli
+  ob <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
+  oblast <- ob$features
+  
+  # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
+  oblast_basic_info <- data.frame(cbind(oblast$id,
+                                        oblast$properties$okreg))
+  colnames(oblast_basic_info)<-c("ID","Name")
+  
+  # z??czenie wszystkich kolumn
+  
+  oblast_final <- cbind(oblast_basic_info)
+  
+  oblastcoord <- oblast$geometry$coordinates
+  
+  oblastcoord2d <- map(oblastcoord, drop)
+  
+  oblastcoord_df <- map(oblastcoord2d, as.data.frame)
+  
+  oblastcoord_id <- map2_df(oblastcoord_df, oblast$id, ~mutate(.x, id=.y))
+  
+  if(Coord == F){
+    result <- oblastcoord_id
+  } else {
+    return(oblast_basic_info)
+  }
+}
