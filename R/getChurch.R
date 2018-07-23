@@ -1,3 +1,8 @@
+library(jsonlite)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+
 getChurch <- function(Coord = F){
   
   # wczytanie danych o kosciolach
