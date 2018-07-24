@@ -2,7 +2,7 @@ library(XML)
 library(tidyr)
 library(plyr)
 
-get_bike_place <- function(coords = F) {
+get_bike_place_details <- function(coords = F) {
 
 download.file("https://nextbike.net/maps/nextbike-official.xml?city=192", "R/bike.xml")
 
@@ -96,3 +96,4 @@ if(arg == TRUE){
 return(data_table_final)
 
 
+}
