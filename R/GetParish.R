@@ -69,6 +69,19 @@ parish <- function (coords = F) {
     colnames(Parish_coord_id) <- c("Longitude",
                                    "Latitude",
                                    "ID")
+    
+    
+    Area_coord_id$Longitude <-ifelse(is.na(Area_coord_id$Longitude),
+                                     Area_coord_id$Added_1,
+                                     Area_coord_id$Longitude)
+    
+    Area_coord_id$Latitude <- ifelse(is.na(Area_coord_id$Latitude),
+                                     Area_coord_id$Added_2,
+                                     Area_coord_id$Latitude)
+    
+    Area_coord_id <- subset(Area_coord_id, select = -c(Added_1,
+                                                       Added_2))
+    
   
   if (coords == T) {
     result <- list(Parishes=Parish_basic_info,
