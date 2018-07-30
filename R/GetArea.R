@@ -3,10 +3,21 @@
 area <- function (coords = F) {
 
   #Rejony szkol
-  
   #Wstepna analiza
   
-  Areas_blank <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=education&co=podstawowe201516")
+  if(havingIP() == T) {
+    
+    tryCatch({
+      
+      Areas_blank <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=education&co=podstawowe201516")
+      
+    },error = function(e) {
+      warning("You used bad link!")
+    })
+    
+  } else {
+    warning("You lost connection to internet!")
+  }
   
   Areas_features <- Areas_blank$features
   
@@ -32,6 +43,7 @@ area <- function (coords = F) {
   
   Area_check <- map(Area_coord_2d,  is.list) 
   
+  
   if (any(Area_check == T)) {   
     
     Area_coord_unlist <- list()
@@ -40,44 +52,46 @@ area <- function (coords = F) {
     V2 <- list()
     Data_frame_multipolygon <- list()
     
-      for (i in 1:nrow(Areas_features)){
+    for (i in 1:nrow(Areas_features)){
+      
+      if (is.list(Area_coord_2d[[i]]) == T) {
         
-        if (is.list(Area_coord_2d[[i]]) == T) {
-          
-          name <- paste('Area_coord',i,sep='_')
-          
-          Area_coord_unlist[[name]] <- unlist(Area_coord_2d[[i]]) 
-          
-          Area_coord_list[[name]] <- data.frame (Area_coord_unlist[[name]])
-          
-          V1[[name]] <- (Area_coord_list[[name]] [Area_coord_list[[name]] <18])
-          V2[[name]] <- (Area_coord_list[[name]] [Area_coord_list[[name]] >48])
-          
-          Data_frame_multipolygon[[name]] <- data.frame(V1[[name]],V2[[name]])
-          
-          Area_coord_2d[[i]] <- Data_frame_multipolygon[[name]]
-          
-          
-        } 
-      }
+        name <- paste('Area_coord',i,sep='_')
+        
+        Area_coord_unlist[[name]] <- unlist(Area_coord_2d[[i]]) 
+        
+        Area_coord_list[[name]] <- data.frame (Area_coord_unlist[[name]])
+        
+        V1[[name]] <- (Area_coord_list[[name]] [Area_coord_list[[name]] <18])
+        V2[[name]] <- (Area_coord_list[[name]] [Area_coord_list[[name]] >48])
+        
+        Data_frame_multipolygon[[name]] <- data.frame(V1[[name]],V2[[name]])
+        
+        Area_coord_2d[[i]] <- Data_frame_multipolygon[[name]]
+        
+        
+      } 
+    }
   }else {
     Area_coord_df <- map(Area_coord_2d, 
                          as.data.frame)
   }
   
   if (exists("Area_coord_df") == F) {
-  Area_coord_df <- map(Area_coord_2d,
-                       as.data.frame)
+    Area_coord_df <- map(Area_coord_2d,
+                         as.data.frame)
   }
-  
   
   Area_coord_id <- map2_df(Area_coord_df,
                            Areas_features$id,
                            ~mutate(.x, id=.y))
   
+  
   colnames(Area_coord_id) <- c("Longitude",
                                "Latitude",
-                               "ID")
+                               "ID",
+                               "Added_1",
+                               "Added_2")
   
   Area_coord_id$Longitude <-ifelse(is.na(Area_coord_id$Longitude),
                                    Area_coord_id$Added_1,
@@ -133,7 +147,7 @@ area <- function (coords = F) {
                   style = list("font-weight" = "normal", padding = "3px 8px"),
                   textsize = "15px",
                   direction = "auto"))
-
+  
   
   
 if (coords == T) {
