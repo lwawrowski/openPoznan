@@ -29,6 +29,31 @@ pm <- function () {
   
   PM_final <- cbind(PM_basic_info,PM_coord)
   
+  # Tworzenie mapy punktowej na wykresie 
+  
+  ggplot(data = PM_final,
+         aes(x= Longitude,
+             y= Latitude,
+             group=ID)) +
+    geom_point(colour = "blue")
+  
+  # Mapa Leaflet
+  
+  PM_Icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/34/34783.svg",
+                      iconWidth = 25, 
+                      iconHeight = 30,
+                      iconAnchorX = 15, 
+                      iconAnchorY = 25)
+  
+  Poznan_with_PM <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = PM_final$Latitude, 
+               lng = PM_final$Longitude, 
+               popup = PM_final$ID,
+               icon = PM_Icon,
+               clusterOptions = markerClusterOptions())
+  
+  
 
 return(PM_final)
 }

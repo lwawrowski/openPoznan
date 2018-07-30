@@ -17,7 +17,6 @@ stop <- function () {
   colnames (Stops_coord) <- c("Longitude",
                               "Latitude")
   
-  
   #Oczyszczenie danych z niepotrzebnych informacji + nazwanie 
   
   Stops_basic_info <- data.frame(cbind(Stops_features$id,
@@ -32,10 +31,34 @@ stop <- function () {
                                    "Stop_Headsigns",
                                    "Stop_Name")
   
-  
   # Ostateczne polaczenie 
   
   Stops_final <- cbind(Stops_basic_info,Stops_coord)
+  
+  # Tworzenie mapy punktowej na wykresie 
+  
+  ggplot(data = Stops_final,
+         aes(x= Longitude,
+             y= Latitude,
+             group=ID)) +
+    geom_point(colour = "blue")
+  
+  # Mapa Leaflet
+  
+  Stops_Icon <- icons(iconUrl = ifelse(Stops_final$Route_Type == 3,"https://d30y9cdsu7xlg0.cloudfront.net/png/19259-200.png","http://icons.iconarchive.com/icons/icons8/android/512/Transport-Tram-icon.png"),
+                      iconWidth = 25, 
+                      iconHeight = 30,
+                      iconAnchorX = 15, 
+                      iconAnchorY = 25)
+  
+  Poznan_with_Stops <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = Stops_final$Latitude, 
+               lng = Stops_final$Longitude, 
+               popup = Stops_final$ID,
+               icon = Stops_Icon[Stops_final$Route_Type],
+               clusterOptions = markerClusterOptions())
+  Poznan_with_Stops
 
 return(Stops_final)
 

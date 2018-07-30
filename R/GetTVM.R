@@ -35,14 +35,10 @@ tvm <- function () {
                                "Store_Card",
                                "TVM_Order",
                                "TVM_Description")
-  
-  
+
   # Ostateczne polaczenie 
   
   TVM_final <- cbind(TVM_basic_info,TVM_coord)
-  
-  
-  
   
   # Tworzenie mapy punktowej na wykresie 
   
@@ -60,10 +56,8 @@ tvm <- function () {
   
   plot(Poznan_with_TVM)
   
-  
   # Mapa Leaflet
   
-  #Tworzenie wlasnychh ikon = cos nie tak z obrazkiem !.! 
   TVM_Icon <- makeIcon(iconUrl = "https://d30y9cdsu7xlg0.cloudfront.net/png/44651-200.png",
                        iconWidth = 25, 
                        iconHeight = 30,

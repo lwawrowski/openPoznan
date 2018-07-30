@@ -78,8 +78,6 @@ parish <- function (coords = F) {
     
     #Function spatial lines
     
-    # https://stackoverflow.com/questions/45237646/r-leaflet-addpolygons-by-group <- problem z leaf let i rozw
-    
     Parish_split_data = lapply(unique(Parish_coord_id$ID), function(x) {
       df = as.matrix(Parish_coord_id[Parish_coord_id$ID == x, c("Longitude", "Latitude") ])
       polys = Polygons(list(Polygon(df)), ID = x)
@@ -114,7 +112,6 @@ parish <- function (coords = F) {
                     textsize = "15px",
                     direction = "auto"))
     
-    Parish_leaflet_map
     
     #https://www.jessesadler.com/post/geocoding-with-r/  <- do szukania pkt parafii
     
@@ -127,6 +124,11 @@ parish <- function (coords = F) {
     Church_df$Parish_Name <- ifelse(grepl(" w ", Church_df$Parish_Name), 
                                     Church_df$Parish_Name,
                                     paste(Church_df$Parish_Name, " w Poznaniu"))
+    
+    
+    
+    
+    
     
 
   if (coords == T) {

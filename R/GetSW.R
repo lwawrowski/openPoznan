@@ -32,6 +32,32 @@ sw <- function() {
   
   SW_final <- cbind (SW_basic_info,
                      SW_coord)
+  
+  # Tworzenie mapy punktowej na wykresie 
+  
+  ggplot(data = SW_final,
+         aes(x= Longitude,
+             y= Latitude,
+             group=ID)) +
+    geom_point(colour = "blue")
+  
+  # Mapa Leaflet
+  
+  SW_Icon <- makeIcon(iconUrl = "",
+                      iconWidth = 25, 
+                      iconHeight = 30,
+                      iconAnchorX = 15, 
+                      iconAnchorY = 25)
+  
+  Poznan_with_SW <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = SW_final$Latitude, 
+               lng = SW_final$Longitude, 
+               popup = SW_final$ID,
+               icon = SW_Icon,
+               clusterOptions = markerClusterOptions())
+  
+  
 
 return (SW_final)
 
