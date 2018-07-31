@@ -15,7 +15,7 @@ search_coord_df <- map(search_coord, as.data.frame)
 search_coord_id <- map2_df(search_coord_df, search$features$id, ~mutate(.x, id=.y))
 
 ggplot(search_coord_id, aes(x= V1, y= V2, group=id), col = "red") +
-  geom_line()
+  geom_path()
 
 search_address <- paste(search_features$properties$a4,search_features$properties$a6)
 
