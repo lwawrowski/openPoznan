@@ -8,7 +8,13 @@ getOblast <- function(Coord = F){
   # obwody rad osiedli
   
   # wczytanie obwod?w rad osiedli
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   ob <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   oblast <- ob$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
@@ -28,7 +34,7 @@ getOblast <- function(Coord = F){
   
   oblastcoord_id <- map2_df(oblastcoord_df, oblast$id, ~mutate(.x, id=.y))
   
-  if(Coord == F){
+  if(Coord == T){
     result <- oblastcoord_id
   } else {
     return(oblast_basic_info)

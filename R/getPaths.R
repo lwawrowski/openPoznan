@@ -7,8 +7,13 @@ library(purrr)
 
 getPaths <- function(Coord = F){
   # szlaki turystyczne 
-  
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   t <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=tourism&co=trails")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   paths <- t$features
   
   paths_basic_info <- data.frame(cbind(paths$id,

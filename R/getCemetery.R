@@ -7,7 +7,13 @@ getCemetery <- function(Coord = F) {
   # wyszukiwarka cmentarzy 
   
   # wczytanie danych cmentarzy 
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   c <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/cmentarze/all.json")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   cemetery <- c$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

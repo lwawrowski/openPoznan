@@ -6,7 +6,13 @@ library(purrr)
 getChurch <- function(Coord = F){
   
   # wczytanie danych o kosciolach
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   ch <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=2471")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   church <- ch$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
@@ -31,7 +37,7 @@ getChurch <- function(Coord = F){
   # z??czenie wszystkich kolumn
   
   church_final <- cbind(church_basic_info,church_coord)
-  if(Coord == F){
+  if(Coord == T){
     result <- church_coord
   } else {
     return(church_final)

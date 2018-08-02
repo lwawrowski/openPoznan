@@ -7,8 +7,14 @@ getTicket <- function(Coord = F) {
   # sprzeda biletow
   
   # wczytanie danych biletow 
-  
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
+    
   tick <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=4803")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   ticket <- tick$features 
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
   

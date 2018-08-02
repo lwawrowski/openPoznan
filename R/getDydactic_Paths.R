@@ -7,8 +7,13 @@ getDydactic_Paths <- function(Coord = F){
   
   # szlaki dydaktyczne
   
-  
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   d <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=tourism&co=dydactic_paths")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   dpaths <- d$features
   
   trail_basic_info <- data.frame(cbind(dpaths$id,

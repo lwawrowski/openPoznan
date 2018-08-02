@@ -7,8 +7,13 @@ getDistrict <- function(Coord = F) {
   # samorzady pomocnicze 
   
   # wczytanie danych samorzadow pomocniczych 
-  
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   s <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=local_gov&co=osiedla")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   district <- s$features
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
   

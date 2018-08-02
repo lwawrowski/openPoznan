@@ -6,8 +6,13 @@ library(purrr)
 getBikePaths <- function(Coord = F){
   
   # szlaki rowerowe 
-  
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   b <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=tourism&co=cycling_routes")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   bikepaths <- b$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

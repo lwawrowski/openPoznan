@@ -7,7 +7,13 @@ getEstate <- function(Coord = F) {
   # dane wyborcze rad osiedli 
   
   # wczytanie danych rad osiedli
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   e <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_lokale/")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   estate <- e$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

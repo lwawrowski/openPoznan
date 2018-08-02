@@ -8,7 +8,15 @@ get_local_government <- function(Coord = F){
   
   # wczytanie danych o wyborach samorzadowych
   
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   go <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_lokale_wgs/")
+  
+  }, error = function(err) {
+    
+      print(paste("check the internet connection"))
+    
+  })
+  
   gov <- go$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
@@ -28,7 +36,7 @@ get_local_government <- function(Coord = F){
   
   gov_final <- cbind(gov_basic_info, gov_coord)
   
-  if(Coord == F){
+  if(Coord == T){
       result <- gov_coord
     } else {
       return(gov_basic_info)

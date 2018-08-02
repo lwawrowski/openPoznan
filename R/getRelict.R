@@ -9,7 +9,13 @@ getRelict <- function(Coord = F){
   # zabytki
   
   # wczytanie danych o zabytkach
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
   r <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=2572")
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   relikt <- r$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
@@ -35,7 +41,7 @@ getRelict <- function(Coord = F){
   # z??czenie wszystkich kolumn
   
   relikt_final <- cbind(relikt_basic_info,relikt_coord)
-  if(Coord == F){
+  if(Coord == T){
     result <- relikt_coord
   } else {
     return(relikt_final)

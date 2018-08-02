@@ -7,8 +7,15 @@ getCircle <- function(Coord = F){
   # okragi wyborow rad osiedli
   
   # wczytanie danych rad osiedli
-  
+  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
+    
   co <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
+  
+  }, error = function(err) {
+    
+    print(paste(""))
+    
+  })
   circle <- co$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
@@ -29,7 +36,7 @@ getCircle <- function(Coord = F){
   
   circlecoord_id <- map2_df(circlecoord_df, circle$id, ~mutate(.x, id=.y))
   
-  if(Coord == F){
+  if(Coord == T){
     result <- circlecoord_id
   } else {
     return(circle_final)  
