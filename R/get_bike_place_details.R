@@ -2,11 +2,13 @@ library(XML)
 library(tidyr)
 library(plyr)
 
-get_bike_place_details <- function(coords = F) {
+
+get_bike_place_details <- function() {
 
 download.file("https://nextbike.net/maps/nextbike-official.xml?city=192", "R/bike.xml")
 
 data <- xmlParse("R/bike.xml")
+
 
 root <- xmlRoot(data)
 
@@ -46,7 +48,7 @@ result <- tryCatch(
 i <- n
 
   while(i <= 109) {
-    
+
     place <- root[[1]][[1]][[i]]
     
     li <- xmlToList(place)
@@ -84,16 +86,9 @@ i <- n
     
   }
 
-if(arg == TRUE){
-  
-  data_table_final <- TRUE
-  
-} else {
-  
-  data_table_final <- FALSE
-}
 
 return(data_table_final)
 
 
 }
+

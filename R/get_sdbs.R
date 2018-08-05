@@ -6,10 +6,26 @@ library(rgeos)
 library(geosphere)
 library(gmapsdistance)
 library(dplyr)
-library(sqldf)
-
-## get shortest distances between bike station/bike racks
-get_sdbs <- function(coords = F){
+#' get_sdbs Function
+#'
+#' This function download data from NextBike and and calculates the shortest distance between stations
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite, tidyverse, ggmap, sp, rgeos, geosphere, gmapsdistance, dplyr
+#' @format 
+#' \describe{
+#' \item{station}{factor; station name.}
+#' \item{longitude}{factor; longitude}
+#' \item{latitude}{factor; latitude.}
+#' \item{station}{factor; station name.}
+#' \item{longitude}{factor; longitude}
+#' \item{latitude}{factor; latitude.}
+#' \item{straight_distance}{factor; the shortest straight distance between stations.}
+#' }
+#' @examples
+#' get_sdbs
+get_sdbs <- function(){
   
 sdbs <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=stacje_rowerowe")
 sdbs_coords <- data.frame(matrix(unlist(sdbs$features$geometry$coordinates), 

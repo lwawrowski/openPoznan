@@ -1,6 +1,24 @@
-library(jsonlite)
-
-get_property_fs <- function(coords = F){
+#' get_property_fs Function
+#'
+#' This function download data about property for sale
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite
+#' @format 
+#' \describe{
+#' \item{id}{factor; property id.}
+#' \item{longitude}{factor; longitude.}
+#' \item{latitude}{factor; latitude.}
+#' \item{plot_number}{factor; plot_number.}
+#' \item{plot_of_land}{factor; plot_of_land.}
+#' \item{description}{factor; description.}
+#' \item{comment}{factor; comments.}
+#' \item{url_bip}{factor; url bip.}
+#' }
+#' @examples
+#' get_property_fs()
+get_property_fs <- function(){
 
 property_fs<- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=properties_for_sale&co=wgn&type=3')
 
@@ -27,17 +45,6 @@ colnames(property_fs_final)<-c("id",
                                 "comment",
                                 "url_bip")
 
-result <- property_fs_final
-
-if(arg == TRUE){
-  
-  result <- TRUE
-  
-} else {
-  
-  result <- FALSE
-}
-
-return(result)
+return(property_fs_final)
 
 }

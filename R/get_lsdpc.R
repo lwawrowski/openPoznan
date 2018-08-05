@@ -1,11 +1,20 @@
-library(jsonlite)
-library(dplyr)
-library(purrr)
-library(ggplot2)
-library(leaflet)
-library(sp)
-
-## Local Spatial Development Plans - Called
+#' get_lsdpc Function
+#'
+#' This function download data about Called Local Spatial Development Plans 
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite, dplyr, purrr, ggplot2, leaflet, sp
+#' @format 
+#' \describe{
+#' \item{id}{factor; id.}
+#' \item{lsdpc_location_name}{factor; location name.}
+#' \item{lsdpc_adopted_change}{factor; adopted change.}
+#' \item{lsdpc_adaptive_resolution}{factor; adaptive resolution.}
+#' \item{lsdpc_date_oAR}{factor; date of adaptive resolution.}
+#' }
+#' @examples
+#' get_lsdpc()
 
 get_lsdpc <- function (coords = F) {
   

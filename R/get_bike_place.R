@@ -1,6 +1,25 @@
-library(jsonlite)
-
-get_bike_place <- function(coords = F){
+#' get_bike_place Function
+#'
+#' This function download statistic about bike station from NextBike
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite
+#' @format 
+#' \describe{
+#' \item{id}{factor; station id.}
+#' \item{longitude}{factor; longitude.}
+#' \item{latitude}{factor; latitude.}
+#' \item{name}{factor; station name.}
+#' \item{bike_racks}{factor; bike racks.}
+#' \item{free_racks}{factor; free racks.}
+#' \item{bike_types}{factor; bike types.}
+#' \item{bikes}{factor; number of bikes.}
+#' \item{update}{factor; last update.}
+#' }
+#' @examples
+#' get_bike_plac()
+get_bike_place <- function(){
   
   NextBike <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=stacje_rowerowe')
   
@@ -27,18 +46,9 @@ get_bike_place <- function(coords = F){
                               "bikes",
                               "updated")
   
-  result <- NextBike_final
-  
-  if(arg == TRUE){
-    
-    result <- TRUE
-    
-  } else {
-    
-    result <- FALSE
-  }
-  
-  return(result)
+return(NextBike_final)
 
   
 }
+
+                     

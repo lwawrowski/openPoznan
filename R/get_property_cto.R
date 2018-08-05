@@ -1,5 +1,24 @@
-library(jsonlite)
-get_property_cto <- function(coords = F){
+#' get_property_cto Function
+#'
+#' This function download data about property current trade offer
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite
+#' @format 
+#' \describe{
+#' \item{id}{factor; property id.}
+#' \item{longitude}{factor; longitude.}
+#' \item{latitude}{factor; latitude.}
+#' \item{plot_number}{factor; plot_number.}
+#' \item{plot_of_land}{factor; plot_of_land.}
+#' \item{description}{factor; description.}
+#' \item{comment}{factor; comments.}
+#' \item{url_bip}{factor; url bip.}
+#' }
+#' @examples
+#' get_property_cto()
+get_property_cto <- function(){
 
 property_cto <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=properties_for_sale&co=wgn&type=4')
 
@@ -26,17 +45,8 @@ colnames(property_cto_final)<-c("id",
                                 "comment",
                                 "url_bip")
 
-result <- property_cto_final
+return(property_cto_final)
 
-if(arg == TRUE){
-  
-  result <- TRUE
-  
-} else {
-  
-  result <- FALSE
-}
 
-return(result)
 
 }

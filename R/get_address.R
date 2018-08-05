@@ -1,8 +1,21 @@
-library(jsonlite)
-library(dplyr)
-library(ggplot2)
-library(purrr)
-get_address <- function(coords = F){
+#' get_address Function
+#'
+#' This function download information about address location
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite, dplyr, ggplot2, purrr
+#' @format 
+#' \describe{
+#' \item{id}{factor; address id.}
+#' \item{longitude}{factor; longitude}
+#' \item{latitude}{factor; latitude.}
+#' \item{address}{factor; address name.}
+#' }
+#' @examples
+#' get_address()
+
+get_address <- function(){
   
 search <- fromJSON('http://www.poznan.pl/featureserver/featureserver.cgi/ulice_wgs/')
 
@@ -29,17 +42,6 @@ colnames(search_final)<-c("id",
                           "latitude",
                           "address")
 
-result <- search_final
-
-if(arg == TRUE){
-  
-  result <- TRUE
-  
-} else {
-  
-  result <- FALSE
-}
-
-return(result)
+return(search_final)
 
 }

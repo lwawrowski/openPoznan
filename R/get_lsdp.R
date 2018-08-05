@@ -1,15 +1,26 @@
-library(jsonlite)
-library(dplyr)
-library(purrr)
-library(ggplot2)
-library(leaflet)
-library(sp)
+#' get_lsdp Function
+#'
+#' This function download data about Passed Local Spatial Development Plans 
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite, dplyr, purrr, ggplot2, leaflet, sp
+#' @format 
+#' \describe{
+#' \item{id}{factor; id.}
+#' \item{lsdp_location_name}{factor; location name.}
+#' \item{lsdp_adaptive_resolution}{factor; adaptive resolution.}
+#' \item{lsdp_date_of_ar}{factor; date of adaptive resolution.}
+#' \item{lsdp_approval_of_the_resolution}{factor; approval of the resolution.}
+#' \item{lsdp_date_of_the_ar}{factor; date of the approval of the resolution.}
+#' \item{lsdp_official_journal}{factor; official journal.}
+#' \item{lsdp_date_of_oj}{factor; date of official journal.}
+#' }
+#' @examples
+#' get_lsdp()
 
-## Local Spatial Development Plans - Passed
-
-get_lsdp <- function (coords = F) {
+get_lsdp <- function () {
   
-
 lsdp <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=urban_planning&co=mpzp')
 
 lsdp_features <- lsdp$features
@@ -145,16 +156,6 @@ lsdp_leaflet_map <- leaflet() %>%
 lsdp_leaflet_map
 
 
-
-if (coords == T) 
-  {
-  result <- list(lsdpp=lsdp_basic_info,
-                 Coords = lsdp_coord_id)
-  
-} else {
   return(lsdp_basic_info)
 }
-
-}
-
 
