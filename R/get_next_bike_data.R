@@ -104,7 +104,7 @@ get_nextbike <-function(data,date){
     
     if(are_bikes[[i]]){
       
-      station <- places[[1]]
+      station <- places[[i]]
       
       station_attr <- as.data.frame(t(station$.attrs))
       station$.attrs <- NULL
