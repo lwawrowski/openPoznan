@@ -21,7 +21,19 @@ sw <- function() {
 
   #Wstepna analiza
   
+  if(havingIP() == T) {
+    
+    tryCatch({
+      
   SW_blank <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=environment&co=omnc02")
+   
+   },error = function(e) {
+      warning("You used bad link or didn't load jsonlite package")
+    })
+    
+  } else {
+    warning("You lost connection to internet!")
+  }
   
   SW_feautures <- SW_blank$features
   

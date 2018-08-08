@@ -1,8 +1,27 @@
-#Rejony szkol
+#' area Function
+#'
+#' This function download data about basic school areas in Poznań.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @param coords shows basic_data about schools area. When set TRUE shows coords of schools area.
+#' @import jsonlite, textclean, tidyverse, purrr
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of school area.}
+#' \item{School_Nr}{factor; Number of school. }
+#' \item{Shape}{factor; }
+#' \item{PK}{factor; Shows type of school with number.}
+#' \item{School_Name}{factor; Name of school area.}
+#' \item{Longitude}{numeric; Longitude of parish site.}
+#' \item{Latitude}{numeric; Latitude of parish site.}
+#' }
+#' @examples
+#' area ()
+
 
 area <- function (coords = F) {
 
-  #Rejony szkol
   #Wstepna analiza
   
   if(havingIP() == T) {
@@ -68,8 +87,6 @@ area <- function (coords = F) {
         Data_frame_multipolygon[[name]] <- data.frame(V1[[name]],V2[[name]])
         
         Area_coord_2d[[i]] <- Data_frame_multipolygon[[name]]
-        
-        
       } 
     }
   }else {
@@ -85,7 +102,6 @@ area <- function (coords = F) {
   Area_coord_id <- map2_df(Area_coord_df,
                            Areas_features$id,
                            ~mutate(.x, id=.y))
-  
   
   colnames(Area_coord_id) <- c("Longitude",
                                "Latitude",
@@ -103,52 +119,6 @@ area <- function (coords = F) {
   
   Area_coord_id <- subset(Area_coord_id, select = -c(Added_1,
                                                      Added_2))
-  
-  # Tworzenie mapy punktowej na wykresie 
-  
-  ggplot(data = Area_coord_id,
-         aes(x= Longitude,
-             y= Latitude,
-             group=ID)) +
-    geom_polygon(colour = "blue")
-  
-  #Function spatial lines
-  
-  Area_split_data = lapply(unique(Area_coord_id$ID), function(x) {
-    df = as.matrix(Area_coord_id[Area_coord_id$ID == x, c("Longitude", "Latitude") ])
-    polys = Polygons(list(Polygon(df)), ID = x)
-    return(polys)
-  })
-  
-  Area_data_lines = SpatialPolygons(Area_split_data)
-  
-  #Leaflet - ladna mapka
-  
-  labels <- sprintf("<strong>%s</strong><br/>",
-                    Areas_basic_info$School_Name) %>% 
-    lapply(htmltools::HTML)
-  
-  Area_leaflet_map <- leaflet() %>%
-    addTiles() %>%  
-    addPolygons(data = Area_data_lines,
-                weight = 2, 
-                opacity = 1,
-                dashArray = "3",
-                color = "white",
-                smoothFactor = 0.5,
-                fillOpacity = 0.5, 
-                highlight = highlightOptions(
-                  weight = 5,
-                  color = "#666",
-                  fillOpacity = 0.7,
-                  bringToFront = TRUE),
-                label = labels,
-                labelOptions = labelOptions(
-                  style = list("font-weight" = "normal", padding = "3px 8px"),
-                  textsize = "15px",
-                  direction = "auto"))
-  
-  
   
 if (coords == T) {
   result <- list(Areas=Areas_basic_info,

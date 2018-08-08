@@ -1,13 +1,39 @@
-#Geolokalizacja z google na temat dokładnej lokalizacji kościoła. 
-
-#Parafie Calosc
+#' parish Function
+#'
+#' This function download data about parishes in Poznań
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @param coords shows basic_data about parishes. When set TRUE shows coords of Parishes
+#' @import jsonlite, textclean, tidyverse, purrr
+#' @format 
+#' \describe{
+#' \item{ID}{character; ID of parish.}
+#' \item{Parish_Name}{factor; Number of sewage work.}
+#' \item{Longitude}{numeric; Longitude of parish site.}
+#' \item{Latitude}{numeric; Latitude of parish site.}
+#' }
+#' @examples
+#' parish ()
 
 parish <- function (coords = F) {
   
     #Wstepna analiza
     
+    if(havingIP() == T) {
+    
+      tryCatch({
+      
     Parish_blank <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=parishes&co=parishes")
     
+      },error = function(e) {
+        warning("You used bad link or didn't load jsonlite package")
+      })
+      
+    } else {
+      warning("You lost connection to internet!")
+    }
+  
     Parish_features <- Parish_blank$features
     
     #Oczyszczenie danych z niepotrzebnych informacji + nazwanie 
@@ -68,69 +94,6 @@ parish <- function (coords = F) {
                                    "Latitude",
                                    "ID")
     
-    # Tworzenie mapy punktowej na wykresie 
-    
-    ggplot(data = Parish_coord_id,
-           aes(x= Longitude,
-               y= Latitude,
-               group=ID)) +
-      geom_polygon(colour = "blue")
-    
-    #Function spatial lines
-    
-    Parish_split_data = lapply(unique(Parish_coord_id$ID), function(x) {
-      df = as.matrix(Parish_coord_id[Parish_coord_id$ID == x, c("Longitude", "Latitude") ])
-      polys = Polygons(list(Polygon(df)), ID = x)
-      return(polys)
-    })
-    
-    Parish_data_lines = SpatialPolygons(Parish_split_data)
-    
-    #Leaflet - ladna mapka
-    
-    labels <- sprintf("<strong>%s</strong><br/>",
-                      Parish_basic_info$Parish_Name) %>% 
-                      lapply(htmltools::HTML)
-    
-    Parish_leaflet_map <- leaflet() %>%
-      addTiles() %>%  
-      addPolygons(data = Parish_data_lines,
-                  weight = 2, 
-                  opacity = 1,
-                  dashArray = "3",
-                  color = "white",
-                  smoothFactor = 0.5,
-                  fillOpacity = 0.5, 
-                  highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE),
-                  label = labels,
-                  labelOptions = labelOptions(
-                    style = list("font-weight" = "normal", padding = "3px 8px"),
-                    textsize = "15px",
-                    direction = "auto"))
-    
-    
-    #https://www.jessesadler.com/post/geocoding-with-r/  <- do szukania pkt parafii
-    
-    Church <- distinct(Parish_basic_info, Parish_Name)
-    
-    Church_df <- as.data.frame(Church)
-    
-    Church_df$Parish_Name <- paste("ko?ci??? ", Church_df$Parish_Name)
-    
-    Church_df$Parish_Name <- ifelse(grepl(" w ", Church_df$Parish_Name), 
-                                    Church_df$Parish_Name,
-                                    paste(Church_df$Parish_Name, " w Poznaniu"))
-    
-    
-    
-    
-    
-    
-
   if (coords == T) {
     result <- list(Parishes=Parish_basic_info,
                    Coords = Parish_coord_id)

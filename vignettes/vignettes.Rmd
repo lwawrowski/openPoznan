@@ -210,7 +210,176 @@ ggplot(data = Cesspool_Final,
 ```{r}
 
 
+# Tworzenie mapy punktowej na wykresie 
 
+ggplot(data = Parish_coord_id,
+       aes(x= Longitude,
+           y= Latitude,
+           group=ID)) +
+  geom_polygon(colour = "blue")
+
+#Function spatial lines
+
+# https://stackoverflow.com/questions/45237646/r-leaflet-addpolygons-by-group <- problem z leaf let i rozw
+
+Parish_split_data = lapply(unique(Parish_coord_id$ID), function(x) {
+  df = as.matrix(Parish_coord_id[Parish_coord_id$ID == x, c("Longitude", "Latitude") ])
+  polys = Polygons(list(Polygon(df)), ID = x)
+  return(polys)
+})
+
+Parish_data_lines = SpatialPolygons(Parish_split_data)
+
+#Leaflet - ladna mapka
+
+labels <- sprintf("<strong>%s</strong><br/>",
+                  Parish_basic_info$Parish_Name) %>% 
+                  lapply(htmltools::HTML)
+
+Parish_leaflet_map <- leaflet() %>%
+addTiles() %>%  
+  addPolygons(data = Parish_data_lines,
+               weight = 2, 
+               opacity = 1,
+               dashArray = "3",
+               color = "white",
+               smoothFactor = 0.5,
+               fillOpacity = 0.5, 
+                 highlight = highlightOptions(
+                 weight = 5,
+                 color = "#666",
+                 fillOpacity = 0.7,
+                 bringToFront = TRUE),
+                   label = labels,
+                   labelOptions = labelOptions(
+                   style = list("font-weight" = "normal", padding = "3px 8px"),
+                   textsize = "15px",
+                   direction = "auto"))
+                           
+Parish_leaflet_map
+
+#Lista parafii z Urzedu miasta
+
+Church <- distinct(Parish_basic_info, Parish_Name)
+
+Church_list_df <- data.frame(Church, stringsAsFactors = FALSE)
+
+Church_list_df$Parish_Name <- paste("Kosciol ", Church_list_df$Parish_Name)
+
+Church_list_df$Parish_Name <- ifelse(grepl(" w ", Church_list_df$Parish_Name), 
+                                Church_list_df$Parish_Name,
+                                paste(Church_list_df$Parish_Name, " w Poznaniu"))
+
+Church_list_df[sapply(Church_list_df, is.character)] <- lapply(Church_list_df[sapply(Church_list_df,is.character)], as.factor)
+
+#Geocoding z opencage
+
+Church_opencage <- opencage_forward (placename = "Ko?ci??, 
+                           Pozna??,
+                           Polska",
+                           key =  "1883310f1dd440b1b7b48dfbabe55ff2",               
+                           countrycode = "PL",
+                           language = "pl",
+                           limit = 100)
+
+Church_opencage_df <- as.data.frame(Church_opencage)
+
+Church_coords_opencage_df <- data.frame(Church_opencage_df$results.geometry.lat,
+                    Church_opencage_df$results.geometry.lng,
+                    Church_opencage_df$results.formatted)
+#Webscrapping
+
+url <- "https://pl.wikipedia.org/wiki/Kategoria:Ko%C5%9Bcio%C5%82y_rzymskokatolickie_w_Poznaniu"
+
+Church_wiki_list <- url %>%
+  read_html %>%
+  html_nodes(".mw-category ul li a") %>%
+  html_text()
+
+Church_wiki_links <- url %>%
+  read_html %>%
+  html_nodes(".mw-category ul li a") %>%
+  html_attr("href")
+
+Church_wiki_links <- paste("https://pl.wikipedia.org", Church_wiki_links, sep="")
+
+Church_coord_final <- data.frame()
+
+for(i in 1:length(Church_wiki_list)){
+
+  church <- Church_wiki_links[i]
+
+  long <- church %>%
+    read_html %>%
+    html_nodes(".infobox .geo-nondefault .geo-dms .longitude") %>%
+    html_text()
+
+  lat <- church %>%
+    read_html %>%
+    html_nodes(".infobox .geo-nondefault .geo-dms .latitude") %>%
+    html_text()
+  
+  church_name <- church %>%
+    read_html %>%
+    html_nodes("#firstHeading") %>%
+    html_text
+
+  if(length(long) != 0 & length(lat) != 0){
+
+    result <- data.frame(long, lat, church_name)
+
+    Church_coord_final <- rbind(Church_coord_final, result)
+  }
+}
+
+colnames(Church_coord_final) <- c("Longitude",
+                                 "Latitude",
+                                 "Parish_Name")
+
+Church_coord_final$Parish_Name <- replace_non_ascii(Church_coord_final$Parish_Name)
+Church_list_df$Parish_Name <- replace_non_ascii(Church_list_df$Parish_Name)
+
+#spytaj jak to zoptymalizowc 
+
+Church_list_df$Parish_Name <- gsub("Swietej", "sw.", Church_list_df$Parish_Name)
+Church_list_df$Parish_Name <- gsub("Swietego", "sw.", Church_list_df$Parish_Name)
+Church_coord_final$Parish_Name <- gsub("Swietej", "sw.", Church_coord_final$Parish_Name)
+Church_coord_final$Parish_Name <- gsub("Swietego", "sw.", Church_coord_final$Parish_Name)
+Church_coord_final$Parish_Name <- gsub("Bozej", "Boskiej", Church_coord_final$Parish_Name)
+Church_coord_final$Parish_Name <- gsub("Bazylika", "Kosciol", Church_coord_final$Parish_Name)
+Church_list_df$Parish_Name <- gsub("Bozej", "Boskiej", Church_list_df$Parish_Name)
+
+#Modyfikacje dla 1 ko?cio?a 
+
+Church_coord_final$Parish_Name <- gsub("archikatedralna", "", Church_coord_final$Parish_Name)
+Church_coord_final$Parish_Name <- gsub("Apostolow Slowian i Patronow Europy", "", Church_coord_final$Parish_Name)
+Church_coord_final$Parish_Name <- gsub("Kosciol Nawrocenia sw. Pawla Apostola", "Kosciol Nawrocenia sw. Pawla", Church_coord_final$Parish_Name)
+Church_list_df$Parish_Name <- gsub("z Pietrelciny", "", Church_list_df$Parish_Name)
+Church_list_df$Parish_Name <- gsub("Chojnica - Morasko", "", Church_list_df$Parish_Name)
+Church_list_df$Parish_Name <- gsub("Kosciol sw. Lukasza", "Kosciol sw. Lukasza Ewangelisty", Church_list_df$Parish_Name)
+Church_list_df$Parish_Name <- gsub("Kosciol Matki Odkupiciela", "Kosciol Najswietszej Maryi Panny Matki Odkupiciela", Church_list_df$Parish_Name)
+
+removePunctWords <- function(x) {
+  gsub(pattern = "\\(\\w*", "", x)
+}
+
+Church_coord_final$Parish_Name <- removePunctWords(Church_coord_final$Parish_Name)
+
+Church_coord_final$Parish_Name <- gsub("(.*?) w .*" , "\\1" ,Church_coord_final$Parish_Name ) 
+Church_list_df$Parish_Name<- gsub("(.*?) w .*" , "\\1" , Church_list_df$Parish_Name ) 
+
+Podobienstwa <- Church_coord_final %>% 
+  stringdist_right_join(Church_list_df,
+                  by = "Parish_Name",
+                  distance_col = NULL,
+                  method = "osa")
+
+Macierz_odl<- stringdistmatrix(Church_coord_final$Parish_Name, 
+                               Church_list_df$Parish_Name, 
+                               useNames = "strings",
+                               method = "jw")
+
+Macierz_df <- as.data.frame(as.table(Macierz_odl))
 
 
 
@@ -221,6 +390,124 @@ ggplot(data = Cesspool_Final,
 ```{r}
 
 
+# Tworzenie mapy punktowej na wykresie 
+
+ggplot(data = Area_coord_id,
+       aes(x= Longitude,
+           y= Latitude,
+           group=ID)) +
+  geom_polygon(colour = "blue")
+
+#Function spatial lines
+
+Area_split_data = lapply(unique(Area_coord_id$ID), function(x) {
+  df = as.matrix(Area_coord_id[Area_coord_id$ID == x, c("Longitude", "Latitude") ])
+  polys = Polygons(list(Polygon(df)), ID = x)
+  return(polys)
+})
+
+Area_data_lines = SpatialPolygons(Area_split_data)
+
+#Leaflet - ladna mapka
+
+labels <- sprintf("<strong>%s</strong><br/>",
+                  Areas_basic_info$School_Name) %>% 
+                  lapply(htmltools::HTML)
+
+Area_leaflet_map <- leaflet() %>%
+addTiles() %>%  
+  addPolygons(data = Area_data_lines,
+               weight = 2, 
+               opacity = 1,
+               dashArray = "3",
+               color = "white",
+               smoothFactor = 0.5,
+               fillOpacity = 0.5, 
+                 highlight = highlightOptions(
+                 weight = 5,
+                 color = "#666",
+                 fillOpacity = 0.7,
+                 bringToFront = TRUE),
+                   label = labels,
+                   labelOptions = labelOptions(
+                   style = list("font-weight" = "normal", padding = "3px 8px"),
+                   textsize = "15px",
+                   direction = "auto"))
+                           
+Area_leaflet_map
+               
+#Geocoding z opencage
+
+School_opencage <- opencage_forward (placename = "Szko?a, 
+                           Pozna??,
+                           Polska",
+                           key =  "1883310f1dd440b1b7b48dfbabe55ff2",               
+                           countrycode = "PL",
+                           language = "pl")
+
+School_opencage_df <- as.data.frame(School_opencage)
+
+School_coords_opencage_df <- data.frame(School_opencage_df$results.geometry.lat,
+                    School_opencage_df$results.geometry.lng,
+                    School_opencage_df$results.formatted)
+
+
+#webbscraping sszkoly- idea 
+
+#pobierz nazwy i adres szkol ze strony i geocoduj po liscie adresow z open cage, badz OSM :)
+
+# 
+#http://www.poznan.pl/mim/oswiata/szkoly-podstawowe,poi,2284,8884/
+
+
+#ew. skorzystajmy z gotowej na stronie miasta: https://www.um.poznan.pl/mim/plan/plan.html?srs=EPSG%3A2177&lhs=chapters&layersid=wms_mpk%2Cwms_georss_obiekty&layers=B000&id_cz=8884&id_klasy=2284
+
+School_url <- "http://www.poznan.pl/mim/oswiata/szkoly-podstawowe,poi,2284,8884/"
+
+School_list_names <- School_url %>%
+  read_html %>%
+  html_nodes(".object h2") %>%
+  html_text() %>% as.data.frame
+
+
+School_list_address_unclear <- School_url %>%
+  read_html %>%
+  html_nodes(".object p") %>%
+  html_text() 
+
+School_list_remove_html <- gsub("\r?\n|\r", " ", School_list_address_unclear) 
+School_list_address_clear <- gsub("(.*?)Telefon.*" , "\\1" , School_list_remove_html) %>%
+                             as.data.frame
+
+School_list_finale <- cbind(School_list_names,
+                            School_list_address_clear)
+
+colnames(School_list_finale) <- c("Name", 
+                                  "Address")
+
+School_list_finale %>% mutate_if(is.factor, as.character) -> School_list_finale
+
+
+School_opencage_list <- data.frame()
+
+for (i in 1:length(School_list_finale$Address)) {
+
+School_opencage <- opencage_forward (placename = School_list_finale$Address[i],
+                           key =  "1883310f1dd440b1b7b48dfbabe55ff2",               
+                           countrycode = "PL",
+                           language = "pl",
+                           bounds = c(15,50,19,54),
+                           limit = 100) 
+
+School_opencage_df <- as.data.frame(School_opencage)
+
+School_coords_opencage_df <- data.frame(lat = School_opencage_df$results.geometry.lat,
+                    long = School_opencage_df$results.geometry.lng,
+                    name = School_opencage_df$results.formatted,
+                    iter = i)
+
+School_opencage_list <- rbind(School_opencage_list, School_coords_opencage_df)
+}
 
 
 
