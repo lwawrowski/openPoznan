@@ -1,4 +1,15 @@
-
+#' havingIP Function
+#'
+#' This function check connection to internet. 
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import 
+#' @format 
+#' \describe{
+#' }
+#' @examples
+#' havingIP ()
 
 havingIP <- function() {
   if (.Platform$OS.type == "windows") {

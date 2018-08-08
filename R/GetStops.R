@@ -1,3 +1,23 @@
+#' stop Function
+#'
+#' This function download data about stops in Poznań
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite, textclean, tidyverse
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of stop.}
+#' \item{Stop_Zone}{factor; Zone in which stop is placed.}
+#' \item{Route_Type}{factor; Shows route type on which stop is placed.}
+#' \item{Stop_Headsign}{factor; Shows which trams and buses departure from stop.}
+#' \item{Stop_Name}{factor; Name of stop.}
+#' \item{Longitude}{numeric; Longitude of stop.}
+#' \item{Latitude}{numeric; Latitude of stop.}
+#' }
+#' @examples
+#' stop()
+
 
 stop <- function () {
 
@@ -5,7 +25,19 @@ stop <- function () {
   
   #Wstepna analiza
   
+  if(havingIP() == T) {
+    
+    tryCatch({
+  
   Stops_blank <- fromJSON ("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=cluster")
+  
+    },error = function(e) {
+      warning("You used bad link!")
+    })
+    
+  } else {
+    warning("You lost connection to internet!")
+  }
   
   Stops_features <- Stops_blank$features
   
@@ -35,31 +67,6 @@ stop <- function () {
   
   Stops_final <- cbind(Stops_basic_info,Stops_coord)
   
-  # Tworzenie mapy punktowej na wykresie 
-  
-  ggplot(data = Stops_final,
-         aes(x= Longitude,
-             y= Latitude,
-             group=ID)) +
-    geom_point(colour = "blue")
-  
-  # Mapa Leaflet
-  
-  Stops_Icon <- icons(iconUrl = ifelse(Stops_final$Route_Type == 3,"https://d30y9cdsu7xlg0.cloudfront.net/png/19259-200.png","http://icons.iconarchive.com/icons/icons8/android/512/Transport-Tram-icon.png"),
-                      iconWidth = 25, 
-                      iconHeight = 30,
-                      iconAnchorX = 15, 
-                      iconAnchorY = 25)
-  
-  Poznan_with_Stops <- leaflet() %>%
-    addTiles() %>%  
-    addMarkers(lat = Stops_final$Latitude, 
-               lng = Stops_final$Longitude, 
-               popup = Stops_final$ID,
-               icon = Stops_Icon[Stops_final$Route_Type],
-               clusterOptions = markerClusterOptions())
-  Poznan_with_Stops
-
 return(Stops_final)
 
 }

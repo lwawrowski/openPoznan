@@ -102,6 +102,34 @@ dwa sposoby na mapy z TVM
 
 ```{r}
 
+
+ # Tworzenie mapy punktowej na wykresie 
+  
+  ggplot(data = Stops_final,
+         aes(x= Longitude,
+             y= Latitude,
+             group=ID)) +
+    geom_point(colour = "blue")
+  
+  # Mapa Leaflet
+  
+  Stops_Icon <- icons(iconUrl = ifelse(Stops_final$Route_Type == 3,"https://d30y9cdsu7xlg0.cloudfront.net/png/19259-200.png","http://icons.iconarchive.com/icons/icons8/android/512/Transport-Tram-icon.png"),
+                      iconWidth = 25, 
+                      iconHeight = 30,
+                      iconAnchorX = 15, 
+                      iconAnchorY = 25)
+  
+  Poznan_with_Stops <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = Stops_final$Latitude, 
+               lng = Stops_final$Longitude, 
+               popup = Stops_final$ID,
+               icon = Stops_Icon[Stops_final$Route_Type],
+               clusterOptions = markerClusterOptions())
+  Poznan_with_Stops
+
+
+
 ```
 
 
@@ -109,7 +137,30 @@ dwa sposoby na mapy z TVM
 
 ```{r}
 
+# Tworzenie mapy punktowej na wykresie 
 
+ggplot(data = Cesspool_Final,
+       aes(x= Longitude,
+           y= Latitude,
+           group=ID)) +
+  geom_point(colour = "blue")
+
+ # Mapa Leaflet
+  
+  Cesspool_Icon <- makeIcon(iconUrl = "",
+                       iconWidth = 25, 
+                       iconHeight = 30,
+                       iconAnchorX = 15, 
+                       iconAnchorY = 25)
+  
+  Poznan_with_Cesspool <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = Cesspool_final$Latitude, 
+               lng = Cesspool_final$Longitude, 
+               popup = Cesspool_final$ID,
+               icon = Cesspool_Icon,
+               clusterOptions = markerClusterOptions())
+  Poznan_with_Cesspool
 
 
 
@@ -121,6 +172,31 @@ dwa sposoby na mapy z TVM
 
 ```{r}
 
+ # Tworzenie mapy punktowej na wykresie 
+  
+  ggplot(data = SW_final,
+         aes(x= Longitude,
+             y= Latitude,
+             group=ID)) +
+    geom_point(colour = "blue")
+  
+  # Mapa Leaflet
+  
+  SW_Icon <- makeIcon(iconUrl = "",
+                      iconWidth = 25, 
+                      iconHeight = 30,
+                      iconAnchorX = 15, 
+                      iconAnchorY = 25)
+  
+  Poznan_with_SW <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = SW_final$Latitude, 
+               lng = SW_final$Longitude, 
+               popup = SW_final$ID,
+               icon = SW_Icon,
+               clusterOptions = markerClusterOptions())
+  
+  
 
 
 

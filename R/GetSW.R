@@ -1,7 +1,24 @@
+#' sw Function
+#'
+#' This function download data about sewage works in Poznań.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite, textclean, tidyverse
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of sewage work.}
+#' \item{Cesspool_Nr}{factor; Number of sewage work.}
+#' \item{Cesspool_Street}{factor; Street of sewage work.}
+#' \item{Cesspoll_Plot}{factor; Number of plot. }
+#' \item{Longitude}{numeric; Longitude of sewage work.}
+#' \item{Latitude}{numeric; Latitude of sewage work.}
+#' }
+#' @examples
+#' sw ()
+
 sw <- function() {
 
-  #Scieki Calosc
-  
   #Wstepna analiza
   
   SW_blank <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=environment&co=omnc02")
@@ -33,35 +50,9 @@ sw <- function() {
   SW_final <- cbind (SW_basic_info,
                      SW_coord)
   
-  # Tworzenie mapy punktowej na wykresie 
-  
-  ggplot(data = SW_final,
-         aes(x= Longitude,
-             y= Latitude,
-             group=ID)) +
-    geom_point(colour = "blue")
-  
-  # Mapa Leaflet
-  
-  SW_Icon <- makeIcon(iconUrl = "",
-                      iconWidth = 25, 
-                      iconHeight = 30,
-                      iconAnchorX = 15, 
-                      iconAnchorY = 25)
-  
-  Poznan_with_SW <- leaflet() %>%
-    addTiles() %>%  
-    addMarkers(lat = SW_final$Latitude, 
-               lng = SW_final$Longitude, 
-               popup = SW_final$ID,
-               icon = SW_Icon,
-               clusterOptions = markerClusterOptions())
-  
-  
-
 return (SW_final)
 
 }
 
 
-SWs <- sw()
+sws <- sw()
