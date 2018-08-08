@@ -1,11 +1,39 @@
+#' pm Function
+#'
+#' This function download data about parking machines in Poznań
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @import jsonlite, textclean, tidyverse
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of PM.}
+#' \item{PM_Zone}{factor; Zone in which PM is placed.}
+#' \item{PM_Street}{factor; Street in which PM is placed.}
+#' \item{Longitude}{numeric; Longitude of PM.}
+#' \item{Latitude}{numeric; Latitude of PM.}
+#' }
+#' @examples
+#' pm()
+
 
 pm <- function () {
 
-  #Parkomaty calosc 
-  
   #Wstepna analiza
   
+  if(havingIP() == T) {
+    
+    tryCatch({
+  
   PM_blank <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=parking_meters")
+    
+  },error = function(e) {
+      warning("You used bad link!")
+    })
+    
+  } else {
+    warning("You lost connection to internet!")
+  }
   
   PM_features <- PM_blank$features
   
@@ -29,32 +57,6 @@ pm <- function () {
   
   PM_final <- cbind(PM_basic_info,PM_coord)
   
-  # Tworzenie mapy punktowej na wykresie 
-  
-  ggplot(data = PM_final,
-         aes(x= Longitude,
-             y= Latitude,
-             group=ID)) +
-    geom_point(colour = "blue")
-  
-  # Mapa Leaflet
-  
-  PM_Icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/34/34783.svg",
-                      iconWidth = 25, 
-                      iconHeight = 30,
-                      iconAnchorX = 15, 
-                      iconAnchorY = 25)
-  
-  Poznan_with_PM <- leaflet() %>%
-    addTiles() %>%  
-    addMarkers(lat = PM_final$Latitude, 
-               lng = PM_final$Longitude, 
-               popup = PM_final$ID,
-               icon = PM_Icon,
-               clusterOptions = markerClusterOptions())
-  
-  
-
 return(PM_final)
 }
 
