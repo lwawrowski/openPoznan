@@ -15,7 +15,12 @@
 #' \item{Latitude}{numeric; Latitude of sewage work.}
 #' }
 #' @examples
-#' sw ()
+#' 
+#' sws <- sw()
+#' 
+#' 
+#' 
+
 
 sw <- function() {
 
@@ -65,6 +70,3 @@ sw <- function() {
 return (SW_final)
 
 }
-
-
-sws <- sw()

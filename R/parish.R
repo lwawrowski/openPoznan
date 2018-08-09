@@ -14,7 +14,11 @@
 #' \item{Latitude}{numeric; Latitude of parish site.}
 #' }
 #' @examples
-#' parish ()
+#' 
+#' parish_basic <- parish()
+#'
+#' parish_with_coord <- parish(TRUE)
+#' 
 
 parish <- function (coords = F) {
   
@@ -103,9 +107,3 @@ parish <- function (coords = F) {
   }
   
 }
-
-#examples
-
-parish_basic <- parish()
-
-parish_with_coord <- parish(TRUE)

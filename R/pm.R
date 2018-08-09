@@ -14,7 +14,11 @@
 #' \item{Latitude}{numeric; Latitude of PM.}
 #' }
 #' @examples
-#' pm()
+#' 
+#' pms <- pm()
+#' 
+#' 
+#' 
 
 
 pm <- function () {
@@ -60,6 +64,3 @@ pm <- function () {
 return(PM_final)
 }
 
-#example
-
-pms <- pm()

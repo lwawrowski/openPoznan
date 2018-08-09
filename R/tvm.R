@@ -17,8 +17,11 @@
 #' \item{Latitude}{numeric; Latitude of TVM.}
 #' }
 #' @examples
-#' tvm()
-
+#' 
+#' tvms <- tvm()
+#' 
+#' 
+#' 
 
 tvm <- function () {
   
@@ -82,5 +85,5 @@ tvm <- function () {
 #examples 
 
 
-tvms <- tvm()
+
 

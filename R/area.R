@@ -17,8 +17,10 @@
 #' \item{Latitude}{numeric; Latitude of parish site.}
 #' }
 #' @examples
-#' area ()
-
+#' 
+#'Area_basic <- area () 
+#'
+#'Area_with_coord <- area (TRUE)
 
 area <- function (coords = F) {
 
@@ -61,7 +63,6 @@ area <- function (coords = F) {
   Area_coord_2d <- map(Area_coord, drop)
   
   Area_check <- map(Area_coord_2d,  is.list) 
-  
   
   if (any(Area_check == T)) {   
     
@@ -130,9 +131,4 @@ if (coords == T) {
 
 }
 
-#example 
-
-Area_basic <- area () 
-
-Area_with_coord <- area (TRUE)
 

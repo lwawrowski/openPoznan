@@ -16,7 +16,10 @@
 #' \item{Latitude}{numeric; Latitude of stop.}
 #' }
 #' @examples
-#' stop()
+#' 
+#' Stops <- stop() 
+#' 
+#' 
 
 
 stop <- function () {
@@ -70,7 +73,3 @@ stop <- function () {
 return(Stops_final)
 
 }
-
-#example 
-
-Stops <- stop() 
