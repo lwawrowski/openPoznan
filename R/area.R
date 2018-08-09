@@ -5,7 +5,10 @@
 #' @export
 #' @details Details of usage 
 #' @param coords shows basic_data about schools area. When set TRUE shows coords of schools area.
-#' @import jsonlite, textclean, tidyverse, purrr
+#' @import jsonlite 
+#' @import textclean  
+#' @import dplyr
+#' @import purrr
 #' @format 
 #' \describe{
 #' \item{ID}{factor; ID of school area.}

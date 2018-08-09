@@ -4,7 +4,6 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import 
 #' @format 
 #' \describe{
 #' }
