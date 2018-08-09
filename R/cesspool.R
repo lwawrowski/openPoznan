@@ -15,7 +15,7 @@
 #' \item{Latitude}{numeric; Latitude of cesspool.}
 #' }
 #' @examples
-#' cesspool()
+#' Cesspools <- cesspool()
 
 cesspool <- function() {
 
@@ -65,7 +65,3 @@ cesspool <- function() {
 return (Cesspool_Final)
 
 }
-
-#examples 
-
-Cesspools <- cesspool()
