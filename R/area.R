@@ -5,10 +5,10 @@
 #' @export
 #' @details Details of usage 
 #' @param coords shows basic_data about schools area. When set TRUE shows coords of schools area.
-#' @import jsonlite 
-#' @import textclean  
-#' @import dplyr
-#' @import purrr
+#' @importFrom jsonlite fromJSON 
+#' @importFrom dplyr mutate
+#' @importFrom purrr map map2_df
+#' @import curl
 #' @format 
 #' \describe{
 #' \item{ID}{factor; ID of school area.}
@@ -28,7 +28,7 @@
 area <- function (coords = F) {
 
   #Wstepna analiza
-  
+
   if(havingIP() == T) {
     
     tryCatch({

@@ -2,7 +2,8 @@
 
 export(area)
 export(havingIP)
-import(dplyr)
-import(jsonlite)
-import(purrr)
-import(textclean)
+import(curl)
+importFrom(dplyr,mutate)
+importFrom(jsonlite,fromJSON)
+importFrom(purrr,map)
+importFrom(purrr,map2_df)
