@@ -5,7 +5,19 @@ output: html_document
 
 ```{r setup, include=FALSE}
 
-
+library(openPoznan)
+library(jsonlite)
+library(purrr)
+library(dplyr)
+library(ggplot2)
+library(ggmap)
+library(leaflet)
+library(sp)
+library(rvest)
+library(opencage)
+library(fuzzyjoin)
+library(textclean)
+library(stringdist)
 ```
 ##
 
@@ -14,6 +26,8 @@ Vignette for tvm function.
 - Create map using leaflet. 
 ```{r tvm}
  # Leaflet map with custom icon 
+
+  TVM_example <- tvm()
 
   TVM_Icon <- makeIcon(iconUrl = "https://d30y9cdsu7xlg0.cloudfront.net/png/44651-200.png",
                        iconWidth = 25, 
@@ -35,6 +49,8 @@ Vignette for pm function.
 - Create map using leaflet. 
 ```{r pm}
 # Leaflet map with custom icon
+
+  PM_final <- pm()
   
   PM_Icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/34/34783.svg",
                       iconWidth = 25, 
@@ -55,6 +71,8 @@ Vignette for stop function.
 - Create map using leaflet. 
 ```{r stops}
   # Leaflet map with custom icon 
+
+  Stops_final <- stop()
   
   Stops_Icon <- icons(iconUrl = ifelse(Stops_final$Route_Type == 3,"https://d30y9cdsu7xlg0.cloudfront.net/png/19259-200.png","http://icons.iconarchive.com/icons/icons8/android/512/Transport-Tram-icon.png"),
                       iconWidth = 25, 
@@ -76,6 +94,8 @@ Vignette for cesspool function.
 - Create map using leaflet. 
 ```{r cesspool}
  # Leaflet map with custom icon 
+
+  Cesspool_final <- cesspool()
   
   Cesspool_Icon <- makeIcon(iconUrl = "http://cdn.onlinewebfonts.com/svg/img_537720.png",
                        iconWidth = 25, 
@@ -96,7 +116,9 @@ Vignette for sw function.
 
 - Create map using leaflet. 
 ```{r sw}
-  # Leaflet map with custom icon 
+  # Leaflet map with custom icon
+
+  SW_final <- sw()
   
   SW_Icon <- makeIcon(iconUrl = "https://www.corkdrain.ie/assets/icon4.png",
                       iconWidth = 25, 
@@ -118,6 +140,10 @@ Vignette for area function.
 - Create map using leaflet (first changing data type, so it is possible). 
 ```{r area}
 #Function spatial lines => get rid of multipolygons and polygons, so we can use Leaflet
+
+  Areas_basic_info <- area()
+  Area_full_info <- area(T)
+  Area_coord_id <- Area_full_info$Coords
 
 Area_split_data = lapply(unique(Area_coord_id$ID), function(x) {
   df = as.matrix(Area_coord_id[Area_coord_id$ID == x, c("Longitude", "Latitude") ])
@@ -159,6 +185,10 @@ Vignette for parish function.
 - Create map using leaflet (first changing data type, so it is possible). 
 ```{r parish}
 #Function spatial lines => get rid of multipolygons and polygons, so we can use Leaflet
+
+  Parish_basic_info <- parish()
+  Parish_full_info <- parish(T)
+  Parish_coord_id <- Parish_full_info$Coords
 
 Parish_split_data = lapply(unique(Parish_coord_id$ID), function(x) {
   df = as.matrix(Parish_coord_id[Parish_coord_id$ID == x, c("Longitude", "Latitude") ])

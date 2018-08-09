@@ -11,265 +11,124 @@ vignette: >
 
 ```{r setup, include=FALSE}
 
-
-#puste 
-
-
-
-
+  library(openPoznan)
+  library(jsonlite)
+  library(purrr)
+  library(dplyr)
+  library(ggplot2)
+  library(ggmap)
+  library(leaflet)
+  library(sp)
+  library(rvest)
+  library(opencage)
+  library(fuzzyjoin)
+  library(textclean)
+  library(stringdist)
 ```
+Vignette for tvm function. 
 
-## R Markdown
+- Shows head of TVM data 
+```{r tvm head}
+  TVM_example <- tvm()
 
+  head(TVM_example)
+```
 Vignette for tvm function. 
 
 - Create map using gg plot, and put points on Poznan map. 
-- Create map using leaflet. 
-
-
-```{r cars}
+```{r tvm ggmap, fig.width=10, fig.height=5}
   # Create point map on the graph
-  
-  TVM_points <- geom_point(data = TVM_final,
+
+  TVM_points <- geom_point(data = TVM_example,
                            aes(x= Longitude,
                                y= Latitude,
                                group=ID), colour = "blue")
   
   # Download Poznan map and put created points on it 
-  
+
   get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
   poznan <- ggmap(get_poznan)
   
   Poznan_with_TVM <- poznan + TVM_points
   
   plot(Poznan_with_TVM)
-  
-  # Leaflet map with custom icon 
-  
-  TVM_Icon <- makeIcon(iconUrl = "https://d30y9cdsu7xlg0.cloudfront.net/png/44651-200.png",
-                       iconWidth = 25, 
-                       iconHeight = 30,
-                       iconAnchorX = 15, 
-                       iconAnchorY = 25)
-  
-  Poznan_with_TVM2 <- leaflet() %>%
-    addTiles() %>%  
-    addMarkers(lat = TVM_final$Latitude, 
-               lng = TVM_final$Longitude, 
-               popup = TVM_final$ID,
-               icon = TVM_Icon,
-               clusterOptions = markerClusterOptions())
-  Poznan_with_TVM2
 ```
-
-##
-
 Vignette for pm function. 
 
 - Create map using gg plot.
-- Create map using leaflet. 
-
-
-```{r pressure, echo=FALSE}
+```{r pm ggmap}
 # Create point map on the graph
+
+PM_final <- pm()
   
   ggplot(data = PM_final,
          aes(x= Longitude,
              y= Latitude,
              group=ID)) +
-    geom_point(colour = "blue")
-  
-  # Leaflet map with custom icon 
-  
-  PM_Icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/34/34783.svg",
-                      iconWidth = 25, 
-                      iconHeight = 30,
-                      iconAnchorX = 15, 
-                      iconAnchorY = 25)
-  
-  Poznan_with_PM <- leaflet() %>%
-    addTiles() %>%  
-    addMarkers(lat = PM_final$Latitude, 
-               lng = PM_final$Longitude, 
-               popup = PM_final$ID,
-               icon = PM_Icon,
-               clusterOptions = markerClusterOptions())
+  geom_point(colour = "blue")
 ```
-
-
-##
-
 Vignette for stop function. 
 
 - Create map using gg plot.
-- Create map using leaflet. 
-
-
-
-```{r}
+```{r stop ggmap}
 # Create point map on the graph
+
+  Stops_final <- stop()
   
   ggplot(data = Stops_final,
          aes(x= Longitude,
              y= Latitude,
              group=ID)) +
     geom_point(colour = "blue")
-  
-  # Leaflet map with custom icon 
-  
-  Stops_Icon <- icons(iconUrl = ifelse(Stops_final$Route_Type == 3,"https://d30y9cdsu7xlg0.cloudfront.net/png/19259-200.png","http://icons.iconarchive.com/icons/icons8/android/512/Transport-Tram-icon.png"),
-                      iconWidth = 25, 
-                      iconHeight = 30,
-                      iconAnchorX = 15, 
-                      iconAnchorY = 25)
-  
-  Poznan_with_Stops <- leaflet() %>%
-    addTiles() %>%  
-    addMarkers(lat = Stops_final$Latitude, 
-               lng = Stops_final$Longitude, 
-               popup = Stops_final$ID,
-               icon = Stops_Icon[Stops_final$Route_Type],
-               clusterOptions = markerClusterOptions())
-  Poznan_with_Stops
 ```
-
 Vignette for cesspool function. 
 
 - Create map using gg plot.
-- Create map using leaflet. 
-
-
-
-```{r}
+```{r cesspool ggmap}
 # Create point map on the graph
 
-ggplot(data = Cesspool_Final,
-       aes(x= Longitude,
-           y= Latitude,
-           group=ID)) +
+  Cesspool_final <- cesspool()
+  
+  ggplot(data = Cesspool_final,
+         aes(x= Longitude,
+             y= Latitude,
+             group=ID)) +
   geom_point(colour = "blue")
-
- # Leaflet map with custom icon 
-  
-  Cesspool_Icon <- makeIcon(iconUrl = "",
-                       iconWidth = 25, 
-                       iconHeight = 30,
-                       iconAnchorX = 15, 
-                       iconAnchorY = 25)
-  
-  Poznan_with_Cesspool <- leaflet() %>%
-    addTiles() %>%  
-    addMarkers(lat = Cesspool_final$Latitude, 
-               lng = Cesspool_final$Longitude, 
-               popup = Cesspool_final$ID,
-               icon = Cesspool_Icon,
-               clusterOptions = markerClusterOptions())
-  Poznan_with_Cesspool
 ```
-
 Vignette for sw function. 
 
 - Create map using gg plot.
-- Create map using leaflet. 
-
-
-```{r}
+```{r sw ggmap}
  # Create point map on the graph
+
+  SW_final <- sw()
   
   ggplot(data = SW_final,
          aes(x= Longitude,
              y= Latitude,
              group=ID)) +
-    geom_point(colour = "blue")
-  
-  # Leaflet map with custom icon 
-  
-  SW_Icon <- makeIcon(iconUrl = "",
-                      iconWidth = 25, 
-                      iconHeight = 30,
-                      iconAnchorX = 15, 
-                      iconAnchorY = 25)
-  
-  Poznan_with_SW <- leaflet() %>%
-    addTiles() %>%  
-    addMarkers(lat = SW_final$Latitude, 
-               lng = SW_final$Longitude, 
-               popup = SW_final$ID,
-               icon = SW_Icon,
-               clusterOptions = markerClusterOptions())
+  geom_point(colour = "blue")
 ```
-
 Vignette for parish function. 
 
 - Create map using gg plot.
-- Create map using leaflet (first changing data type, so it is possible). 
-- Geocode with opencage.
-- webscrapp wiki for Church coords.
-- Use functions for finding closes string, and match Church with it's Parish.
-
-
-
-```{r}
+```{r parish ggmap}
 # Create point map on the graph
 
-ggplot(data = Parish_coord_id,
-       aes(x= Longitude,
-           y= Latitude,
-           group=ID)) +
+  Parish_basic_info <- parish()
+  Parish_full_info <- parish(T)
+  Parish_coord_id <- Parish_full_info$Coords
+  
+  ggplot(data = Parish_coord_id,
+         aes(x= Longitude,
+             y= Latitude,
+             group=ID)) +
   geom_polygon(colour = "blue")
+```
+Vignette for parish function. 
 
-#Function spatial lines => get rid of multipolygons and polygons, so we can use Leaflet
-
-Parish_split_data = lapply(unique(Parish_coord_id$ID), function(x) {
-  df = as.matrix(Parish_coord_id[Parish_coord_id$ID == x, c("Longitude", "Latitude") ])
-  polys = Polygons(list(Polygon(df)), ID = x)
-  return(polys)
-})
-
-Parish_data_lines = SpatialPolygons(Parish_split_data)
-
-# Leaflet map with custom icon 
-
-labels <- sprintf("<strong>%s</strong><br/>",
-                  Parish_basic_info$Parish_Name) %>% 
-                  lapply(htmltools::HTML)
-
-Parish_leaflet_map <- leaflet() %>%
-addTiles() %>%  
-  addPolygons(data = Parish_data_lines,
-               weight = 2, 
-               opacity = 1,
-               dashArray = "3",
-               color = "white",
-               smoothFactor = 0.5,
-               fillOpacity = 0.5, 
-                 highlight = highlightOptions(
-                 weight = 5,
-                 color = "#666",
-                 fillOpacity = 0.7,
-                 bringToFront = TRUE),
-                   label = labels,
-                   labelOptions = labelOptions(
-                   style = list("font-weight" = "normal", padding = "3px 8px"),
-                   textsize = "15px",
-                   direction = "auto"))
-                           
-Parish_leaflet_map
-
-#List of Parish from city hall api 
-
-Church <- distinct(Parish_basic_info, Parish_Name)
-
-Church_list_df <- data.frame(Church, stringsAsFactors = FALSE)
-
-Church_list_df$Parish_Name <- paste("Kosciol ", Church_list_df$Parish_Name)
-
-Church_list_df$Parish_Name <- ifelse(grepl(" w ", Church_list_df$Parish_Name), 
-                                Church_list_df$Parish_Name,
-                                paste(Church_list_df$Parish_Name, " w Poznaniu"))
-
-Church_list_df[sapply(Church_list_df, is.character)] <- lapply(Church_list_df[sapply(Church_list_df,is.character)], as.factor)
-
+- Geocode with opencage.
+```{r parish opencage}
 #Geocoding with Opencage
 
 Church_opencage <- opencage_forward (placename = "Kościół, 
@@ -285,7 +144,11 @@ Church_opencage_df <- as.data.frame(Church_opencage)
 Church_coords_opencage_df <- data.frame(Church_opencage_df$results.geometry.lat,
                     Church_opencage_df$results.geometry.lng,
                     Church_opencage_df$results.formatted)
+```
+Vignette for parish function. 
 
+- webscrapp wiki for Church coords.
+```{r parish webscrapping}
 #Webscrapping from wiki (for Church coords)
 
 url <- "https://pl.wikipedia.org/wiki/Kategoria:Ko%C5%9Bcio%C5%82y_rzymskokatolickie_w_Poznaniu"
@@ -334,11 +197,29 @@ for(i in 1:length(Church_wiki_list)){
 colnames(Church_coord_final) <- c("Longitude",
                                  "Latitude",
                                  "Parish_Name")
+```
+Vignette for parish function. 
+
+- Use functions for finding closes string, and match Church with it's Parish.
+```{r parish merging}
+#List of Parish from city hall api 
+
+Church <- distinct(Parish_basic_info, Parish_Name)
+
+Church_list_df <- data.frame(Church, stringsAsFactors = FALSE)
+
+Church_list_df$Parish_Name <- paste("Kosciol ", Church_list_df$Parish_Name)
+
+Church_list_df$Parish_Name <- ifelse(grepl(" w ", Church_list_df$Parish_Name), 
+                                Church_list_df$Parish_Name,
+                                paste(Church_list_df$Parish_Name, " w Poznaniu"))
+
+Church_list_df[sapply(Church_list_df, is.character)] <- lapply(Church_list_df[sapply(Church_list_df,is.character)], as.factor)
+
+#Changing structure of church names, so it will be possible to match them 
 
 Church_coord_final$Parish_Name <- replace_non_ascii(Church_coord_final$Parish_Name)
 Church_list_df$Parish_Name <- replace_non_ascii(Church_list_df$Parish_Name)
-
-#Changing structure of church names, so iit will be possible to match them 
 
 Church_list_df$Parish_Name <- gsub("Swietej", "sw.", Church_list_df$Parish_Name)
 Church_list_df$Parish_Name <- gsub("Swietego", "sw.", Church_list_df$Parish_Name)
@@ -380,76 +261,26 @@ Macierz_odl<- stringdistmatrix(Church_coord_final$Parish_Name,
 
 Macierz_df <- as.data.frame(as.table(Macierz_odl))
 ```
-
 Vignette for area function. 
 
 - Create map using gg plot.
-- Create map using leaflet (first changing data type, so it is possible). 
-- Webscrapp poznan site for school adressess 
-- Geocode with opencage using adressess
- 
-```{r}
+```{r area ggmap}
 # Create point map on the graph
 
-ggplot(data = Area_coord_id,
-       aes(x= Longitude,
-           y= Latitude,
-           group=ID)) +
+  Areas_basic_info <- area()
+  Area_full_info <- area(T)
+  Area_coord_id <- Area_full_info$Coords
+
+  ggplot(data = Area_coord_id,
+         aes(x= Longitude,
+             y= Latitude,
+             group=ID)) +
   geom_polygon(colour = "blue")
+```
+Vignette for area function. 
 
-#Function spatial lines => get rid of multipolygons and polygons, so we can use Leaflet
-
-Area_split_data = lapply(unique(Area_coord_id$ID), function(x) {
-  df = as.matrix(Area_coord_id[Area_coord_id$ID == x, c("Longitude", "Latitude") ])
-  polys = Polygons(list(Polygon(df)), ID = x)
-  return(polys)
-})
-
-Area_data_lines = SpatialPolygons(Area_split_data)
-
-# Leaflet map with custom icon 
-
-labels <- sprintf("<strong>%s</strong><br/>",
-                  Areas_basic_info$School_Name) %>% 
-                  lapply(htmltools::HTML)
-
-Area_leaflet_map <- leaflet() %>%
-addTiles() %>%  
-  addPolygons(data = Area_data_lines,
-               weight = 2, 
-               opacity = 1,
-               dashArray = "3",
-               color = "white",
-               smoothFactor = 0.5,
-               fillOpacity = 0.5, 
-                 highlight = highlightOptions(
-                 weight = 5,
-                 color = "#666",
-                 fillOpacity = 0.7,
-                 bringToFront = TRUE),
-                   label = labels,
-                   labelOptions = labelOptions(
-                   style = list("font-weight" = "normal", padding = "3px 8px"),
-                   textsize = "15px",
-                   direction = "auto"))
-                           
-Area_leaflet_map
-               
-#Geocoding with Opencage
-
-School_opencage <- opencage_forward (placename = "Szko?a, 
-                           Pozna??,
-                           Polska",
-                           key =  "1883310f1dd440b1b7b48dfbabe55ff2",               
-                           countrycode = "PL",
-                           language = "pl")
-
-School_opencage_df <- as.data.frame(School_opencage)
-
-School_coords_opencage_df <- data.frame(School_opencage_df$results.geometry.lat,
-                    School_opencage_df$results.geometry.lng,
-                    School_opencage_df$results.formatted)
-
+- Webscrapp poznan site for school adressess 
+```{r area webscrapping}
 #Webscrapping Poznan site for addressess of basic schools 
 
 School_url <- "http://www.poznan.pl/mim/oswiata/szkoly-podstawowe,poi,2284,8884/"
@@ -475,7 +306,12 @@ colnames(School_list_finale) <- c("Name",
                                   "Address")
 
 School_list_finale %>% mutate_if(is.factor, as.character) -> School_list_finale
+```
+Vignette for area function. 
 
+- Geocode with opencage using adressess
+```{r area geocode with opencage}
+#Geocoding using addressess from webscrapping 
 
 School_opencage_list <- data.frame()
 
