@@ -4,7 +4,8 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import jsonlite, textclean, tidyverse
+#' @importFrom jsonlite fromJSON 
+#' @import curl
 #' @format 
 #' \describe{
 #' \item{ID}{factor; ID of stop.}
@@ -20,7 +21,6 @@
 #' Stops <- stop() 
 #' 
 #' 
-
 
 stop <- function () {
 

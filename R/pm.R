@@ -4,7 +4,7 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import jsonlite, textclean, tidyverse
+#' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
 #' \item{ID}{factor; ID of PM.}

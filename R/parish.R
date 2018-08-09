@@ -5,7 +5,9 @@
 #' @export
 #' @details Details of usage 
 #' @param coords shows basic_data about parishes. When set TRUE shows coords of Parishes
-#' @import jsonlite, textclean, tidyverse, purrr
+#' @importFrom jsonlite fromJSON 
+#' @importFrom dplyr mutate
+#' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
 #' \item{ID}{character; ID of parish.}
