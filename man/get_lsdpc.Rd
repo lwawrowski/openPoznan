@@ -11,7 +11,7 @@
 \item{lsdpc_date_oAR}{factor; date of adaptive resolution.}
 }}
 \usage{
-get_lsdpc(coords = F)
+get_lsdpc(basic = TRUE)
 }
 \description{
 This function download data about Called Local Spatial Development Plans

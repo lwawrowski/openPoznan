@@ -1,0 +1,74 @@
+---
+title: "vignette_for_bikes"
+author: "Kamil Nowak"
+date: "10 sierpnia 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+  library(openPoznan)
+  library(jsonlite)
+  library(purrr)
+  library(plyr)
+  library(dplyr)
+  library(ggplot2)
+  library(ggmap)
+  library(leaflet)
+  library(sp)
+  library(rgeos)
+  library(geosphere)
+  library(gmapsdistance)
+  library(XML)
+  library(sqldf)
+```
+
+## Vignette for get_bike_place function.
+
+```{r}
+bike_place_example <- get_bike_place()
+head(bike_place_example)
+```
+
+# Create map using gg plot, and put points on Poznan map.
+
+```{r}
+get_poznan <- get_map(c(16.916, 52.42), zoom = 12)
+poznan <- ggmap(get_poznan)
+
+poznan + geom_point(data=bike_place_example, aes(x=longitude, y=latitude))  +
+  ylab("") + xlab("")
+```
+#Calculates the shortest distance between stations
+
+```{r}
+
+bike_place_example <- bike_place_example %>%
+  mutate(id=1:nrow(bike_place_example))
+
+bike_station_sp <- bike_place_example
+coordinates(bike_station_sp) <- ~longitude + latitude
+
+dist <- distm(bike_station_sp)
+min_dist <- apply(dist, 1, function(x) order(x, decreasing=F)[2])
+
+bike_station_dist <- cbind(bike_place_example, bike_place_example[min_dist,], 
+                       apply(dist, 1, function(x) sort(x, decreasing=F)[2]))
+colnames(bike_station_dist) <- c(colnames(bike_place_example), 
+                             paste0("n_", colnames(bike_place_example)), "straight_distance")
+bike_station_dist_2 <- sqldf("select * from bike_station_dist order by straight_distance")
+head(bike_station_dist_2)
+
+
+```
+## Vignette for get_nextbike function.
+
+```{r}
+get_nextbike_example <- get_nextbike()
+head(get_nextbike_example)
+```
+## Vignette for get_next_bike_data function.
+
+```{r}
+get_next_bike_data_example <- get_next_bike_data("10-08-2018 14:50","10-08-2018 15:10")
+head(get_next_bike_data_example)
+```

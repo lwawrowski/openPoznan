@@ -4,12 +4,15 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import jsonlite, dplyr, ggplot2, purrr
+#' @importFrom jsonlite fromJSON 
+#' @importFrom dplyr mutate
+#' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
+#' \item{longitude}{numeric; longitude}
+#' \item{latitude}{numeric; latitude.}
 #' \item{id}{factor; address id.}
-#' \item{longitude}{factor; longitude}
-#' \item{latitude}{factor; latitude.}
+#' \item{order}{numeric; order.}
 #' \item{address}{factor; address name.}
 #' }
 #' @examples
@@ -27,19 +30,19 @@ search_coord_df <- map(search_coord, as.data.frame)
 
 search_coord_id <- map2_df(search_coord_df, search$features$id, ~mutate(.x, id=.y))
 
-ggplot(search_coord_id, aes(x= V1, y= V2, group=id), col = "red") +
-  geom_path()
+search_coord_id$order <- 1:nrow(search_coord_id)
 
-search_address <- paste(search_features$properties$a4,search_features$properties$a6)
+search_coord_id$id <- as.factor(search_coord_id$id)
 
-search_final <- data.frame(cbind(search_features$id,
-                                 search_coord_id$V1,
-                                 search_coord_id$V2,
-                                 search_address))
+search_address <- data.frame(Address=paste(search_features$properties$a4,search_features$properties$a6),
+                             id = as.factor(search_features$id))
 
-colnames(search_final)<-c("id",
-                          "longitude",
+search_final <- left_join(search_coord_id, search_address, by ="id")
+
+colnames(search_final)<-c("longitude",
                           "latitude",
+                          "id",
+                          "order",
                           "address")
 
 return(search_final)

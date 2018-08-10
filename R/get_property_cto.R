@@ -4,12 +4,12 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import jsonlite
+#' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
 #' \item{id}{factor; property id.}
-#' \item{longitude}{factor; longitude.}
-#' \item{latitude}{factor; latitude.}
+#' \item{longitude}{numeric; longitude.}
+#' \item{latitude}{numeric; latitude.}
 #' \item{plot_number}{factor; plot_number.}
 #' \item{plot_of_land}{factor; plot_of_land.}
 #' \item{description}{factor; description.}
@@ -27,23 +27,15 @@ property_cto_features <- property_cto$features
 property_cto_coord <- data.frame(matrix(unlist(property_cto_features$geometry$coordinates),
                                         nrow = nrow(property_cto_features), byrow = T))
 
-property_cto_final <- data.frame(cbind(property_cto_features$id,
-                                       property_cto_coord$X1,
-                                       property_cto_coord$X2,
-                                       property_cto_features$properties$dzialka,
-                                       property_cto_features$properties$pole,
-                                       property_cto_features$properties$opis,
-                                       property_cto_features$properties$komentarz,
-                                       property_cto_features$properties$url_bip))
+property_cto_final <- data.frame(id= property_cto_features$id,
+                                 longitude = property_cto_coord$X1,
+                                 latitude = property_cto_coord$X2,
+                                 plot_number = property_cto_features$properties$dzialka,
+                                 plot_of_land = property_cto_features$properties$pole,
+                                 description = property_cto_features$properties$opis,
+                                 comment = property_cto_features$properties$komentarz,
+                                 url_bip = property_cto_features$properties$url_bip)
 
-colnames(property_cto_final)<-c("id", 
-                                "longitude",
-                                "latitude",
-                                "plot_number",
-                                "plot_of_land",
-                                "description",
-                                "comment",
-                                "url_bip")
 
 return(property_cto_final)
 

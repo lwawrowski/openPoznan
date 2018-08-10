@@ -4,12 +4,12 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import jsonlite
+#' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
 #' \item{id}{factor; property id.}
-#' \item{longitude}{factor; longitude.}
-#' \item{latitude}{factor; latitude.}
+#' \item{longitude}{numeric; longitude.}
+#' \item{latitude}{numeric; latitude.}
 #' \item{plot_number}{factor; plot_number.}
 #' \item{plot_of_land}{factor; plot_of_land.}
 #' \item{description}{factor; description.}
@@ -27,23 +27,15 @@ property_fs_features <- property_fs$features
 property_fs_coord <- data.frame(matrix(unlist(property_fs_features$geometry$coordinates),
                                        nrow = nrow(property_fs_features), byrow = T))
 
-property_fs_final <- data.frame(cbind(property_fs_features$id,
-                                      property_fs_coord$X1,
-                                      property_fs_coord$X2,
-                                      property_fs_features$properties$dzialka,
-                                      property_fs_features$properties$pole,
-                                      property_fs_features$properties$opis,
-                                      property_fs_features$properties$komentarz,
-                                      property_fs_features$properties$url_bip))
+property_fs_final <- data.frame(id = property_fs_features$id,
+                                longitude =  property_fs_coord$X1,
+                                latitude = property_fs_coord$X2,
+                                 plot_number = property_fs_features$properties$dzialka,
+                                 plot_of_land = property_fs_features$properties$pole,
+                                 description = property_fs_features$properties$opis,
+                                 comment = property_fs_features$properties$komentarz,
+                                 url_bip = property_fs_features$properties$url_bip)
 
-colnames(property_fs_final)<-c("id", 
-                                "longitude",
-                                "latitude",
-                                "plot_number",
-                                "plot_of_land",
-                                "description",
-                                "comment",
-                                "url_bip")
 
 return(property_fs_final)
 

@@ -5,8 +5,8 @@
 \title{get_property_cto Function}
 \format{\describe{
 \item{id}{factor; property id.}
-\item{longitude}{factor; longitude.}
-\item{latitude}{factor; latitude.}
+\item{longitude}{numeric; longitude.}
+\item{latitude}{numeric; latitude.}
 \item{plot_number}{factor; plot_number.}
 \item{plot_of_land}{factor; plot_of_land.}
 \item{description}{factor; description.}

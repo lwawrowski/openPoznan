@@ -4,12 +4,12 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import jsonlite
+#' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
 #' \item{id}{factor; station id.}
-#' \item{longitude}{factor; longitude.}
-#' \item{latitude}{factor; latitude.}
+#' \item{longitude}{numericr; longitude.}
+#' \item{latitude}{numeric; latitude.}
 #' \item{name}{factor; station name.}
 #' \item{bike_racks}{factor; bike racks.}
 #' \item{free_racks}{factor; free racks.}
@@ -28,14 +28,14 @@ get_bike_place <- function(){
   NextBike_coord <- data.frame(matrix(unlist(NextBike_features$geometry$coordinates),
                                       nrow = nrow(NextBike_features), byrow = T))
   
-  NextBike_final <- data.frame(cbind(NextBike_features$id,
-                                     NextBike_coord$X1,
-                                     NextBike_coord$X2,
-                                     NextBike_features$properties$label,
-                                     NextBike_features$properties$bike_racks,
-                                     NextBike_features$properties$free_racks,
-                                     NextBike_features$properties$bikes,
-                                     NextBike_features$properties$updated))
+  NextBike_final <- data.frame(id =NextBike_features$id,
+                               longitude= NextBike_coord$X1,
+                               latitude= NextBike_coord$X2,
+                               station= NextBike_features$properties$label,
+                               bike_racks=  NextBike_features$properties$bike_racks,
+                               free_racks=  NextBike_features$properties$free_racks,
+                               bikes=  NextBike_features$properties$bikes,
+                               updated=NextBike_features$properties$updated)
   
   colnames(NextBike_final)<-c("id",
                               "longitude",

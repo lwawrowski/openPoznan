@@ -4,7 +4,9 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import XML, purrr, tidyverse
+#' @import XML
+#' @importFrom purrr map map2_df
+#' @importFrom dplyr mutate
 #' @format 
 #' \describe{
 #' \item{number}{character; bike number.}
@@ -24,13 +26,13 @@
 #' get_nextbike()
 get_nextbike <-function(){
   
+  download.file("https://nextbike.net/maps/nextbike-official.xml?city=192","R/bike.xml" )
+  
   d <- xmlParse("R/bike.xml")
   
   root <- xmlRoot(d)
   
   places <- xmlToList(root[[1]][[1]])
-  
-  # usunięcie attrs
   
   places$.attrs <- NULL
   
@@ -60,4 +62,5 @@ get_nextbike <-function(){
  
   }
   station_final <- station_basic_info[ -c(4:5,11,15:16,18:21) ] 
+  return(station_final)
 }

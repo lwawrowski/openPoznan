@@ -4,9 +4,10 @@
 \alias{get_address}
 \title{get_address Function}
 \format{\describe{
+\item{longitude}{numeric; longitude}
+\item{latitude}{numeric; latitude.}
 \item{id}{factor; address id.}
-\item{longitude}{factor; longitude}
-\item{latitude}{factor; latitude.}
+\item{order}{numeric; order.}
 \item{address}{factor; address name.}
 }}
 \usage{

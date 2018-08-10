@@ -14,7 +14,7 @@
 \item{lsdp_date_of_oj}{factor; date of official journal.}
 }}
 \usage{
-get_lsdp()
+get_lsdp(basic = TRUE)
 }
 \description{
 This function download data about Passed Local Spatial Development Plans

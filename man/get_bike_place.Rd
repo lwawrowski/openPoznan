@@ -5,8 +5,8 @@
 \title{get_bike_place Function}
 \format{\describe{
 \item{id}{factor; station id.}
-\item{longitude}{factor; longitude.}
-\item{latitude}{factor; latitude.}
+\item{longitude}{numericr; longitude.}
+\item{latitude}{numeric; latitude.}
 \item{name}{factor; station name.}
 \item{bike_racks}{factor; bike racks.}
 \item{free_racks}{factor; free racks.}

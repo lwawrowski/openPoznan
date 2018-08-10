@@ -4,7 +4,9 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import jsonlite, dplyr, purrr, ggplot2, leaflet, sp
+#' @importFrom jsonlite fromJSON 
+#' @importFrom dplyr mutate
+#' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
 #' \item{id}{factor; id.}
@@ -16,7 +18,7 @@
 #' @examples
 #' get_lsdpc()
 
-get_lsdpc <- function (coords = F) {
+get_lsdpc <- function (basic = TRUE) {
   
   
   lsdpc <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=urban_planning&co=mpzpw')
@@ -147,13 +149,11 @@ get_lsdpc <- function (coords = F) {
   
   
   
-  if (coords == T) 
-  {
-    result <- list(lsdpcp=lsdpcc_basic_info,
-                   Coords = lsdpcc_coord_id)
-    
-  } else {
+  if(basic == TRUE){
     return(lsdpc_basic_info)
+  }
+  else{
+    return(lsdpc_coord_id)
   }
   
 }

@@ -1,4 +1,4 @@
-#' get_nextbike_data Function
+#' get_next_bike_data Function
 #'
 #' This function download statistic about bikes from NextBike
 #' @param start the beginning of data downloading
@@ -6,7 +6,10 @@
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
-#' @import XML, tidyr, plyr,purrr,tidyverse
+#' @import XML
+#' @importFrom purrr map map2_df
+#' @importFrom dplyr mutate id
+#' @importFrom tidyr fill
 #' @format 
 #' \describe{
 #' \item{number}{character; bike number.}
@@ -24,11 +27,11 @@
 #' \item{date}{factor; date.}
 #' }
 #' @examples
-#' get_nextbike_data("27-07-2018 13:05","28-07-2018 13:05")
+#' get_next_bike_data("27-07-2018 13:05","28-07-2018 13:05")
 
 ## start -> dd-mm-yyyy hh:MM where d-day m- month -y year h- hours M- minute
 # example get_bike_place_details_functions("27-07-2018 13:05","28-07-2018 13:05")
-get_nextbike_data <- function(start,end) {
+get_next_bike_data <- function(start,end) {
 ## download data about bikes from NextBike every 5 minute.
 #start <- "30-07-2018 8:34"
 #end <- "30-08-2018 8:44"
@@ -77,15 +80,16 @@ date <- substring(list.xml[i],6,21)
 
 data<-xmlParse(paste0("R/NextBike/",list.xml[i]))
 
-data_table<- get_nextbike(data,date)
+data_table<- get_nextbikes(data,date)
 compare_table <- compare::compareEqual(data_table,data_table2) 
+
+
 if(compare_table$result  == FALSE) {
   data_table_final <- rbind(data_table_final,data_table)
   data_table2 <- data_table 
   }
 }
-
-get_nextbike <-function(data,date){
+get_nextbikes <-function(data,date){
 
   
   
