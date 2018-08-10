@@ -31,12 +31,14 @@ address_example <- get_address()
 head(address_example)
 ```
 
-Create map using gg plot, and put path on map.
+#Create map using gg plot, and put path on map.
+
 ```{r pressure, echo=FALSE}
 
 ggplot(data = address_example, aes(x= longitude, y= latitude, group=id)) +
   geom_path()
 ```
+
 ## Vignette for get_property_cto function.
 
 ```{r}
@@ -46,6 +48,7 @@ head(property_cto_example)
 ```
 
 #Create map using gg plot, and put points on Poznan map.
+
 ```{r}
 get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
 
@@ -66,7 +69,9 @@ property_fs_example <- get_property_fs()
 head(property_fs_example)
 
 ```
+
 #Create map using gg plot, and put points on Poznan map.
+
 ```{r}
 get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
 
