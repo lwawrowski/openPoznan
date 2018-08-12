@@ -72,3 +72,75 @@ head(get_nextbike_example)
 get_next_bike_data_example <- get_next_bike_data("10-08-2018 14:50","10-08-2018 15:10")
 head(get_next_bike_data_example)
 ```
+```{r}
+data_table_final %>%
+  filter(id=="6151") %>%
+  group_by(date) %>%
+  count() %>%
+  ggplot(aes(x=n)) + geom_histogram(binwidth = 1)
+```
+# Liczba rowerów
+```{r}
+ data_table_final%>%
+  distinct(number)%>%
+  count()
+```
+
+#Liczba stacji rowerowych
+```{r}
+ data_table_final%>%
+  distinct(id)%>%
+  count()
+```
+
+
+# Liczba rowerów z podziałem na typy
+```{r}
+ data_table_final%>%
+  group_by(bike_type)%>%
+  distinct(number)%>%
+  count()
+```
+# Liczba wypozyczonych rowerow w danej godzinie
+```{r}
+example  <- data_table_final%>%
+  group_by(date)%>%
+  count()
+
+date <- data.frame(date =example$date,n = 1066 - example$n )
+head(date)
+```
+#Mediana
+```{r}
+median(date$n)
+```
+
+```{r}
+
+  ggplot(data = date, aes(n)) + geom_histogram(binwidth = 3)
+
+
+```
+#Mediana wypożyczeń rowerów z kazdej godziny
+```{r}
+date <- cbind(date,data.frame(hours =as.numeric(substring(date$date,12,13))))
+
+```
+
+
+```{r}
+median <- date%>%
+  group_by(hours)%>%
+  summarise(mean = median(n))
+
+median
+```
+#Najwięcej wypożyczeń
+```{r}
+arrange(median,desc(mean))
+
+```
+
+
+
+
