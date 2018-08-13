@@ -3,17 +3,18 @@ library(ggplot2)
 library(dplyr)
 library(purrr)
 
+# wyszukiwarka cmentarzy 
 getCemetery <- function(Coord = F) {
-  # wyszukiwarka cmentarzy 
   
   # wczytanie danych cmentarzy 
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-  c <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/cmentarze/all.json")
+  result <- tryCatch({ # w przypadku baraku internetu wywoła wyjątek
+    c <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/cmentarze/all.json")
   }, error = function(err) {
     
-    print(paste(""))
+    print(paste("brak internetu lub zły link"))
     
   })
+  
   cemetery <- c$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
@@ -22,22 +23,22 @@ getCemetery <- function(Coord = F) {
                                           cemetery$properties$cm_name,
                                           cemetery$properties$cm_type))
   
-  colnames(district_basic_info)<-c("ID","Cemetery_Name","Cemetery_Type")
+  colnames(cemetery_basic_info)<-c("ID","Cementary_Name","Cementary_Type")
   
   # z??czenie wszystkich kolumn
   
-  cementary_final <- cemetery_basic_info
+  cemetery_final <- cemetery_basic_info
   
-  cemeterycoord <- cementary$geometry$coordinates
+  cemeterycoord <- cemetery$geometry$coordinates
   
   cemeterycoord2d <- map(cemeterycoord, drop)
   
   cemeterycoord_df <- map(cemeterycoord2d, as.data.frame)
   
-  cemeterycoord_id <- map2_df(cemeterycoord_df, cemetery$id, ~mutate(.x, id=.y))
+  cemeterycoord_id <- map2_df(cemeterycoord_df, cemetery$id, ~mutate(.x, id=.y)) %>% distinct()
   
   if(Coord == T){
-    result <- cemetery_coord
+    result <- cemeterycoord_id
   } else {
     return(cemetery_basic_info)
   }
