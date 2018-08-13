@@ -1,8 +1,29 @@
+#'Grave  Function
+#'
+#' This function download data about Grave in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{Cemetery_ID}{factor; ID of  Cemetery in Poznan.}
+#' \item{Cemetery_No}{factor; Cemetery number.}
+#' \item{Date_birth}{factor; Date birth pearson.}
+#' \item{Date_death}{factor; Date death pearson.}
+#' \item{Date_Burial}{factor; Date burial pearson.}
+#' \item{Row_No}{factor; Row.}
+#' \item{Grave_Name}{factor; Name.}
+#' \item{Grave_Surname}{factor; Surname.}
+#' \item{Grave_Name_Surname}{factor; Name and Surname.}
+#' \item{Field_No}{factor; Field number in cemetery.}
+#' \item{Place_No}{factor; Place number in cemetery.}
+#' \item{Paid}{factor; Paid.}
+#' }
+#' @examples
+#' Grave <- getGrave(Coord = F)
+#' Grave_coord <- getGrave(Coord = T)
 
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
 
 getGrave <- function(Coord = F){ 
   # wczytanie danych groboW
@@ -46,35 +67,23 @@ getGrave <- function(Coord = F){
     
   } 
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
-  grave_basic_info_final <- data.frame(cbind(grave_basic_info_all$cm_id,
-                                             grave_basic_info_all$cm_nr,
-                                             grave_basic_info_all$g_date_birth,
-                                             grave_basic_info_all$g_date_death,
-                                             grave_basic_info_all$g_date_burial,
-                                             grave_basic_info_all$g_row,
-                                             grave_basic_info_all$g_name,
-                                             grave_basic_info_all$g_surname,
-                                             grave_basic_info_all$print_surname_name,
-                                             grave_basic_info_all$g_field,
-                                             grave_basic_info_all$g_place,
-                                             grave_basic_info_all$paid))
-  
-  colnames(grave_basic_info_final) <-c("Cementary_ID",
-                                       "Cementary_No",
-                                       "Date_birth",
-                                       "Date_death",
-                                       "Date_burial",
-                                       "Row_no",
-                                       "Grave_name",
-                                       "Grave_surname",
-                                       "Grave_name_surname",
-                                       "Field_no",
-                                       "Place_no",
-                                       "Paid")
+  grave_basic_info_final <- data.frame(Cemetery_ID=grave_basic_info_all$cm_id,
+                                             Cemetery_No=grave_basic_info_all$cm_nr,
+                                             Date_birth=grave_basic_info_all$g_date_birth,
+                                             Date_death=grave_basic_info_all$g_date_death,
+                                             Date_burial=grave_basic_info_all$g_date_burial,
+                                             Row_no=grave_basic_info_all$g_row,
+                                             Grave_Name=grave_basic_info_all$g_name,
+                                             Grave_Surname=grave_basic_info_all$g_surname,
+                                             Grave_Name_Surname=grave_basic_info_all$print_surname_name,
+                                             Field_No=grave_basic_info_all$g_field,
+                                             Place_No=grave_basic_info_all$g_place,
+                                             Paid=grave_basic_info_all$paid)
+
   if(Coord == T){
     result <- grave_coord_all
   } else {
-    return(grave_basic_info_final)
+    result <- grave_basic_info_final
   }
-  
+  return(result)
 }

@@ -1,3 +1,30 @@
+#'Grave All  Function
+#'
+#' This function download data about Grave All in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{Cemetery_ID}{factor; ID of  Cemetery in Poznan.}
+#' \item{Cemetery_No}{factor; Cemetery number.}
+#' \item{Date_birth}{factor; Date birth pearson.}
+#' \item{Date_death}{factor; Date death pearson.}
+#' \item{Date_Burial}{factor; Date burial pearson.}
+#' \item{Row_No}{factor; Row.}
+#' \item{Grave_Name}{factor; Name.}
+#' \item{Grave_Surname}{factor; Surname.}
+#' \item{Grave_Name_Surname}{factor; Name and Surname.}
+#' \item{Field_No}{factor; Field number in cemetery.}
+#' \item{Place_No}{factor; Place number in cemetery.}
+#' \item{Paid}{factor; Paid.}
+#' }
+#' @examples
+#' Grave_All <- getGrave_All(Coord = F)
+#' Grave_All_coord <- getGrave_All(Coord = T)
+
+
 # pobieranie wszystkich grobów
 getGrave_all <- function(Coord =F){
   
@@ -64,7 +91,7 @@ getGrave_all <- function(Coord =F){
   if(Coord == T) {
     result2 <- grave_coord_all
   }else{
-    return(grave_basic_info_all)
+    result <- grave_basic_info_all
   }
-  
+  return(result)
 }

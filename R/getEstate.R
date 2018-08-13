@@ -1,7 +1,24 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#'Estate  Function
+#'
+#' This function download data about Estate in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of  Estate.}
+#' \item{Type}{factor; Type of Estate in Poznan.}
+#' \item{Address}{factor; Address of Residence.}
+#' \item{Residence}{factor; Residence of Estate in Poznan.}
+#' \item{Electoral_District}{factor; Electoral District in Poznan.}
+#' \item{AFDP}{factor; Adaptation for disabled pearson.}
+#' \item{Venue_no}{factor; Venue of Estate in Poznan.}
+#' \item{Distroct_no}{factor; District number in Poznan.}
+#' }
+#' @examples
+#' Estate <- getEstate(Coord = F)
+#' Estate_coord <- getEstate(Coord = T)
 
 getEstate <- function(Coord = F) {
   # dane wyborcze rad osiedli 
@@ -23,15 +40,14 @@ getEstate <- function(Coord = F) {
   colnames(estate_coord)[(names(estate_coord)=="X1")] <- "V1"
   colnames(estate_coord)[(names(estate_coord)=="X2")] <- "V2"
   
-  estate_basic_info <- data.frame(cbind(estate$id,
-                                        estate$type,
-                                        estate$properties$adres,
-                                        estate$properties$siedziba,
-                                        estate$properties$okreg,
-                                        estate$properties$przystosowanie,
-                                        estate$properties$nr_lokalu,
-                                        estate$properties$nr_obwodu))
-  colnames(estate_basic_info)<-c("ID","Type","Address","Residence","Electoral_District","AFDP","Venue_no","District_no")
+  estate_basic_info <- data.frame(ID=estate$id,
+                                        Type=estate$type,
+                                        Address=estate$properties$adres,
+                                        Residence=estate$properties$siedziba,
+                                        Electoral_District=estate$properties$okreg,
+                                        AFDP=estate$properties$przystosowanie,
+                                        Venue_no=estate$properties$nr_lokalu,
+                                        District_no=estate$properties$nr_obwodu)
   
   # z??czenie wszystkich kolumn
   
@@ -40,7 +56,7 @@ getEstate <- function(Coord = F) {
   if(Coord == T){
     result <- estate_coord
   } else {
-    return(estate_basic_info)
+    result <- estate_basic_info
   }
-  
+  return(result)
 }

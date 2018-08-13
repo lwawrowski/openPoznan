@@ -1,7 +1,18 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#'Circle electoral  Function
+#'
+#' This function download data about Circle electoral in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of circle.}
+#' \item{Name}{factor; Name of circle.}
+#' }
+#' @examples
+#' Circle_electoral <- getCircle(Coord = F)
+#' Circle_coord <- getCircle(Coord = T)
 
 getCircle <- function(Coord = F){
   # okragi wyborow rad osiedli
@@ -20,9 +31,8 @@ getCircle <- function(Coord = F){
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
   
-  circle_basic_info <- data.frame(cbind(circle$id,
-                                        circle$properties$okreg))
-  colnames(circle_basic_info)<-c("ID","Name")
+  circle_basic_info <- data.frame(ID=circle$id,
+                                        Name=circle$properties$okreg)
   
   # z??czenie wszystkich kolumn
   
@@ -39,7 +49,7 @@ getCircle <- function(Coord = F){
   if(Coord == T){
     result <- circlecoord_id
   } else {
-    return(circle_final)  
+    result <- circle_final  
   }  
- 
+  return(result)
 }  

@@ -1,7 +1,21 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#'Dydactic Paths  Function
+#'
+#' This function download data about Dydactic paths  in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of Dydactic paths.}
+#' \item{Name}{factor; Name of Dydactic paths in Poznan.}
+#' \item{Length}{factor; Length of Dydactic paths.}
+#' \item{Description}{factor; Description of Dydactic paths in Poznan.}
+#' }
+#' @examples
+#' Dydactic_Paths <- getDydactic_Paths(Coord = F)
+#' Dydactic_Paths_coord <- getDydactic_Paths(Coord = T)
+
 
 getDydactic_Paths <- function(Coord = F){
   
@@ -16,12 +30,11 @@ getDydactic_Paths <- function(Coord = F){
   })
   dpaths <- d$features
   
-  trail_basic_info <- data.frame(cbind(dpaths$id,
-                                       dpaths$properties$name,
-                                       dpaths$properties$length,
-                                       dpaths$properties$desc))
+  trail_basic_info <- data.frame(ID=dpaths$id,
+                                       Name=dpaths$properties$name,
+                                       Length=dpaths$properties$length,
+                                       Description=dpaths$properties$desc)
   
-  colnames(trail_basic_info)<-c("ID","Name","Lenght","Description")
   
   # z??czenie wszystkich kolumn
   
@@ -32,9 +45,11 @@ getDydactic_Paths <- function(Coord = F){
   dcoord_df <- map(dcoord, as.data.frame)
   
   dcoord_id <- map2_df(dcoord_df, dpaths$id, ~mutate(.x, id=.y))
+  
   if(Coord == T){
     reuslt <- dcoord_id
   } else {
-    return(trail_basic_info)
+    result <- trail_basic_info
   }
+  return(result)
 }

@@ -1,7 +1,19 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#' Area Electoral Function
+#'
+#' This function download data about Area Electoral in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of area electoral.}
+#' \item{District_no}{factor; Number of District.}
+#' }
+#' @examples
+#' Area_Electoral <- getArea_electoral(Coord = F)
+#' Area_Electoral_coords <- getArea_electoral(Coord = T)
+
 
 getArea_electoral <- function(Coord = F){
   # dane wybory samorzadowe obwody wyborcze 
@@ -26,11 +38,9 @@ getArea_electoral <- function(Coord = F){
   oblast2coord_id <- map2_df(oblast2coord_df, oblast2$id, ~mutate(.x, id=.y))
   
   
-  oblast2_basic_info <- data.frame(cbind(oblast2$id,
-                                         oblast2$properties$okreg))
-  
-  colnames(oblast2_basic_info)<-c("District_no")
-  
+  oblast2_basic_info <- data.frame(ID=oblast2$id,
+                                         District_no=oblast2$properties$okreg)
+
   
   # z??czenie wszystkich kolumn
   
@@ -38,6 +48,7 @@ getArea_electoral <- function(Coord = F){
   if(Coord == T){
      result <- oblast2_coord
     } else {
-      return(oblast2_final)  
+      result <- oblast2_final
     }
+  return(result)
 }

@@ -1,7 +1,19 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#'District  Function
+#'
+#' This function download data about District  in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of District.}
+#' \item{Name}{factor; Name of District.}
+#' \item{Type}{factor; Type of District.}
+#' }
+#' @examples
+#' District <- getDistrict(Coord = F)
+#' District_coord <- getDistrict(Coord = T)
 
 getDistrict <- function(Coord = F) {
   # samorzady pomocnicze 
@@ -17,11 +29,9 @@ getDistrict <- function(Coord = F) {
   district <- s$features
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
   
-  district_basic_info <- data.frame(cbind(district$id,
-                                          district$properties$name,
-                                          district$type))
-  
-  colnames(district_basic_info)<-c("ID","Name","Type")
+  district_basic_info <- data.frame(ID=district$id,
+                                          Name=district$properties$name,
+                                          Type=district$type)
   
   # z??czenie wszystkich kolumn
   
@@ -38,7 +48,7 @@ getDistrict <- function(Coord = F) {
   if(Coord == T) {
     result <- districtcoord_id
   }else{
-    return(district_basic_info)
+    result <- district_basic_info
   }
-  # prawie dobrze 
+  return(result)
 } 

@@ -1,9 +1,21 @@
+#'Paths  Function
+#'
+#' This function download data about Paths in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of Paths in Poznan.}
+#' \item{Name}{factor; Name of Paths in Poznan.}
+#' \item{Lenght{factor; Lenght.}
+#' \item{Description}{factor; Description Paths in Poznan.}
+#' }
+#' @examples
+#' Paths <- getPaths(Coord = F)
+#' Paths_coord <- getPaths(Coord = T)
 
-
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
 
 getPaths <- function(Coord = F){
   # szlaki turystyczne 
@@ -16,12 +28,11 @@ getPaths <- function(Coord = F){
   })
   paths <- t$features
   
-  paths_basic_info <- data.frame(cbind(paths$id,
-                                       paths$properties$name,
-                                       paths$properties$length,
-                                       paths$properties$desc))
-  
-  colnames(paths_basic_info)<-c("ID","Name","Lenght","Description")
+  paths_basic_info <- data.frame(ID=paths$id,
+                                       Name=paths$properties$name,
+                                       Lenght=paths$properties$length,
+                                       Description=paths$properties$desc)
+
   
   # z??czenie wszystkich kolumn
   
@@ -34,6 +45,7 @@ getPaths <- function(Coord = F){
   if(Coord == T){
     reuslt <- pathscoord_id
   } else {
-    return(paths_basic_info)
+   result <- paths_basic_info
   }
+  return(result)
 }

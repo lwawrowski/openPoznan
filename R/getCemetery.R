@@ -1,9 +1,22 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#' Cemetery Function
+#'
+#' This function download data about Cemetery in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of Cemetery in Poznan.}
+#' \item{Cemetery_Name}{factor; Name of cemetery in Poznan.}
+#' \item{Cemetery_Type}{factor; Type of cemetery in Poznan.}
+#' }
+#' @examples
+#' Cemetery <- getCemetery(Coord = F)
+#' Cemetery_coords <- getCemetery(Coord = T)
 
 # wyszukiwarka cmentarzy 
+
 getCemetery <- function(Coord = F) {
   
   # wczytanie danych cmentarzy 
@@ -19,11 +32,9 @@ getCemetery <- function(Coord = F) {
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
   
-  cemetery_basic_info <- data.frame(cbind(cemetery$id,
-                                          cemetery$properties$cm_name,
-                                          cemetery$properties$cm_type))
-  
-  colnames(cemetery_basic_info)<-c("ID","Cementary_Name","Cementary_Type")
+  cemetery_basic_info <- data.frame(ID=cemetery$id,
+                                          Cemetery_Name=cemetery$properties$cm_name,
+                                          tery_Type=Cemecemetery$properties$cm_type)
   
   # z??czenie wszystkich kolumn
   
@@ -40,6 +51,7 @@ getCemetery <- function(Coord = F) {
   if(Coord == T){
     result <- cemeterycoord_id
   } else {
-    return(cemetery_basic_info)
+    result <- cemetery_basic_info
   }
+  return(result)
 }

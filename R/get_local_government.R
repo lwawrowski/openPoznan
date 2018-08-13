@@ -1,7 +1,20 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#' Local Government Function
+#'
+#' This function download data about local government in Poznań.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of District.}
+#' \item{AFDP}{factor; Adaptation for disabled pearson.}
+#' \item{District_no}{factor; Number of district.}
+#' \item{Residence}{factor; Name of Residence. }
+#' }
+#' @examples
+#' Local_Government <- get_local_government(Coord = F)
+
 
 get_local_government <- function(Coord = F){
   # dane wyborzcze samorzadowe 
@@ -26,11 +39,10 @@ get_local_government <- function(Coord = F){
   colnames(gov_coord)[(names(gov_coord)=="X1")] <- "V1"
   colnames(gov_coord)[(names(gov_coord)=="X2")] <- "V2"
   
-  gov_basic_info <- data.frame(cbind(gov$id,
-                                     gov$properties$przystosowanie,
-                                     gov$properties$nr_obwodu,
-                                     gov$properties$siedziba))
-  colnames(gov_basic_info)<-c("ID","AFDP","District_no","Residence")
+  gov_basic_info <- data.frame(ID=gov$id,
+                                     AFDP=gov$properties$przystosowanie,
+                                     District_no=gov$properties$nr_obwodu,
+                                     Residence=gov$properties$siedziba)
   
   # z??czenie wszystkich kolumn
   
@@ -43,3 +55,4 @@ get_local_government <- function(Coord = F){
     }
   
 }
+

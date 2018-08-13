@@ -1,7 +1,26 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#' Church  Function
+#'
+#' This function download data about Church in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of church.}
+#' \item{Code}{factor; code of church in Poznan.}
+#' \item{Name}{factor; Name of church.}
+#' \item{Category_builiding}{factor; Category of church in Poznan.}
+#' \item{City}{factor; City.}
+#' \item{Lang}{factor; Language.}
+#' \item{Address}{factor; Address of church.}
+#' \item{ID_monument}{factor; ID monument in Poznan.}
+#' \item{Description}{factor; Description of church.}
+#' }
+#' @examples
+#' Church <- getChurch(Coord = F)
+#' Church_coord <- getChurch(Coord = T)
+
 
 getChurch <- function(Coord = F){
   
@@ -22,17 +41,16 @@ getChurch <- function(Coord = F){
   colnames(church_coord)[(names(church_coord)=="X1")] <- "V1"
   colnames(church_coord)[(names(church_coord)=="X2")] <- "V2"
   
-  church_basic_info <- data.frame(cbind(church$id,
-                                        church$properties$kod,
-                                        church$properties$nazwa,
-                                        church$properties$opis_klasy,
-                                        church$properties$adres,
-                                        church$properties$miasto,
-                                        church$properties$lang,
-                                        church$properties$id_klasy,
-                                        church$properties$opis))
-  
-  colnames(church_basic_info)<-c("ID","Code","Name","Category_builiding","City","Lang","Address","ID_monument","Description")
+  church_basic_info <- data.frame(ID=church$id,
+                                        Code=church$properties$kod,
+                                        Name=church$properties$nazwa,
+                                        Category_builiding=church$properties$opis_klasy,
+                                        City=church$properties$adres,
+                                        Lang=church$properties$miasto,
+                                        Address=church$properties$lang,
+                                        ID_monument=church$properties$id_klasy,
+                                        Description=church$properties$opis)
+
   
   # z??czenie wszystkich kolumn
   
@@ -40,6 +58,7 @@ getChurch <- function(Coord = F){
   if(Coord == T){
     result <- church_coord
   } else {
-    return(church_final)
+    result <- church_final
   }
+  return(result)
 }

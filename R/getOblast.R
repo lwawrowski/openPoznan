@@ -1,8 +1,19 @@
+#'Oblast Function
+#'
+#' This function download data about Oblast in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of Oblast.}
+#' \item{Name}{factor; Name of Oblast in Poznan.}
+#' }
+#' @examples
+#' oblast <- getOblast(Coord = F)
+#' oblast_coord <- getOblast(Coord = T)
 
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
 
 getOblast <- function(Coord = F){
   # obwody rad osiedli
@@ -18,9 +29,8 @@ getOblast <- function(Coord = F){
   oblast <- ob$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
-  oblast_basic_info <- data.frame(cbind(oblast$id,
-                                        oblast$properties$okreg))
-  colnames(oblast_basic_info)<-c("ID","Name")
+  oblast_basic_info <- data.frame(ID=oblast$id,
+                                        Name=oblast$properties$okreg)
   
   # z??czenie wszystkich kolumn
   
@@ -37,6 +47,7 @@ getOblast <- function(Coord = F){
   if(Coord == T){
     result <- oblastcoord_id
   } else {
-    return(oblast_basic_info)
+   result <- oblast_basic_info
   }
+  return(result)
 }

@@ -1,9 +1,22 @@
-library(jsonlite)
-library(ggplot2)
-library(dplyr)
-library(purrr)
+#' Bike Paths Function
+#'
+#' This function download data about Bike Paths in Poznan.
+#' @keywords keyword
+#' @export
+#' @details Details of usage 
+#' @importFrom jsonlite fromJSON 
+#' @format 
+#' \describe{
+#' \item{ID}{factor; ID of all bike paths in Poznan.}
+#' \item{Name}{factor; Name of bike paths.}
+#' \item{Lenght}{factor; Lenght of bike paths}
+#' \item{Description}{factor; Description of bike paths}
+#' }
+#' @examples
+#' Bike_Paths <- getBike_Paths(Coord = F)
+#' Area_Electoral_coords <- getBike_Paths(Coord = T)
 
-getBikePaths <- function(Coord = F){
+getBike_Paths <- function(Coord = F){
   
   # szlaki rowerowe 
   tryCatch({ # w przypadku baraku internetu wywoła wyjątek
@@ -23,12 +36,11 @@ getBikePaths <- function(Coord = F){
   
   bcoord_id <- map2_df(bcoord_df, bikepaths$id, ~mutate(.x, id=.y))
   
-  bikepaths_basic_info <- data.frame(cbind(bikepaths$id,
-                                           bikepaths$properties$name,
-                                           bikepaths$properties$length,
-                                           bikepaths$properties$desc))
-  
-  colnames(bikepaths_basic_info)<-c("ID","Name","Lenght","Description")
+  bikepaths_basic_info <- data.frame(ID=bikepaths$id,
+                                           Name=bikepaths$properties$name,
+                                           Lenght=bikepaths$properties$length,
+                                           Description=bikepaths$properties$desc)
+
   
   # z??czenie wszystkich kolumn
   
@@ -37,6 +49,7 @@ getBikePaths <- function(Coord = F){
   if(Coord == T){
     reuslt <- bcoord_id
   } else {
-    return(bikepaths_final)
+    result <- bikepaths_final
   }
+  return(result)
 }
