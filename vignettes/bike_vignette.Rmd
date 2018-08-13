@@ -72,6 +72,7 @@ head(get_nextbike_example)
 get_next_bike_data_example <- get_next_bike_data("10-08-2018 14:50","10-08-2018 15:10")
 head(get_next_bike_data_example)
 ```
+
 ```{r}
 data_table_final %>%
   filter(id=="6151") %>%
@@ -81,6 +82,7 @@ data_table_final %>%
 ```
 # Liczba rowerów
 ```{r}
+
  data_table_final%>%
   distinct(number)%>%
   count()
@@ -103,35 +105,48 @@ data_table_final %>%
 ```
 # Liczba wypozyczonych rowerow w danej godzinie
 ```{r}
-example  <- data_table_final%>%
-  group_by(date)%>%
-  count()
+example  <- data_table_final %>%
+  group_by(date) %>%
+  count() %>%
+  mutate(n_rent=1066-n)
 
-date <- data.frame(date =example$date,n = 1066 - example$n )
-head(date)
+
+
 ```
+
 #Mediana
 ```{r}
-median(date$n)
+median(example$n_rent)
 ```
 
 ```{r}
 
-  ggplot(data = date, aes(n)) + geom_histogram(binwidth = 3)
+ggplot(data = example, aes(n_rent)) + geom_histogram(binwidth = 10)
 
 
 ```
+
 #Mediana wypożyczeń rowerów z kazdej godziny
+
+
 ```{r}
-date <- cbind(date,data.frame(hours =as.numeric(substring(date$date,12,13))))
+
+bike_hours <- example %>%
+  mutate(hours = as.numeric(substring(date,12,13))) %>%
+  group_by(hours) %>%
+  summarise(sum=sum(n_rent))
+
+bike_hours %>%
+  ggplot(aes(x=hours, y=sum)) + geom_line()
+
 
 ```
 
 
 ```{r}
-median <- date%>%
+median <- bike_hours %>%
   group_by(hours)%>%
-  summarise(mean = median(n))
+  summarise(mean = median(sum))
 
 median
 ```
