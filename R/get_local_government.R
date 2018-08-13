@@ -21,14 +21,22 @@ get_local_government <- function(Coord = F){
   
   # wczytanie danych o wyborach samorzadowych
   
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-  go <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_lokale_wgs/")
+  if(havingIP() == T){
   
-  }, error = function(err) {
+      tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     
-      print(paste("check the internet connection"))
+
+      go <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_lokale_wgs/")
+  
+      },error = function(err) {
     
-  })
+      warning("You used bad link!")
+      })
+    
+  }else{
+    
+      warning("You lost connection to internet!")
+  }
   
   gov <- go$features
   

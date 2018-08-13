@@ -27,14 +27,26 @@ getTicket <- function(Coord = F) {
   # sprzeda biletow
   
   # wczytanie danych biletow 
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
+  
+  if(havingIP() == T) {
     
-  tick <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=4803")
-  }, error = function(err) {
+  
+  
+      tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     
-    print(paste(""))
+      tick <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=4803")
+      }, error = function(err) {
+        
+      warning("You used bad link!")
+        
+      })
     
-  })
+  }else{
+    
+      warning("You lost connection to internet!")
+    
+  }    
+   
   ticket <- tick$features 
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie
   

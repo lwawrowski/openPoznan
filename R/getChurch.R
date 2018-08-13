@@ -25,13 +25,24 @@
 getChurch <- function(Coord = F){
   
   # wczytanie danych o kosciolach
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-  ch <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=2471")
-  }, error = function(err) {
+  
+  if(havingIP() == T) {
+  
+    tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     
-    print(paste(""))
     
-  })
+    ch <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=2471")
+    }, error = function(err) {
+    
+    warning("You used bad link!")
+     })
+    
+  }else{
+    
+    warning("You lost connection to internet!")
+    
+  }    
+    
   church <- ch$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

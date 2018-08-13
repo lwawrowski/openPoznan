@@ -19,13 +19,21 @@ getOblast <- function(Coord = F){
   # obwody rad osiedli
   
   # wczytanie obwod?w rad osiedli
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-  ob <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
-  }, error = function(err) {
+  if(havingIP() == T) {
+  
+  
+      tryCatch({ # w przypadku baraku internetu wywoła wyjątek
+      ob <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
+      }, error = function(err) {
     
-    print(paste(""))
+      warning("You used bad link!")
+      })
     
-  })
+  }else{
+    
+      warning("You lost connection to internet!")
+    
+  }    
   oblast <- ob$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

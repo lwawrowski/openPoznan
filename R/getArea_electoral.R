@@ -19,13 +19,24 @@ getArea_electoral <- function(Coord = F){
   # dane wybory samorzadowe obwody wyborcze 
   
   # wczytanie danych o wyborach samorzadowych
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-  ob2 <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_obwody_wgs/")
-  }, error = function(err) {
+  
+  if(havingIP() == T){
+  
+      tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     
-    print(paste(""))
     
-  })
+      ob2 <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_obwody_wgs/")
+      },error = function(err) {
+    
+      warning("You used bad link!")
+      })
+  
+  }else{
+    
+      warning("You lost connection to internet!")
+    
+  }  
+    
   oblast2 <- ob2$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

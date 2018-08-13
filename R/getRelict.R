@@ -26,13 +26,22 @@ getRelict <- function(Coord = F){
   # zabytki
   
   # wczytanie danych o zabytkach
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-  r <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=2572")
-  }, error = function(err) {
+  
+  if(havingIP() == T) {
+  
+      tryCatch({ # w przypadku baraku internetu wywoła wyjątek
+      r <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=class_objects&class_id=2572")
+      }, error = function(err) {
+      
+      warning("You used bad link!")
+    })
     
-    print(paste(""))
+  }else{
     
-  })
+      warning("You lost connection to internet!")
+    
+  }    
+   
   relikt <- r$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

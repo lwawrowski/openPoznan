@@ -21,13 +21,22 @@ getDydactic_Paths <- function(Coord = F){
   
   # szlaki dydaktyczne
   
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-  d <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=tourism&co=dydactic_paths")
-  }, error = function(err) {
+  if(havingIP() == T) {
+  
+    tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     
-    print(paste(""))
+    d <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=tourism&co=dydactic_paths")
+    }, error = function(err) {
     
-  })
+    warning("You used bad link!")
+    })
+    
+  }else{
+    
+    warning("You lost connection to internet!")
+    
+  }    
+    
   dpaths <- d$features
   
   trail_basic_info <- data.frame(ID=dpaths$id,

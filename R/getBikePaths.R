@@ -17,15 +17,24 @@
 #' Area_Electoral_coords <- getBike_Paths(Coord = T)
 
 getBike_Paths <- function(Coord = F){
+  # szlaki rowerowe
   
-  # szlaki rowerowe 
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-  b <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=tourism&co=cycling_routes")
-  }, error = function(err) {
+  if(havingIP() == T) {
+  
+      tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     
-    print(paste(""))
     
-  })
+      b <- fromJSON("http://www.poznan.pl/mim/plan/map_service.html?mtype=tourism&co=cycling_routes")
+      },error = function(err) {
+    
+      warning("You used bad link!")
+      })
+    
+  }else{
+    
+      warning("You lost connection to internet!")
+  }  
+    
   bikepaths <- b$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

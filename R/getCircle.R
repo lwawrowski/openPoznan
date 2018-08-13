@@ -1,4 +1,4 @@
-#'Circle electoral  Function
+#' Circle electoral  Function
 #'
 #' This function download data about Circle electoral in Poznan.
 #' @keywords keyword
@@ -18,15 +18,25 @@ getCircle <- function(Coord = F){
   # okragi wyborow rad osiedli
   
   # wczytanie danych rad osiedli
-  tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-    
-  co <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
+  if(havingIP() == T) {
   
-  }, error = function(err) {
+  
+    tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     
-    print(paste(""))
+    co <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
+  
+    }, error = function(err) {
     
-  })
+    warning("You used bad link!")
+    })
+    
+  }else{
+    
+    warning("You lost connection to internet!")
+    
+  }    
+    
+    
   circle <- co$features
   
   # Oczyszczenie danych z niepotrzebnych informacji + nazwanie

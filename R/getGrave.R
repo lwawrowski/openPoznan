@@ -41,13 +41,21 @@ getGrave <- function(Coord = F){
     cat("Cemetery of",i," from ",length(cementary_final$ID), "\n")
     
     id <- cementary_final$ID[i]
+    
+    if(havingIP() == T) {
+      
     tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     new_link <- paste0("http://www.poznan.pl/featureserver/featureserver.cgi/groby?maxFeatures=1000&queryable=cm_id&cm_id=",id)
     }, error = function(err) {
       
-      print(paste(""))
-      
+      warning("You used bad link!")
     })
+      
+    }else{
+      
+      warning("You lost cinnection to internet!")
+      
+    }      
     n <- fromJSON(new_link)
     
     grave_basic_info <- n$features$properties

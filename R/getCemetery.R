@@ -20,13 +20,23 @@
 getCemetery <- function(Coord = F) {
   
   # wczytanie danych cmentarzy 
-  result <- tryCatch({ # w przypadku baraku internetu wywoła wyjątek
-    c <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/cmentarze/all.json")
-  }, error = function(err) {
+  
+  if(havingIP() == T) {
+  
+      tryCatch({ # w przypadku baraku internetu wywoła wyjątek
     
-    print(paste("brak internetu lub zły link"))
+      c <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/cmentarze/all.json")
+      }, error = function(err) {
     
-  })
+      warning("You used bad link!")
+      })
+    
+  }else{
+    
+      warning("You lost connection to internet!")
+    
+  }  
+  
   
   cemetery <- c$features
   
