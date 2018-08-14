@@ -20,6 +20,9 @@
 \usage{
 getGrave(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about Grave in Poznań}
+}
 \description{
 This function download data about Grave in Poznan.
 }

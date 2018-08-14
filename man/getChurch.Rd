@@ -17,8 +17,11 @@
 \usage{
 getChurch(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about historic church in Poznań}
+}
 \description{
-This function download data about Church in Poznan.
+This function download data about historic Church in Poznan.
 }
 \details{
 Details of usage

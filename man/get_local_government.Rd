@@ -12,6 +12,9 @@
 \usage{
 get_local_government(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about local government in Poznań}
+}
 \description{
 This function download data about local government in Poznań.
 }

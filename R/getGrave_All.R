@@ -3,6 +3,7 @@
 #' This function download data about Grave All in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about Grave All in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom dplyr filter mutate

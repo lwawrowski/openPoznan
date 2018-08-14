@@ -3,6 +3,7 @@
 #' This function download data about Bike Paths in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about Bike paths in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
@@ -44,7 +45,7 @@ getBike_Paths <- function(Coord = F){
   
   bcoord_df <- map(bcoord, as.data.frame)
   
-  bcoord_id <- map2_df(bcoord_df, bikepaths$id, ~mutate(.x, id=.y))
+  bcoord_id <- map2_df(bcoord_df, bikepaths$properties$name,  ~mutate(.x, id2=.y))
   
   bikepaths_basic_info <- data.frame(ID=bikepaths$id,
                                            Name=bikepaths$properties$name,
@@ -57,7 +58,7 @@ getBike_Paths <- function(Coord = F){
   bikepaths_final <- cbind(bikepaths_basic_info)
   
   if(Coord == T){
-    reuslt <- bcoord_id
+    result <- bcoord_id
   } else {
     result <- bikepaths_final
   }

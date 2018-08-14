@@ -3,6 +3,7 @@
 #' This function download data about local government in Poznań.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about local government in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 

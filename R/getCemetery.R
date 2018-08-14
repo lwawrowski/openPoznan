@@ -3,6 +3,7 @@
 #' This function download data about Cemetery in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about cemetery in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
@@ -46,7 +47,7 @@ getCemetery <- function(Coord = F) {
   
   cemetery_basic_info <- data.frame(ID=cemetery$id,
                                           Cemetery_Name=cemetery$properties$cm_name,
-                                          tery_Type=Cemecemetery$properties$cm_type)
+                                          Cemetery_Type=cemetery$properties$cm_type)
   
   # z??czenie wszystkich kolumn
   

@@ -10,6 +10,9 @@
 \usage{
 getCircle(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about circle electoral of local government in Poznań}
+}
 \description{
 This function download data about Circle electoral in Poznan.
 }

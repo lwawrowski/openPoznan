@@ -3,6 +3,7 @@
 #' This function download data about Oblast in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about Oblast in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df

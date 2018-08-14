@@ -17,6 +17,9 @@
 \usage{
 getRelict(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about Relict in Poznań}
+}
 \description{
 This function download data about Relict in Poznan.
 }

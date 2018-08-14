@@ -10,6 +10,9 @@
 \usage{
 getOblast(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about Oblast in Poznań}
+}
 \description{
 This function download data about Oblast in Poznan.
 }

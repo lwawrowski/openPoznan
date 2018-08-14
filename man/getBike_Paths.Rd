@@ -12,6 +12,9 @@
 \usage{
 getBike_Paths(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about Bike paths in Poznań}
+}
 \description{
 This function download data about Bike Paths in Poznan.
 }

@@ -1,8 +1,9 @@
 #' Church  Function
 #'
-#' This function download data about Church in Poznan.
+#' This function download data about historic Church in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about historic church in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 

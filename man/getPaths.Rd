@@ -6,8 +6,11 @@
 \usage{
 getPaths(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about trail in Poznań}
+}
 \description{
-This function download data about Paths in Poznan.
+This function download data about trail in Poznan.
 }
 \details{
 Details of usage

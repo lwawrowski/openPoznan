@@ -10,6 +10,9 @@
 \usage{
 getArea_electoral(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about Area electoral in Poznań}
+}
 \description{
 This function download data about Area Electoral in Poznan.
 }

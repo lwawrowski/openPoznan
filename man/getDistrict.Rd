@@ -11,6 +11,9 @@
 \usage{
 getDistrict(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about distric in Poznań}
+}
 \description{
 This function download data about District  in Poznan.
 }

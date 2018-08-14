@@ -1,8 +1,9 @@
 #'Paths  Function
 #'
-#' This function download data about Paths in Poznan.
+#' This function download data about trail in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about trail in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
@@ -51,10 +52,10 @@ getPaths <- function(Coord = F){
   
   pathscoord_df <- map(pathscoord, as.data.frame)
   
-  pathscoord_id <- map2_df(pathscoord_df, paths$id, ~mutate(.x, id=.y))
+  pathscoord_id <- map2_df(pathscoord_df, paths$properties$name, ~mutate(.x, id3=.y))
   
   if(Coord == T){
-    reuslt <- pathscoord_id
+    result <- pathscoord_id
   } else {
    result <- paths_basic_info
   }

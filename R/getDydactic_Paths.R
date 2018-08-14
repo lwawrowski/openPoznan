@@ -3,6 +3,7 @@
 #' This function download data about Dydactic paths  in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about Dydactic pathsin Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
@@ -55,10 +56,10 @@ getDydactic_Paths <- function(Coord = F){
   
   dcoord_df <- map(dcoord, as.data.frame)
   
-  dcoord_id <- map2_df(dcoord_df, dpaths$id, ~mutate(.x, id=.y))
+  dcoord_id <- map2_df(dcoord_df, trail_basic_info$Name, ~mutate(.x, id1=.y))
   
   if(Coord == T){
-    reuslt <- dcoord_id
+    result <- dcoord_id
   } else {
     result <- trail_basic_info
   }

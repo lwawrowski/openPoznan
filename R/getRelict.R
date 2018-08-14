@@ -3,6 +3,7 @@
 #' This function download data about Relict in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about Relict in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
@@ -69,7 +70,7 @@ getRelict <- function(Coord = F){
   if(Coord == T){
     result <- relikt_coord
   } else {
-    resut <- relikt_final
+    result <- relikt_final
   }
   return(result)
 }

@@ -3,6 +3,7 @@
 #' This function download data about Area Electoral in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about Area electoral in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
@@ -51,16 +52,15 @@ getArea_electoral <- function(Coord = F){
   
   
   oblast2_basic_info <- data.frame(ID=oblast2$id,
-                                         District_no=oblast2$properties$okreg)
+                                         District_no=oblast2$properties$nr_obwodu)
   
-  # oblast2_coord <- data.frame(oblast2coord_i
+  
   # z??czenie wszystkich kolumn
   
-  oblast2_final <- cbind(oblast2coord_id)
   if(Coord == T){
-     result <- oblast2_coord
+     result <- oblast2coord_id
     } else {
-      result <- oblast2_final
+      result <- oblast2_basic_info
     }
   return(result)
 }

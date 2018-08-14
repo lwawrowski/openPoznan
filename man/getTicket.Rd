@@ -19,6 +19,9 @@
 \usage{
 getTicket(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about Ticket in Poznań}
+}
 \description{
 This function download data about Ticket in Poznan.
 }

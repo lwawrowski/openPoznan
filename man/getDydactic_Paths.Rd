@@ -12,6 +12,9 @@
 \usage{
 getDydactic_Paths(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about Dydactic pathsin Poznań}
+}
 \description{
 This function download data about Dydactic paths  in Poznan.
 }

@@ -1,8 +1,9 @@
-#'Ticket  Function
+#' Ticket  Function
 #'
 #' This function download data about Ticket in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about Ticket in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 

@@ -11,6 +11,9 @@
 \usage{
 getCemetery(Coord = F)
 }
+\arguments{
+\item{Coord}{show basic_data about cemetery in Poznań}
+}
 \description{
 This function download data about Cemetery in Poznan.
 }

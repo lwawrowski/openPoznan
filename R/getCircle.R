@@ -3,6 +3,7 @@
 #' This function download data about Circle electoral in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about circle electoral of local government in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df

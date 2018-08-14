@@ -1,8 +1,9 @@
-#'Estate  Function
+#' Council  Function
 #'
-#' This function download data about Estate in Poznan.
+#' This function download data about district council in Poznan.
 #' @keywords keyword
 #' @export
+#' @param Coord show basic_data about district council in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
@@ -20,7 +21,7 @@
 #' Estate <- getEstate(Coord = F)
 #' Estate_coord <- getEstate(Coord = T)
 
-getEstate <- function(Coord = F) {
+getCouncil <- function(Coord = F) {
   # dane wyborcze rad osiedli 
   
   # wczytanie danych rad osiedli
