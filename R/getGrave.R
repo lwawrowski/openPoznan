@@ -5,6 +5,8 @@
 #' @export
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
+#' @importFrom purrr map map2_df
+#' @importFrom dplyr mutate
 #' @format 
 #' \describe{
 #' \item{Cemetery_ID}{factor; ID of  Cemetery in Poznan.}

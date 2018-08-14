@@ -44,8 +44,8 @@ get_local_government <- function(Coord = F){
   
   gov_coord <- data.frame(matrix(unlist(go$features$geometry$coordinates),
                                  nrow = nrow(go$features), byrow = T))
-  colnames(gov_coord)[(names(gov_coord)=="X1")] <- "V1"
-  colnames(gov_coord)[(names(gov_coord)=="X2")] <- "V2"
+  colnames(gov_coord)[(names(gov_coord)=="X1")] <- "Longitude"
+  colnames(gov_coord)[(names(gov_coord)=="X2")] <- "Latitude"
   
   gov_basic_info <- data.frame(ID=gov$id,
                                      AFDP=gov$properties$przystosowanie,
@@ -59,8 +59,8 @@ get_local_government <- function(Coord = F){
   if(Coord == T){
       result <- gov_coord
     } else {
-      return(gov_basic_info)
+      result <- gov_basic_info
     }
-  
+  return(result)
 }
 

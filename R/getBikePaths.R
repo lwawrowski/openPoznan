@@ -5,6 +5,7 @@
 #' @export
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
+#' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
 #' \item{ID}{factor; ID of all bike paths in Poznan.}

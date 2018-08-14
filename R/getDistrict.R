@@ -1,10 +1,12 @@
-#'District  Function
+#' District  Function
 #'
 #' This function download data about District  in Poznan.
 #' @keywords keyword
 #' @export
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
+#' @importFrom purrr map map2_df
+#' @importFrom dplyr mutate
 #' @format 
 #' \describe{
 #' \item{ID}{factor; ID of District.}

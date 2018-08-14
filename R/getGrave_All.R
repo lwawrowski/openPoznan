@@ -5,6 +5,8 @@
 #' @export
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
+#' @importFrom dplyr filter mutate
+#' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
 #' \item{Cemetery_ID}{factor; ID of  Cemetery in Poznan.}
@@ -30,7 +32,7 @@ getGrave_all <- function(Coord =F){
   
   cemeterycoord_id <- getCemetery(Coord = T)
   
-  warn = 1
+  
   #na wsp??rz?dnych
   # zbieranie wszystkich danych 
   

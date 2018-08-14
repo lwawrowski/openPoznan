@@ -5,6 +5,7 @@
 #' @export
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
+#' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
 #' \item{ID}{factor; ID of area electoral.}
@@ -51,8 +52,8 @@ getArea_electoral <- function(Coord = F){
   
   oblast2_basic_info <- data.frame(ID=oblast2$id,
                                          District_no=oblast2$properties$okreg)
-
   
+  # oblast2_coord <- data.frame(oblast2coord_i
   # z??czenie wszystkich kolumn
   
   oblast2_final <- cbind(oblast2coord_id)
