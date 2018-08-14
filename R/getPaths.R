@@ -5,6 +5,8 @@
 #' @export
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
+#' @importFrom purrr map map2_df
+#' @importFrom dplyr mutate
 #' @format 
 #' \describe{
 #' \item{ID}{factor; ID of Paths in Poznan.}
