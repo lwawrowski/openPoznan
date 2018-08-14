@@ -1,4 +1,4 @@
-#'Grave All  Function
+#' Grave All  Function
 #'
 #' This function download data about Grave All in Poznan.
 #' @keywords keyword
@@ -28,23 +28,27 @@
 #' Grave_All_coord <- getGrave_All(Coord = T)
 
 
-# pobieranie wszystkich grobów
 getGrave_all <- function(Coord =F){
   
   cemeterycoord_id <- getCemetery(Coord = T)
   
   
+  coords <-cemeterycoord_id %>% mutate(id2=ifelse(id %in% (c(7,8,9,10,11,13,14)), 25, id)) %>%
+    arrange(id2)
   #na wsp??rz?dnych
   # zbieranie wszystkich danych 
   
-  cm_unique_id <-  unique(cemeterycoord_id$id)
+  cm_unique_id <-  unique(coords$id2)
   
   
+  grave_basic_info_all <- data.frame()
+  
+  grave_coord_all <- data.frame()
   
   # cm nr 1 
-  for(i in 1:length(unique(cemeterycoord_id$id))){
+  for(i in 1:length(unique(coords$id2))){
     
-    cm_i <- cemeterycoord_id %>% filter(id == cm_unique_id[i])
+    cm_i <- coords %>% filter(id2 == cm_unique_id[i])
     
     
     min_x1 <- min(cm_i$V1)
@@ -61,12 +65,12 @@ getGrave_all <- function(Coord =F){
     c <- cbind(a,b)
     
     
-    grave_basic_info_all <- data.frame()
+    # grave_basic_info_all <- data.frame()
+    # 
+    #    grave_coord_all <- data.frame()
     
-    grave_coord_all <- data.frame()
-    
-    for(i in 1:nrow(c)){
-      link <- paste0("http://www.poznan.pl/featureserver/featureserver.cgi/groby/all.json?maxfeatures=9000&bbox=",c$x1[i],",",c$y1[i],",",c$x2[i],",",c$y2[i])
+    for(j in 1:nrow(c)){
+      link <- paste0("http://www.poznan.pl/featureserver/featureserver.cgi/groby/all.json?maxfeatures=9000&bbox=",c$x1[j],",",c$y1[j],",",c$x2[j],",",c$y2[j])
       
       d <- fromJSON(link)
       
@@ -85,7 +89,7 @@ getGrave_all <- function(Coord =F){
       
       grave_coord_all <- rbind(grave_coord_all, grave_coord)
       
-      cat("Obs: ", nrow(d$features), " Iter: ", i, "cm id: " ,unique(grave_coord$id), "\n")
+      cat("Obs: ", nrow(d$features), " Iter: ", j, "cm id: " ,unique(grave_coord$id), "\n")
     }
     
   }
@@ -94,7 +98,7 @@ getGrave_all <- function(Coord =F){
   if(Coord == T) {
     result2 <- grave_coord_all
   }else{
-    result <- grave_basic_info_all
+    return(grave_basic_info_all)
   }
-  return(result)
+  
 }
