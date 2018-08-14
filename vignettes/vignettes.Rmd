@@ -29,7 +29,7 @@ Vignette for tvm function.
 
 - Shows head of TVM data 
 ```{r tvm head}
-  TVM_example <- tvm()
+  TVM_example <- tram_bus_stops()
 
   head(TVM_example)
 ```
@@ -59,7 +59,7 @@ Vignette for pm function.
 ```{r pm ggmap}
 # Create point map on the graph
 
-PM_final <- pm()
+PM_final <- parking_machines()
   
   ggplot(data = PM_final,
          aes(x= Longitude,
@@ -73,7 +73,7 @@ Vignette for stop function.
 ```{r stop ggmap}
 # Create point map on the graph
 
-  Stops_final <- stop()
+  Stops_final <- tram_bus_stops()
   
   ggplot(data = Stops_final,
          aes(x= Longitude,
@@ -87,7 +87,7 @@ Vignette for cesspool function.
 ```{r cesspool ggmap}
 # Create point map on the graph
 
-  Cesspool_final <- cesspool()
+  Cesspool_final <- cesspools()
   
   ggplot(data = Cesspool_final,
          aes(x= Longitude,
@@ -101,7 +101,7 @@ Vignette for sw function.
 ```{r sw ggmap}
  # Create point map on the graph
 
-  SW_final <- sw()
+  SW_final <- sewage_works()
   
   ggplot(data = SW_final,
          aes(x= Longitude,
@@ -115,8 +115,8 @@ Vignette for parish function.
 ```{r parish ggmap}
 # Create point map on the graph
 
-  Parish_basic_info <- parish()
-  Parish_full_info <- parish(T)
+  Parish_basic_info <- parishes()
+  Parish_full_info <- parishes(T)
   Parish_coord_id <- Parish_full_info$Coords
   
   ggplot(data = Parish_coord_id,
@@ -267,8 +267,8 @@ Vignette for area function.
 ```{r area ggmap}
 # Create point map on the graph
 
-  Areas_basic_info <- area()
-  Area_full_info <- area(T)
+  Areas_basic_info <- school_basic_areas()
+  Area_full_info <- school_basic_areas(T)
   Area_coord_id <- Area_full_info$Coords
 
   ggplot(data = Area_coord_id,

@@ -28,7 +28,7 @@ tram_bus_stops <- function () {
   
   #Wstepna analiza
   
-  if(havingIP() == T) {
+  if(have_ip() == T) {
     
     tryCatch({
   

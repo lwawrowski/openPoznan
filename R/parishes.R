@@ -26,7 +26,7 @@ parishes <- function (coords = F) {
   
     #Wstepna analiza
     
-    if(havingIP() == T) {
+    if(have_ip() == T) {
     
       tryCatch({
       

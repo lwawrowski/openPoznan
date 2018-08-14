@@ -21,7 +21,7 @@ cesspools <- function() {
 
   #Wstepna analiza
   
-  if(havingIP() == T) {
+  if(have_ip() == T) {
     
     tryCatch({
   
