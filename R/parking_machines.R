@@ -1,4 +1,4 @@
-#' pm Function
+#' parking_machines Function
 #'
 #' This function download data about parking machines in Poznań
 #' @keywords keyword
@@ -15,13 +15,13 @@
 #' }
 #' @examples
 #' 
-#' pms <- pm()
+#' pms <- parking_machines()
 #' 
 #' 
 #' 
 
 
-pm <- function () {
+parking_machines <- function () {
 
   #Wstepna analiza
   

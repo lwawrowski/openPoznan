@@ -1,4 +1,4 @@
-#' stop Function
+#' tram_bus_stops Function
 #'
 #' This function download data about stops in Poznań
 #' @keywords keyword
@@ -18,11 +18,11 @@
 #' }
 #' @examples
 #' 
-#' Stops <- stop() 
+#' Stops <- tram_bus_stops() 
 #' 
 #' 
 
-stop <- function () {
+tram_bus_stops <- function () {
 
   #Przystanki ZTM calosc
   

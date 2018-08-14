@@ -1,4 +1,4 @@
-#' area Function
+#' school_basic_areas Function
 #'
 #' This function download data about basic school areas in Poznań.
 #' @keywords keyword
@@ -21,11 +21,11 @@
 #' }
 #' @examples
 #' 
-#'Area_basic <- area () 
+#'Area_basic <- school_basic_areas () 
 #'
-#'Area_with_coord <- area (TRUE)
+#'Area_with_coord <- school_basic_areas (TRUE)
 
-area <- function (coords = F) {
+school_basic_areas <- function (coords = F) {
 
   #Wstepna analiza
 

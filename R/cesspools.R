@@ -1,4 +1,4 @@
-#' cesspool Function
+#' cesspools Function
 #'
 #' This function download data about cesspools in Poznań.
 #' @keywords keyword
@@ -15,9 +15,9 @@
 #' \item{Latitude}{numeric; Latitude of cesspool.}
 #' }
 #' @examples
-#' Cesspools <- cesspool()
+#' Cesspools <- cesspools()
 
-cesspool <- function() {
+cesspools <- function() {
 
   #Wstepna analiza
   

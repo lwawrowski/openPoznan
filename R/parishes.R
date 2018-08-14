@@ -1,4 +1,4 @@
-#' parish Function
+#' parishes Function
 #'
 #' This function download data about parishes in Poznań
 #' @keywords keyword
@@ -17,12 +17,12 @@
 #' }
 #' @examples
 #' 
-#' parish_basic <- parish()
+#' parish_basic <- parishes()
 #'
-#' parish_with_coord <- parish(TRUE)
+#' parish_with_coord <- parishes(TRUE)
 #' 
 
-parish <- function (coords = F) {
+parishes <- function (coords = F) {
   
     #Wstepna analiza
     

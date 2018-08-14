@@ -1,4 +1,4 @@
-#' sw Function
+#' sewage_works Function
 #'
 #' This function download data about sewage works in Poznań.
 #' @keywords keyword
@@ -16,13 +16,13 @@
 #' }
 #' @examples
 #' 
-#' sws <- sw()
+#' sws <- sewage_works()
 #' 
 #' 
 #' 
 
 
-sw <- function() {
+sewage_works <- function() {
 
   #Wstepna analiza
   

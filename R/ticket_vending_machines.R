@@ -1,4 +1,4 @@
-#' tvm Function
+#' ticket_vending_machines Function
 #'
 #' This function download data about ticket vending machines in Poznań
 #' @keywords keyword
@@ -19,12 +19,12 @@
 #' }
 #' @examples
 #' 
-#' tvms <- tvm()
+#' tvms <- ticket_vending_machines()
 #' 
 #' 
 #' 
 
-tvm <- function () {
+ticket_vending_machines <- function () {
   
   #Biletomaty Calosc 
   

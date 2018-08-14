@@ -1,4 +1,4 @@
-#' havingIP Function
+#' have_ip Function
 #'
 #' This function check connection to internet. 
 #' @keywords keyword
@@ -8,9 +8,9 @@
 #' \describe{
 #' }
 #' @examples
-#' havingIP ()
+#' have_ip()
 
-havingIP <- function() {
+have_ip <- function() {
   if (.Platform$OS.type == "windows") {
     ipmessage <- system("ipconfig", intern = TRUE)
   } else {
