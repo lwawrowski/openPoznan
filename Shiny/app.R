@@ -63,7 +63,7 @@ server <- function(input, output) {
      if (input$data == "tvm") {
        
        Points <- TRUE
-       point_data <- tvm()
+       point_data <- ticket_vending_machines()
        marker_name <- point_data$ID
 
        Custom_icon <- makeIcon(iconUrl = "https://d30y9cdsu7xlg0.cloudfront.net/png/44651-200.png",
@@ -74,7 +74,7 @@ server <- function(input, output) {
      } else if (input$data == "pm") {
        
        Points <- TRUE
-       point_data <- pm()
+       point_data <- parking_machines()
        marker_name <- point_data$ID
 
        Custom_icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/34/34783.svg",
@@ -85,7 +85,7 @@ server <- function(input, output) {
      } else if (input$data == "stop") {
         
        Points <- TRUE
-       point_data <- stop()
+       point_data <- tram_bus_stops()
        marker_name <- point_data$ID
 
        Custom_icon <- icons(iconUrl = ifelse(point_data$Route_Type == 3,"https://d30y9cdsu7xlg0.cloudfront.net/png/19259-200.png","http://icons.iconarchive.com/icons/icons8/android/512/Transport-Tram-icon.png"),
@@ -96,7 +96,7 @@ server <- function(input, output) {
      } else if (input$data == "cesspool") {
        
        Points <- TRUE
-       point_data <- cesspool()
+       point_data <- cesspools()
        marker_name <- point_data$ID
        
        Custom_icon <- makeIcon(iconUrl = "http://cdn.onlinewebfonts.com/svg/img_537720.png",
@@ -108,8 +108,8 @@ server <- function(input, output) {
        
        
        Points <- FALSE
-       basic_info <- parish()
-       pick_data <- parish(T)
+       basic_info <- parishes()
+       pick_data <- parishes(T)
        Parish_coord_id <- pick_data$Coords
 
        Parish_split_data = lapply(unique(Parish_coord_id$ID), function(x) {
@@ -128,8 +128,8 @@ server <- function(input, output) {
      } else if(input$data == "area") {
        
        Points <- FALSE
-       basic_info <- area()
-       pick_data <- area(T)
+       basic_info <- school_basic_areas()
+       pick_data <- school_basic_areas(T)
        Area_coord_id <- pick_data$Coords
        
        Area_split_data = lapply(unique(Area_coord_id$ID), function(x) {
@@ -150,7 +150,7 @@ server <- function(input, output) {
      } else if (input$data == "sw") {
        
        Points <- TRUE
-       point_data <- sw()
+       point_data <- sewage_works()
        marker_name <- point_data$ID
        
        Custom_icon <- makeIcon(iconUrl = "https://www.corkdrain.ie/assets/icon4.png",
@@ -164,7 +164,7 @@ server <- function(input, output) {
        
        #Church List from town hall API 
        
-       basic_info <- parish()
+       basic_info <- parishes()
        
        Church <- distinct(basic_info, Parish_Name)
        
