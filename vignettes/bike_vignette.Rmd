@@ -20,6 +20,7 @@ output: html_document
   library(gmapsdistance)
   library(XML)
   library(sqldf)
+  library(lubridate)
 ```
 
 ## Vignette for get_bike_place function.
@@ -80,7 +81,7 @@ data_table_final %>%
   count() %>%
   ggplot(aes(x=n)) + geom_histogram(binwidth = 1)
 ```
-# Liczba rowerów
+# Number of bikes
 ```{r}
 
  data_table_final%>%
@@ -88,7 +89,7 @@ data_table_final %>%
   count()
 ```
 
-#Liczba stacji rowerowych
+# Number of bike stations
 ```{r}
  data_table_final%>%
   distinct(id)%>%
@@ -96,23 +97,24 @@ data_table_final %>%
 ```
 
 
-# Liczba rowerów z podziałem na typy
+# Number of bike type
 ```{r}
  data_table_final%>%
   group_by(bike_type)%>%
   distinct(number)%>%
   count()
 ```
-# Liczba wypozyczonych rowerow w danej godzinie
+# Number of rented bikes
 ```{r}
 example  <- data_table_final %>%
   group_by(date) %>%
   count() %>%
   mutate(n_rent=1066-n)
 
-
+example
 
 ```
+
 
 #Mediana
 ```{r}
@@ -126,33 +128,50 @@ ggplot(data = example, aes(n_rent)) + geom_histogram(binwidth = 10)
 
 ```
 
+
 #Mediana wypożyczeń rowerów z kazdej godziny
 
 
-```{r}
-
-bike_hours <- example %>%
-  mutate(hours = as.numeric(substring(date,12,13))) %>%
-  group_by(hours) %>%
-  summarise(sum=sum(n_rent))
-
-bike_hours %>%
-  ggplot(aes(x=hours, y=sum)) + geom_line()
-
-
-```
-
 
 ```{r}
-median <- bike_hours %>%
-  group_by(hours)%>%
-  summarise(mean = median(sum))
+median <- example %>%
+    mutate(timePeriod = floor_date(dmy_hm(date), "30minutes")) %>%
+  group_by(timePeriod) %>%
+  summarise(mean=median(n_rent))
+
 
 median
 ```
-#Najwięcej wypożyczeń
+#The most rented bikes
 ```{r}
 arrange(median,desc(mean))
+
+```
+
+#Suma wypożyczeń rowerów z kazdej godziny
+
+```{r}
+example %>%
+    mutate(timePeriod = floor_date(dmy_hm(date), "30minutes")) %>%
+  group_by(timePeriod) %>%
+  summarise(sum=sum(n_rent)) %>%
+  ggplot(aes(x=timePeriod, y=sum)) + geom_line() 
+
+```
+
+# Zmiana średniej ilości rowerów na stacji o id 6151
+```{r}
+data_table_final %>%
+  filter(id=="6151")%>%
+  group_by(date) %>%
+  count() %>%
+   mutate(timePeriod = floor_date(dmy_hm(date), "30minutes")) %>%
+  group_by(timePeriod)%>%
+    summarise(mean=median(n)) %>%
+  ggplot(aes(x=timePeriod, y=mean)) + geom_line() 
+
+
+
 
 ```
 
