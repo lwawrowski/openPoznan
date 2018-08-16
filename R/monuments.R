@@ -67,9 +67,10 @@ monuments <- function(coords = F){
 
   
   # z??czenie wszystkich kolumn
+  relikt_coord_all <- cbind(relikt_coord, relikt_basic_info)
   
   if(coords == T){
-    result <- relikt_coord
+    result <- relikt_coord_all
   } else {
     result <- relikt_basic_info
   }

@@ -379,13 +379,25 @@ server <- function(input, output) {
        
        Points <- TRUE
        point_data <- local_government(coords = T)
-       marker_name <- point_data$ID
+       marker_name <- point_data$Residence
        
-       Custom_icon <- makeIcon(iconUrl = "",
+       Custom_icon <- makeIcon(iconUrl = "https://static.thenounproject.com/png/743167-200.png",
                                iconWidth = 25,
                                iconHeight = 30,
-                               iconAnchorX = 15)
+                               iconAnchorX = 15,
+                               iconAnchorY = 25)
        
+     } else if (input$data == "relict") {
+       
+       Points <- TRUE
+       point_data <- monuments(coords = T)
+       marker_name <- point_data$Name
+       
+       Custom_icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/png/512/8/8154.png",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorX = 15,
+                               iconAnchorY = 25)
      }
 
         if(Points == TRUE) {

@@ -59,7 +59,7 @@
   gov_final <- cbind(gov_basic_info, gov_coord)
   
   if(coords == T){
-      result <- gov_coord
+      result <- gov_final
     } else {
       result <- gov_basic_info
     }
