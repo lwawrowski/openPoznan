@@ -378,6 +378,18 @@ server <- function(input, output) {
                                iconHeight = 30,
                                iconAnchorX = 15, 
                                iconAnchorY = 25)
+       
+     } else if (input$data == "lg") {
+       
+       Points <- TRUE
+       point_data <- local_government(coords = T)
+       marker_name <- point_data$ID
+       
+       Custom_icon <- makeIcon(iconUrl = "",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorX = 15)
+       
      }
 
         if(Points == TRUE) {
