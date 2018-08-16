@@ -5,6 +5,7 @@ library(shiny)
 library(openPoznan)
 library(leaflet)
 library(shinydashboard)
+library(sp)
 
 
 # Define UI for application that draws a histogram
