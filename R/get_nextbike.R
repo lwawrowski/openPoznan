@@ -1,4 +1,4 @@
-#' get_nextbike Function
+#' bikes_current Function
 #'
 #' This function download statistic about bikes from NextBike
 #' @keywords keyword
@@ -23,8 +23,8 @@
 #' \item{bike_types}{factor; bike types.}
 #' }
 #' @examples
-#' get_nextbike()
-get_nextbike <-function(){
+#' bikes_current()
+bikes_current <-function(){
   
   download.file("https://nextbike.net/maps/nextbike-official.xml?city=192","R/bike.xml" )
   

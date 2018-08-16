@@ -1,4 +1,4 @@
-#' get_lsdpc Function
+#' local_spatial_dev_plans_called Function
 #'
 #' This function download data about Called Local Spatial Development Plans 
 #' @keywords keyword
@@ -16,9 +16,9 @@
 #' \item{lsdpc_date_oAR}{factor; date of adaptive resolution.}
 #' }
 #' @examples
-#' get_lsdpc()
+#' local_spatial_dev_plans_called()
 
-get_lsdpc <- function (basic = TRUE) {
+local_spatial_dev_plans_called <- function (basic = TRUE) {
   
   
   lsdpc <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=urban_planning&co=mpzpw')

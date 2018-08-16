@@ -1,4 +1,4 @@
-#' get_lsdp Function
+#' local_spatial_dev_plans_passed Function
 #'
 #' This function download data about Passed Local Spatial Development Plans 
 #' @keywords keyword
@@ -19,9 +19,9 @@
 #' \item{lsdp_date_of_oj}{factor; date of official journal.}
 #' }
 #' @examples
-#' get_lsdp()
+#' local_spatial_dev_plans_passed()
 
-get_lsdp <- function (basic = TRUE) {
+local_spatial_dev_plans_passed <- function (basic = TRUE) {
   
 lsdp <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=urban_planning&co=mpzp')
 

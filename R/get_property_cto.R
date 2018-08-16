@@ -1,4 +1,4 @@
-#' get_property_cto Function
+#' properties_current_trade Function
 #'
 #' This function download data about property current trade offer
 #' @keywords keyword
@@ -17,8 +17,8 @@
 #' \item{url_bip}{factor; url bip.}
 #' }
 #' @examples
-#' get_property_cto()
-get_property_cto <- function(){
+#' properties_current_trade()
+properties_current_trade <- function(){
 
 property_cto <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=properties_for_sale&co=wgn&type=4')
 

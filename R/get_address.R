@@ -1,4 +1,4 @@
-#' get_address Function
+#' addresses Function
 #'
 #' This function download information about address location
 #' @keywords keyword
@@ -16,9 +16,9 @@
 #' \item{address}{factor; address name.}
 #' }
 #' @examples
-#' get_address()
+#' addresses()
 
-get_address <- function(){
+addresses <- function(){
   
 search <- fromJSON('http://www.poznan.pl/featureserver/featureserver.cgi/ulice_wgs/')
 

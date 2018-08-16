@@ -1,4 +1,4 @@
-#' get_next_bike_data Function
+#' bikes_period Function
 #'
 #' This function download statistic about bikes from NextBike
 #' @param start the beginning of data downloading
@@ -27,11 +27,11 @@
 #' \item{date}{factor; date.}
 #' }
 #' @examples
-#' get_next_bike_data("27-07-2018 13:05","28-07-2018 13:05")
+#' bikes_period("27-07-2018 13:05","28-07-2018 13:05")
 
 ## start -> dd-mm-yyyy hh:MM where d-day m- month -y year h- hours M- minute
 # example get_bike_place_details_functions("27-07-2018 13:05","28-07-2018 13:05")
-get_next_bike_data <- function(start,end) {
+bikes_period <- function(start,end) {
 ## download data about bikes from NextBike every 5 minute.
 #start <- "30-07-2018 8:34"
 #end <- "30-08-2018 8:44"

@@ -1,4 +1,4 @@
-#' get_property_fs Function
+#' properties_for_sale Function
 #'
 #' This function download data about property for sale
 #' @keywords keyword
@@ -17,8 +17,8 @@
 #' \item{url_bip}{factor; url bip.}
 #' }
 #' @examples
-#' get_property_fs()
-get_property_fs <- function(){
+#' properties_for_sale()
+properties_for_sale <- function(){
 
 property_fs<- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=properties_for_sale&co=wgn&type=3')
 

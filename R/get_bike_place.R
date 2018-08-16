@@ -1,4 +1,4 @@
-#' get_bike_place Function
+#' bike_station Function
 #'
 #' This function download statistic about bike station from NextBike
 #' @keywords keyword
@@ -18,8 +18,8 @@
 #' \item{update}{factor; last update.}
 #' }
 #' @examples
-#' get_bike_plac()
-get_bike_place <- function(){
+#' bike_station()
+bike_station <- function(){
   
   NextBike <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=stacje_rowerowe')
   
