@@ -9,18 +9,18 @@ library(sp)
 
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(
-   
-      fluidPage(id="page",
+ui <- fluidPage(id="page",
                 title = "OpenPoznan Shiny app",
-            
+                
+      titlePanel(title = "openPoznan interactive map",
+                 windowTitle = "openPoznan App"
+      ),
   
      # Sidebar with a slider input for number of bins 
    div(class="outer",
        
        tags$head(
          includeCSS("styles.css")
-         
        ),
        
        leafletOutput(outputId = "llmap", width = "100%", height = "100%"),
@@ -57,11 +57,7 @@ ui <- fluidPage(
                          bottom = "auto",
                          width = 330, 
                          height = "auto")
-  
-          
-        
      )
-    )
 )
 
 
