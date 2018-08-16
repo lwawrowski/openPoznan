@@ -39,7 +39,11 @@ poznan <- ggmap(get_poznan)
 poznan + geom_point(data=bike_station_example, aes(x=longitude, y=latitude))  +
   ylab("") + xlab("")
 ```
+<<<<<<< HEAD
 ## Calculates the shortest distance between stations
+=======
+##Calculates the shortest distance between stations
+>>>>>>> refs/remotes/origin/kamil
 
 ```{r}
 
@@ -123,7 +127,11 @@ ggplot(data = example, aes(n_rent)) + geom_histogram(binwidth = 10)
 ```
 
 
+<<<<<<< HEAD
 ## Median rental bikes from each hour
+=======
+##Median rental bikes from each hour
+>>>>>>> refs/remotes/origin/kamil
 
 ```{r}
 median <- example %>%
@@ -134,13 +142,21 @@ median <- example %>%
 
 median
 ```
+<<<<<<< HEAD
 ## The most rented bikes
+=======
+##The most rented bikes
+>>>>>>> refs/remotes/origin/kamil
 ```{r}
 arrange(median,desc(mean))
 
 ```
 
+<<<<<<< HEAD
 ## The sum of bike rentals from each hour
+=======
+##The sum of bike rentals from each hour
+>>>>>>> refs/remotes/origin/kamil
 
 ```{r}
 example %>%
@@ -151,7 +167,11 @@ example %>%
 
 ```
 
+<<<<<<< HEAD
 ##Change in the average number of bikes at the station with id 6151
+=======
+## Change in the average number of bikes at the station with id 6151
+>>>>>>> refs/remotes/origin/kamil
 ```{r}
 data_table_final %>%
   filter(id=="6151")%>%

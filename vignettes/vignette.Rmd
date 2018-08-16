@@ -31,7 +31,11 @@ address_example <- addresses()
 head(address_example)
 ```
 
+<<<<<<< HEAD
 ## Create map using gg plot, and put path on map.
+=======
+##Create map using gg plot, and put path on map.
+>>>>>>> refs/remotes/origin/kamil
 
 ```{r pressure, echo=FALSE}
 
@@ -47,7 +51,11 @@ head(property_cto_example)
 
 ```
 
+<<<<<<< HEAD
 ## Create map using gg plot, and put points on Poznan map.
+=======
+##Create map using gg plot, and put points on Poznan map.
+>>>>>>> refs/remotes/origin/kamil
 
 ```{r}
 get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
@@ -70,7 +78,11 @@ head(property_fs_example)
 
 ```
 
+<<<<<<< HEAD
 ## Create map using gg plot, and put points on Poznan map.
+=======
+##Create map using gg plot, and put points on Poznan map.
+>>>>>>> refs/remotes/origin/kamil
 
 ```{r}
 get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
