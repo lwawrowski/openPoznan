@@ -14,8 +14,8 @@
 #' \item{Name}{factor; Name of circle.}
 #' }
 #' @examples
-#' Circle_electoral <- getCircle(Coord = F)
-#' Circle_coord <- getCircle(Coord = T)
+#' Circle_electoral <- electoral_circles(Coord = F)
+#' Circle_coord <- electoral_circles(Coord = T)
 
 electoral_circles <- function(Coord = F){
   # okragi wyborow rad osiedli

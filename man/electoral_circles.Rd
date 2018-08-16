@@ -20,7 +20,7 @@ This function download data about electoral circlesl in Poznan.
 Details of usage
 }
 \examples{
-Circle_electoral <- getCircle(Coord = F)
-Circle_coord <- getCircle(Coord = T)
+Circle_electoral <- electoral_circles(Coord = F)
+Circle_coord <- electoral_circles(Coord = T)
 }
 \keyword{keyword}

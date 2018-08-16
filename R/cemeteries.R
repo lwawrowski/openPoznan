@@ -15,8 +15,8 @@
 #' \item{Cemetery_Type}{factor; Type of cemetery in Poznan.}
 #' }
 #' @examples
-#' Cemetery <- getCemetery(Coord = F)
-#' Cemetery_coords <- getCemetery(Coord = T)
+#' Cemetery <- cemeteries(Coord = F)
+#' Cemetery_coords <- cemeteries(Coord = T)
 
 # wyszukiwarka cmentarzy 
 

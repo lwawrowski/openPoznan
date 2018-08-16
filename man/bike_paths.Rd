@@ -22,7 +22,7 @@ This function download data about Bike Paths in Poznan.
 Details of usage
 }
 \examples{
-Bike_Paths <- getBike_Paths(Coord = F)
-Area_Electoral_coords <- getBike_Paths(Coord = T)
+Bike_Paths <- bike_paths(Coord = F)
+Area_Electoral_coords <- bike_paths(Coord = T)
 }
 \keyword{keyword}

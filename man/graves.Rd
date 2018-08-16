@@ -30,7 +30,7 @@ This function download data about graves in Poznan.
 Details of usage
 }
 \examples{
-Grave <- getGrave(Coord = F)
-Grave_coord <- getGrave(Coord = T)
+Grave <- graves(Coord = F)
+Grave_coord <- graves(Coord = T)
 }
 \keyword{keyword}

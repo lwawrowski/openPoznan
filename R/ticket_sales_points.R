@@ -21,8 +21,8 @@
 #' \item{POS}{factor; Description Class.}
 #' }
 #' @examples
-#' Ticket <- getTicket(Coord = F)
-#' Ticket_coord <- getTicket(Coord = T)
+#' Ticket <- ticket_sales_points(Coord = F)
+#' Ticket_coord <- ticket_sales_points(Coord = T)
 
 ticket_sales_points <- function(Coord = F) {
   # sprzeda biletow

@@ -19,8 +19,8 @@
 #' \item{Description}{factor; Description of relikt.}
 #' }
 #' @examples
-#' relikt. <- getRelict(Coord = F)
-#' relikt._coord <- getRelict(Coord = T)
+#' relikt. <- monuments(Coord = F)
+#' relikt._coord <- monuments(Coord = T)
 
 monuments <- function(Coord = F){
   # turystyka 

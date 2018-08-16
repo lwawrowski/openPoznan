@@ -14,7 +14,7 @@
 #' \item{Residence}{factor; Name of Residence. }
 #' }
 #' @examples
-#' Local_Government <- get_local_government(Coord = F)
+#' Local_Government <- local_government(Coord = F)
 
 
  local_government <- function(Coord = F){

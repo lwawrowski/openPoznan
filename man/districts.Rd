@@ -21,7 +21,7 @@ This function download data about districts  in Poznan.
 Details of usage
 }
 \examples{
-District <- getDistrict(Coord = F)
-District_coord <- getDistrict(Coord = T)
+District <- districts(Coord = F)
+District_coord <- districts(Coord = T)
 }
 \keyword{keyword}

@@ -20,102 +20,135 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r}
 # the polls in poznan
-data <- local_government(Coord = T)
+government_info <- local_government(coords = F) %>% sample_n(10, replace = FALSE) 
+data.frame(government_info)
 
-gov_coord <- local_government(Coord = T)
-districtcoord_id <- districts(Coord = T)
+government_coords <- local_government(coords = T)
 
-ggplot(gov_coord, aes(x=Longitude , y= Latitude)) +
-  geom_polygon(data = districtcoord_id, aes(x= V1, y= V2, group=id), colour = "black")+
-geom_point(colour = "red")+ labs(title="The polls in Poznań")+
+gov_coord <- local_government(coords = T)
+districtcoord_id <- districts(coords = T)
+
+ggplot(gov_coord, aes(x= Longitude , y= Latitude)) +
+  geom_polygon(data = districtcoord_id, aes(x= Longitude, y= Latitude, group=id), colour = "black")+
+  geom_point(colour = "red")+
+  labs(title="The polls in Poznań")+
   ylab("Longitude")+
-  xlab("Latitude")+
-  theme(legend.title = element_text(colour="blue", size=5, 
-                                      face="bold"))
+  xlab("Latitude")
 ```
 
 
 ```{r}
 # area electoral in poznan
+electoral_areas <- electoral_areas(coords = F) %>% sample_n(10, replace = FALSE)
+data.frame(electoral_areas)
 
-Area <- electoral_areas(Coord = T)
+Area <- electoral_areas(coords = T)
 
-oblast2coord_id <- electoral_areas(Coord = T)
+oblast2coord_id <- electoral_areas(coords = T)
 
-ggplot(oblast2coord_id, aes(x=V1, y= V2, group=id))+
-geom_polygon(colour = "black")+labs(title="Area electoral in Poznań")+ ylab("Longitude")+ xlab("Latitude")
+ggplot(oblast2coord_id, aes(x= Longitude, y= Latitude, group=id))+
+  geom_polygon(colour = "black")+
+  labs(title="Area electoral in Poznań")+
+  ylab("Longitude")+
+  xlab("Latitude")
 ```
 
 
 ```{r}
 # circle electoral of local government
-Circle <- electoral_circles(Coord = T)
+electoral_circle <- electoral_circles(coords = F) %>% sample_n(10, replace = FALSE)
+data.frame(electoral_circle)
 
-circlecoord_id <- electoral_circles(Coord = T)
+Circle <- electoral_circles(coords = T)
 
-ggplot(circlecoord_id, aes(x= V1, y= V2, group=id), col = "red") +
- geom_polygon(color = "black")+ labs(title="Circle electoral of local government")+ ylab("Longitude")+ xlab("Latitude")
+circlecoord_id <- electoral_circles(coords = T)
+
+ggplot(circlecoord_id, aes(x= Longitude, y= Latitude, group=id), col = "red") +
+  geom_polygon(color = "black")+
+  labs(title="Circle electoral of local government")+
+  ylab("Longitude")+
+  xlab("Latitude")
 ```
 
 
 
 ```{r}
 # District in Poznan
-district <- districts(Coord = T)
+district_info <- districts(coords = F) %>% sample_n(10, replace = FALSE)
+data.frame(district_info)
 
-districtcoord_id <- districts(Coord = T)
+district <- districts(coords = T)
 
-ggplot(districtcoord_id, aes(x=V1, y= V2, group=id))+
-geom_polygon(colour = "black")+labs(title="District in Poznań")+ ylab("Longitude")+ xlab("Latitude")
+districtcoord_id <- districts(coords = T)
+
+ggplot(districtcoord_id, aes(x= Longitude, y= Latitude, group=id))+
+  geom_polygon(colour = "black")+
+  labs(title="District in Poznań")+
+  ylab("Longitude")+
+  xlab("Latitude")
 
 ```
 
 
 
 ```{r, fig.height=7}
-Bike_paths <- bike_paths(Coord = T)
+bike_paths_info <- paths_bike(coords = F)
+data.frame(bike_paths_info)
 
-bcoord_id <- bike_paths(Coord = T)
-districtcoord_id <- districts(Coord = T)
+Bike_paths <- paths_bike(coords = T)
 
-ggplot(bcoord_id, aes(x=V1 , y= V2, group=id2)) +
-  geom_polygon(data = districtcoord_id, aes(x=V1, y= V2, group=id), colour="black")+
-    geom_path(aes(colour=as.factor(id2)))+
-      labs(title="Bike paths in Poznań")+
-  theme(legend.position="bottom")+ ylab("Longitude")+ xlab("Latitude")
+bcoord_id <- paths_bike(coords = T)
+districtcoord_id <- districts(coords = T)
+
+ggplot(bcoord_id, aes(x= Longitude, y= Latitude, group=id2)) +
+  geom_polygon(data = districtcoord_id, aes(x= Longitude, y= Latitude, group=id), colour="black")+
+  geom_path(aes(colour=as.factor(id2)))+
+  labs(title="Bike paths in Poznań")+
+  theme(legend.position="bottom")+
+  ylab("Longitude")+
+  xlab("Latitude")
 ```
 
 
 
 ```{r, fig.height=7}
 # Dydactic paths in Poznan
+dydactic_paths_info <- paths_dydactic(coords = F)
+data.frame(dydactic_paths_info)
 
-Dydactic <- dydactic_paths(Coord = T)
+Dydactic <- paths_dydactic(coords = T)
 
-dcoord_id <- dydactic_paths(Coord = T)
-districtcoord_id <- districts(Coord = T)
+dcoord_id <- paths_dydactic(coords = T)
+districtcoord_id <- districts(coords = T)
 
- ggplot(dcoord_id, aes(x=V1 , y= V2, group=id1))+
-  geom_polygon(data = districtcoord_id, aes(x=V1, y= V2, group=id), colour="black")+
-    geom_path(aes(colour=as.factor(id1)))+
-      labs(title="Dydactic paths in Poznań")+
-   theme(legend.position="bottom")+ ylab("Longitude")+ xlab("Latitude")
+ ggplot(dcoord_id, aes(x= Longitude, y= Latitude, group=id1))+
+  geom_polygon(data = districtcoord_id, aes(x= Longitude, y= Latitude, group=id), colour="black")+
+  geom_path(aes(colour=as.factor(id1)))+
+  labs(title="Dydactic paths in Poznań")+
+  theme(legend.position="bottom")+
+  ylab("Longitude")+
+  xlab("Latitude")
 ```
 
 
 
 ```{r, fig.height=7}
 # Trail in Poznań
-Trail <- paths_walking(Coord = T)
+trail_paths_info <- paths_walking(coords = F) 
+data.frame(trail_paths_info)
 
-pathscoord_id <- paths_walking(Coord = T)
-districtcoord_id <- districts(Coord = T)
+Trail <- paths_walking(coords = T)
 
-ggplot(pathscoord_id, aes(x= V1, y= V2, group=id3)) +
-  geom_polygon(data = districtcoord_id, aes(x=V1, y= V2, group=id), colour="black")+
-    geom_path(aes(colour=as.factor(id3)))+
-      labs(title="Trails in Poznań")+
-  theme(legend.position="bottom")+ ylab("Longitude")+ xlab("Latitude")
+pathscoord_id <- paths_walking(coords = T)
+districtcoord_id <- districts(coords = T)
+
+ggplot(pathscoord_id, aes(x= Longitude, y= Latitude, group=id3)) +
+  geom_polygon(data = districtcoord_id, aes(x= Longitude, y= Latitude, group=id), colour="black")+
+  geom_path(aes(colour=as.factor(id3)))+
+  labs(title="Trails in Poznań")+
+  theme(legend.position="bottom")+
+  ylab("Longitude")+
+  xlab("Latitude")
   
 ```
 
@@ -123,29 +156,29 @@ ggplot(pathscoord_id, aes(x= V1, y= V2, group=id3)) +
 
 ```{r, fig.height=7}
 # all paths 
-Trail <- paths_walking(Coord = T)
+Trail <- paths_walking(coords = T)
 
-pathscoord_id <- paths_walking(Coord = T)
+pathscoord_id <- paths_walking(coords = T)
 
-    Dydactic <- dydactic_paths(Coord = T)
+    Dydactic <- paths_dydactic(coords = T)
 
-    dcoord_id <- dydactic_paths(Coord = T)
+    dcoord_id <- paths_dydactic(coords = T)
   
-          Bike_paths <- bike_paths(Coord = T)
+          Bike_paths <- paths_bike(coords = T)
 
-          bcoord_id <- bike_paths(Coord = T)
-          districtcoord_id <- districts(Coord = T)
+          bcoord_id <- paths_bike(coords = T)
+          districtcoord_id <- districts(coords = T)
           tractcoord_id <- royal_imperial_route()
           
-ggplot(districtcoord_id, aes(x=V1, y= V2, group=id))+
+ggplot(districtcoord_id, aes(x= Longitude, y= Latitude, group=id))+
   geom_polygon(colour = "black")+
-  geom_path(data = pathscoord_id, aes(x=V1, y=V2, group = id3, colour=as.factor(id3)))+
+  geom_path(data = pathscoord_id, aes(x= Longitude, y= Latitude, group = id3, colour=as.factor(id3)))+
 
-   geom_path(data = dcoord_id, aes(x=V1, y=V2, group = id1, colour=as.factor(id1)))+
+  geom_path(data = dcoord_id, aes(x= Longitude, y= Latitude, group = id1, colour=as.factor(id1)))+
   
-   geom_path(data = bcoord_id, aes(x=V1, y=V2, group = id2, colour=as.factor(id2)))+
+  geom_path(data = bcoord_id, aes(x= Longitude, y= Latitude, group = id2, colour=as.factor(id2)))+
     
-  geom_path(data = tractcoord_id, aes(x=V1 , y= V2, group = id ,colour=as.factor(id)))+
+  geom_path(data = tractcoord_id, aes(x= Longitude, y= Latitude, group = id ,colour=as.factor(id)))+
   labs(title = "All Paths in Poznań")+
   theme(legend.position="bottom")+ 
   ylab("Longitude")+ 
@@ -155,29 +188,42 @@ ggplot(districtcoord_id, aes(x=V1, y= V2, group=id))+
 
 
 ```{r}
-Cemetery <- cemeteries(Coord = T)
+cemetery_info <- cemeteries(coords = F) %>% sample_n(10, replace = FALSE)
+data.frame(cemetery_info)
 
-cemeterycoord_id <- cemeteries(Coord = T)
 
-districtcoord_id <- districts(Coord = T)
+Cemetery <- cemeteries(coords = T)
 
-ggplot(cemeterycoord_id, aes(x= V1, y= V2, group=id)) +
-   geom_polygon(data = districtcoord_id, aes(x= V1, y= V2, group=id), colour = "black")+
-   geom_polygon(colour = "blue")+labs(title = "Cemetery in Poznań")+ ylab("Longitude")+ xlab("Latitude")
+cemeterycoord_id <- cemeteries(coords = T)
+
+districtcoord_id <- districts(coords = T)
+
+ggplot(cemeterycoord_id, aes(x= Longitude, y= Latitude, group=id)) +
+  geom_polygon(data = districtcoord_id, aes(x= Longitude, y= Latitude, group=id), colour = "black")+
+  geom_polygon(colour = "blue")+
+  labs(title = "Cemetery in Poznań")+
+  ylab("Longitude")+
+  xlab("Latitude")
 ```
 
 
 
 ```{r}
 # ticket shop 
-ticket <- ticket_sales_points(Coord = T)
+ticket_sales_points_info <- ticket_sales_points(coords = F) %>% sample_n(10, replace = FALSE)
+data.frame(ticket_sales_points_info)
 
-ticket_coord <- ticket_sales_points(Coord = T)
-districtcoord_id <- districts(Coord = T)
+ticket <- ticket_sales_points(coords = T)
 
-ggplot(ticket_coord, aes(x= V1, y= V2)) +
-  geom_polygon(data = districtcoord_id, aes(x= V1, y= V2, group=id), colour = "black")+
-    geom_point(colour = "blue")+labs(title = "Ticket shop in Poznań")+ ylab("Longitude")+ xlab("Latitude")
+ticket_coord <- ticket_sales_points(coords = T)
+districtcoord_id <- districts(coords = T)
+
+ggplot(ticket_coord, aes(x= Longitude, y= Latitude)) +
+  geom_polygon(data = districtcoord_id, aes(x= Longitude, y= Latitude, group=id), colour = "black")+
+  geom_point(colour = "blue")+
+  labs(title = "Ticket shop in Poznań")+
+  ylab("Longitude")+
+  xlab("Latitude")
 
 ```
 
@@ -185,30 +231,44 @@ ggplot(ticket_coord, aes(x= V1, y= V2)) +
 
 ```{r}
 # historical chuch in poznan
-church_relikt <- historical_churches(Coord = T)
+church_info <- historical_churches(coords = F) %>% sample_n(10, replace = FALSE)
+data.frame(church_info)
+monument_info <- monuments(coords = F) %>% sample_n(10, replace = FALSE)
+data.frame(monument_info)
 
-church_coord <- historical_churches(Coord = T)
-districtcoord_id <- districts(Coord = T)
-relikt_coord <-monuments(Coord = T)
+church_relikt <- historical_churches(coords = T)
 
-ggplot(church_coord, aes(x= V1, y= V2))+
-  geom_polygon(data = districtcoord_id, aes(x= V1, y= V2, group=id), colour = "black")+
+church_coord <- historical_churches(coords = T)
+districtcoord_id <- districts(coords = T)
+relikt_coord <-monuments(coords = T)
+
+ggplot(church_coord, aes(x= Longitude, y= Latitude))+
+  geom_polygon(data = districtcoord_id, aes(x= Longitude, y= Latitude, group=id), colour = "black")+
   geom_point(colour = "red")+
-  geom_point(data = relikt_coord, aes(x= V1, y= V2), colour = "yellow")+labs(title = "Churches and Monuments in Poznań")+ ylab("Longitude")+ xlab("Latitude")
+  geom_point(data = relikt_coord, aes(x= Longitude, y= Latitude), colour = "yellow")+
+  labs(title = "Churches and Monuments in Poznań")+
+  ylab("Longitude")+  
+  xlab("Latitude")
 ```
 
 
 
 ```{r}
 # District Council iin Poznan
-Council <- council_districts(Coord = T)
+council_info <- council_districts(coords = F) %>% sample_n(10, replace = FALSE)
+data.frame(council_info)
 
-estate_final <- council_districts(Coord = T)
-oblastcoord_id <- electoral_oblasts(Coord = T)
+Council <- council_districts(coords = T)
 
- ggplot(estate_final, aes(x= V1, y= V2), col = "red") +
-   geom_polygon(data = oblastcoord_id, aes(x= V1, y= V2, group=id), colour = "black")+
-  geom_point(colour = "Green")+labs(title = "District Council in Poznań")+ ylab("Longitude")+ xlab("Latitude")
+estate_final <- council_districts(coords = T)
+oblastcoord_id <- electoral_oblasts(coords = T)
+
+ ggplot(estate_final, aes(x= Longitude, y= Latitude), col = "red") +
+   geom_polygon(data = oblastcoord_id, aes(x= Longitude, y= Latitude, group=id), colour = "black")+
+   geom_point(colour = "Green")+
+   labs(title = "District Council in Poznań")+
+   ylab("Longitude")+
+   xlab("Latitude")
 ```
 
 
@@ -218,11 +278,14 @@ oblastcoord_id <- electoral_oblasts(Coord = T)
 Trakr <- royal_imperial_route()
 
 tractcoord_id <- royal_imperial_route()
-districtcoord_id <- districts(Coord = T)
+districtcoord_id <- districts(coords = T)
 
-ggplot(tractcoord_id, aes(x=V1 , y= V2, group_by(id))) +
-  geom_polygon(data = districtcoord_id, aes(x=V1, y= V2, group=id), colour="black")+
-  geom_path(aes(colour=as.factor(id)))+ ylab("Longitude")+ xlab("Latitude")
+ggplot(tractcoord_id, aes(x= Longitude, y= Latitude, group_by(id))) +
+  geom_polygon(data = districtcoord_id, aes(x= Longitude, y= Latitude, group=id), colour="black")+
+  geom_path(aes(colour=as.factor(id)))+
+  ylab("Longitude")+
+  xlab("Latitude")+
+  theme(legend.position="bottom")
 
 ```
 

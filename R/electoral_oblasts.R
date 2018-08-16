@@ -14,8 +14,8 @@
 #' \item{Name}{factor; Name of Oblast in Poznan.}
 #' }
 #' @examples
-#' oblast <- getOblast(Coord = F)
-#' oblast_coord <- getOblast(Coord = T)
+#' oblast <- electoral_oblasts(Coord = F)
+#' oblast_coord <- electoral_oblasts(Coord = T)
 
 
 electoral_oblasts <- function(Coord = F){

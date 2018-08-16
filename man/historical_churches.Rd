@@ -27,7 +27,7 @@ This function download data about historical Churches in Poznan.
 Details of usage
 }
 \examples{
-Church <- getChurch(Coord = F)
-Church_coord <- getChurch(Coord = T)
+Church <- historical_churches(Coord = F)
+Church_coord <- historical_churches(Coord = T)
 }
 \keyword{keyword}

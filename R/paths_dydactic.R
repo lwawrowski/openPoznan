@@ -1,26 +1,26 @@
-#' dydactic_paths  Function
+#' paths_dydactic  Function
 #'
-#' This function download data about Dydactic paths  in Poznan.
+#' This function download data about dydactic paths  in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about Dydactic pathsin Poznań
+#' @param coords show basic data about dydactic pathsin Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
 #' @format 
 #' \describe{
-#' \item{ID}{factor; ID of Dydactic paths.}
-#' \item{Name}{factor; Name of Dydactic paths in Poznan.}
-#' \item{Length}{factor; Length of Dydactic paths.}
-#' \item{Description}{factor; Description of Dydactic paths in Poznan.}
+#' \item{ID}{numeric; ID of dydactic paths.}
+#' \item{Name}{factor; Name of dydactic paths in Poznan.}
+#' \item{Length}{factor; Length of dydactic paths.}
+#' \item{Description}{factor; Description of dydactic paths in Poznan.}
 #' }
 #' @examples
-#' Dydactic_Paths <- dydactic_paths(Coord = F)
-#' Dydactic_Paths_coord <- dydactic_paths(Coord = T)
+#' Dydactic_Paths <- paths_dydactic(coords = F)
+#' Dydactic_Paths_coord <- paths_dydactic(coords = T)
 
 
-dydactic_paths <- function(Coord = F){
+paths_dydactic <- function(coords = F){
   
   # szlaki dydaktyczne
   
@@ -58,7 +58,11 @@ dydactic_paths <- function(Coord = F){
   
   dcoord_id <- map2_df(dcoord_df, trail_basic_info$Name, ~mutate(.x, id1=.y))
   
-  if(Coord == T){
+  dcoord_id <- data.frame(Longitude=dcoord_id$V1,
+                          Latitude=dcoord_id$V2,
+                          id1=dcoord_id$id1)
+  
+  if(coords == T){
     result <- dcoord_id
   } else {
     result <- trail_basic_info

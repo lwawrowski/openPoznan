@@ -20,7 +20,7 @@ This function download data about Oblast in Poznan.
 Details of usage
 }
 \examples{
-oblast <- getOblast(Coord = F)
-oblast_coord <- getOblast(Coord = T)
+oblast <- electoral_oblasts(Coord = F)
+oblast_coord <- electoral_oblasts(Coord = T)
 }
 \keyword{keyword}

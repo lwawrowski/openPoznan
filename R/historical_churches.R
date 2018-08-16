@@ -19,8 +19,8 @@
 #' \item{Description}{factor; Description of church.}
 #' }
 #' @examples
-#' Church <- getChurch(Coord = F)
-#' Church_coord <- getChurch(Coord = T)
+#' Church <- historical_churches(Coord = F)
+#' Church_coord <- historical_churches(Coord = T)
 
 
 historical_churches <- function(Coord = F){

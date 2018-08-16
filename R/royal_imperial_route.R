@@ -43,4 +43,7 @@ if(have_ip() == T) {
   
   tractcoord_id <- map2_df(tractcoord_df, tr$features$id, ~mutate(.x, id=.y))
   
+  tractcoord_id <- data.frame(Longitude=tractcoord_id$V1,
+                          Latitude=tractcoord_id$V2,
+                          id=tractcoord_id$id)
 }  

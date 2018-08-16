@@ -18,8 +18,8 @@
 #' \item{Distroct_no}{factor; District number in Poznan.}
 #' }
 #' @examples
-#' Estate <- getEstate(Coord = F)
-#' Estate_coord <- getEstate(Coord = T)
+#' Estate <- council_districts(Coord = F)
+#' Estate_coord <- council_districts(Coord = T)
 
 council_districts <- function(Coord = F) {
   # dane wyborcze rad osiedli 

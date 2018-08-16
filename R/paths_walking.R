@@ -16,8 +16,8 @@
 #' \item{Description}{factor; Description Paths in Poznan.}
 #' }
 #' @examples
-#' Paths <- getPaths(Coord = F)
-#' Paths_coord <- getPaths(Coord = T)
+#' Paths <- paths_walking(Coord = F)
+#' Paths_coord <- paths_walking(Coord = T)
 
 
 paths_walking <- function(Coord = F){

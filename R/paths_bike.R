@@ -1,24 +1,24 @@
-#' bike_paths Function
+#' paths_bike Function
 #'
-#' This function download data about Bike Paths in Poznan.
+#' This function download data about bike Paths in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about Bike paths in Poznań
+#' @param coords show basic data about bike paths in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
-#' \item{ID}{factor; ID of all bike paths in Poznan.}
-#' \item{Name}{factor; Name of bike paths.}
-#' \item{Lenght}{factor; Lenght of bike paths}
-#' \item{Description}{factor; Description of bike paths}
+#' \item{ID}{numeric; ID of all bike paths in Poznan.}
+#' \item{Name}{character; Name of bike paths.}
+#' \item{Lenght}{character; Lenght of bike paths}
+#' \item{Description}{character; Description of bike paths}
 #' }
 #' @examples
-#' Bike_Paths <- getBike_Paths(Coord = F)
-#' Area_Electoral_coords <- getBike_Paths(Coord = T)
+#' Bike_Paths <- paths_bike(coords = F)
+#' Area_Electoral_coords <- paths_bike(coords = T)
 
-bike_paths <- function(Coord = F){
+paths_bike <- function(coords = F){
   # szlaki rowerowe
   
   if(have_ip() == T) {
@@ -52,12 +52,14 @@ bike_paths <- function(Coord = F){
                                            Lenght=bikepaths$properties$length,
                                            Description=bikepaths$properties$desc)
 
-  
+  bcoord_id <- data.frame(Longitude=bcoord_id$V1,
+                          Latitude=bcoord_id$V2,
+                          id2=bcoord_id$id2)
   # z??czenie wszystkich kolumn
   
   bikepaths_final <- cbind(bikepaths_basic_info)
   
-  if(Coord == T){
+  if(coords == T){
     result <- bcoord_id
   } else {
     result <- bikepaths_final

@@ -26,7 +26,7 @@ This function download data about council districts in Poznan.
 Details of usage
 }
 \examples{
-Estate <- getEstate(Coord = F)
-Estate_coord <- getEstate(Coord = T)
+Estate <- council_districts(Coord = F)
+Estate_coord <- council_districts(Coord = T)
 }
 \keyword{keyword}

@@ -29,7 +29,7 @@ This function download data about ticket_sales_points in Poznan.
 Details of usage
 }
 \examples{
-Ticket <- getTicket(Coord = F)
-Ticket_coord <- getTicket(Coord = T)
+Ticket <- ticket_sales_points(Coord = F)
+Ticket_coord <- ticket_sales_points(Coord = T)
 }
 \keyword{keyword}

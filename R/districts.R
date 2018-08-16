@@ -15,8 +15,8 @@
 #' \item{Type}{factor; Type of District.}
 #' }
 #' @examples
-#' District <- getDistrict(Coord = F)
-#' District_coord <- getDistrict(Coord = T)
+#' District <- districts(Coord = F)
+#' District_coord <- districts(Coord = T)
 
 districts <- function(Coord = F) {
   # samorzady pomocnicze 

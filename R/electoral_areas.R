@@ -13,8 +13,8 @@
 #' \item{District_no}{factor; Number of District.}
 #' }
 #' @examples
-#' Area_Electoral <- getArea_electoral(Coord = F)
-#' Area_Electoral_coords <- getArea_electoral(Coord = T)
+#' Area_Electoral <- electoral_areas(Coord = F)
+#' Area_Electoral_coords <- electoral_areas(Coord = T)
 
 
 electoral_areas <- function(Coord = F){

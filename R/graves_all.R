@@ -24,8 +24,8 @@
 #' \item{Paid}{factor; Paid.}
 #' }
 #' @examples
-#' Grave_All <- getGrave_All(Coord = F)
-#' Grave_All_coord <- getGrave_All(Coord = T)
+#' Grave_All <- graves_all(Coord = F)
+#' Grave_All_coord <- graves_all(Coord = T)
 
 
 graves_all <- function(Coord =F){

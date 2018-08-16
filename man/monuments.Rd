@@ -27,7 +27,7 @@ This function download data about monuments in Poznan.
 Details of usage
 }
 \examples{
-relikt. <- getRelict(Coord = F)
-relikt._coord <- getRelict(Coord = T)
+relikt. <- monuments(Coord = F)
+relikt._coord <- monuments(Coord = T)
 }
 \keyword{keyword}

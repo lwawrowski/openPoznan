@@ -21,7 +21,7 @@ This function download data about Cemetery in Poznan.
 Details of usage
 }
 \examples{
-Cemetery <- getCemetery(Coord = F)
-Cemetery_coords <- getCemetery(Coord = T)
+Cemetery <- cemeteries(Coord = F)
+Cemetery_coords <- cemeteries(Coord = T)
 }
 \keyword{keyword}

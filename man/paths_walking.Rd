@@ -16,7 +16,7 @@ This function download data about trail in Poznan.
 Details of usage
 }
 \examples{
-Paths <- getPaths(Coord = F)
-Paths_coord <- getPaths(Coord = T)
+Paths <- paths_walking(Coord = F)
+Paths_coord <- paths_walking(Coord = T)
 }
 \keyword{keyword}

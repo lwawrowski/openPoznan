@@ -22,7 +22,7 @@ This function download data about Dydactic paths  in Poznan.
 Details of usage
 }
 \examples{
-Dydactic_Paths <- getDydactic_Paths(Coord = F)
-Dydactic_Paths_coord <- getDydactic_Paths(Coord = T)
+Dydactic_Paths <- dydactic_paths(Coord = F)
+Dydactic_Paths_coord <- dydactic_paths(Coord = T)
 }
 \keyword{keyword}
