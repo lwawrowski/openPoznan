@@ -24,14 +24,14 @@ vignette: >
   library(XML)
 ```
 
-## Vignette for get_address function.
+## Vignette for addresses function.
 
 ```{r}
-address_example <- get_address()
+address_example <- addresses()
 head(address_example)
 ```
 
-#Create map using gg plot, and put path on map.
+## Create map using gg plot, and put path on map.
 
 ```{r pressure, echo=FALSE}
 
@@ -39,15 +39,15 @@ ggplot(data = address_example, aes(x= longitude, y= latitude, group=id)) +
   geom_path()
 ```
 
-## Vignette for get_property_cto function.
+## Vignette for properties_current_trade() function.
 
 ```{r}
-property_cto_example <- get_property_cto()
+property_cto_example <- properties_current_trade()
 head(property_cto_example)
 
 ```
 
-#Create map using gg plot, and put points on Poznan map.
+## Create map using gg plot, and put points on Poznan map.
 
 ```{r}
 get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
@@ -62,15 +62,15 @@ poznan+geom_point(data = property_cto_example,
 
 
 
-## Vignette for get_property_fs function.
+## Vignette for properties_for_sale function.
 
 ```{r}
-property_fs_example <- get_property_fs()
+property_fs_example <- properties_for_sale()
 head(property_fs_example)
 
 ```
 
-#Create map using gg plot, and put points on Poznan map.
+## Create map using gg plot, and put points on Poznan map.
 
 ```{r}
 get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
@@ -85,17 +85,17 @@ poznan+geom_point(data = property_fs_example,
 
 
 ```
-## Vignette for get_lsdp function.
+## Vignette for local_spatial_dev_plans_passed function.
 
 ```{r}
-lsdp_example <- get_lsdp()
-head(lsdp_example)
+lsdpp_example <- local_spatial_dev_plans_passed()
+head(lsdpp_example)
 
 ```
 
-# Create map usign gg plot.
+## Create map usign gg plot.
 ```{r}
-lsdp_coord_id <- get_lsdp(basic = FALSE)
+lsdp_coord_id <- local_spatial_dev_plans_passed(basic = FALSE)
 ggplot(data = lsdp_coord_id,
        aes(x= Longitude,
            y= Latitude,
@@ -105,17 +105,17 @@ ggplot(data = lsdp_coord_id,
 
 
 
-## Vignette for get_lsdpc function.
+## Vignette for local_spatial_dev_plans_called function.
 
 ```{r}
-lsdpc_example <- get_lsdpc()
+lsdpc_example <- local_spatial_dev_plans_called()
 head(lsdpc_example)
 
 ```
 
-# Create map usign gg plot.
+## Create map usign gg plot.
 ```{r}
-lsdpc_coord_id <- get_lsdpc(basic = FALSE)
+lsdpc_coord_id <- local_spatial_dev_plans_called(basic = FALSE)
 ggplot(data = lsdpc_coord_id,
        aes(x= Longitude,
            y= Latitude,
