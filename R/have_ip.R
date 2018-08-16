@@ -8,7 +8,7 @@
 #' \describe{
 #' }
 #' @examples
-#' have_ip ()
+#' have_ip()
 
 have_ip <- function() {
   if (.Platform$OS.type == "windows") {

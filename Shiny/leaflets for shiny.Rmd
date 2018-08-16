@@ -1,0 +1,229 @@
+---
+title: "leaflet for shiny"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(openPoznan)
+library(jsonlite)
+library(purrr)
+library(dplyr)
+library(ggplot2)
+library(ggmap)
+library(leaflet)
+library(sp)
+library(rvest)
+library(opencage)
+library(fuzzyjoin)
+library(textclean)
+library(stringdist)
+```
+##
+
+Vignette for tvm function. 
+
+- Create map using leaflet. 
+```{r tvm}
+ # Leaflet map with custom icon 
+
+  TVM_example <- tvm()
+
+  TVM_Icon <- makeIcon(iconUrl = "https://d30y9cdsu7xlg0.cloudfront.net/png/44651-200.png",
+                       iconWidth = 25, 
+                       iconHeight = 30,
+                       iconAnchorX = 15, 
+                       iconAnchorY = 25)
+  
+  Poznan_with_TVM2 <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = TVM_example$Latitude, 
+               lng = TVM_example$Longitude, 
+               popup = TVM_example$ID,
+               icon = TVM_Icon,
+               clusterOptions = markerClusterOptions())
+  Poznan_with_TVM2
+```
+Vignette for pm function. 
+
+- Create map using leaflet. 
+```{r pm}
+# Leaflet map with custom icon
+
+  PM_final <- pm()
+  
+  PM_Icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/34/34783.svg",
+                      iconWidth = 25, 
+                      iconHeight = 30,
+                      iconAnchorX = 15, 
+                      iconAnchorY = 25)
+  
+  Poznan_with_PM <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = PM_final$Latitude, 
+               lng = PM_final$Longitude, 
+               popup = PM_final$ID,
+               icon = PM_Icon,
+               clusterOptions = markerClusterOptions())
+```
+Vignette for stop function. 
+
+- Create map using leaflet. 
+```{r stops}
+  # Leaflet map with custom icon 
+
+  Stops_final <- stop()
+  
+  Stops_Icon <- icons(iconUrl = ifelse(Stops_final$Route_Type == 3,"https://d30y9cdsu7xlg0.cloudfront.net/png/19259-200.png","http://icons.iconarchive.com/icons/icons8/android/512/Transport-Tram-icon.png"),
+                      iconWidth = 25, 
+                      iconHeight = 30,
+                      iconAnchorX = 15, 
+                      iconAnchorY = 25)
+  
+  Poznan_with_Stops <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = Stops_final$Latitude, 
+               lng = Stops_final$Longitude, 
+               popup = Stops_final$ID,
+               icon = Stops_Icon[Stops_final$Route_Type],
+               clusterOptions = markerClusterOptions())
+  Poznan_with_Stops
+```
+Vignette for cesspool function. 
+
+- Create map using leaflet. 
+```{r cesspool}
+ # Leaflet map with custom icon 
+
+  Cesspool_final <- cesspool()
+  
+  Cesspool_Icon <- makeIcon(iconUrl = "http://cdn.onlinewebfonts.com/svg/img_537720.png",
+                       iconWidth = 25, 
+                       iconHeight = 30,
+                       iconAnchorX = 15, 
+                       iconAnchorY = 25)
+  
+  Poznan_with_Cesspool <- leaflet() %>%
+    addTiles() %>%  
+    addMarkers(lat = Cesspool_final$Latitude, 
+               lng = Cesspool_final$Longitude, 
+               popup = Cesspool_final$ID,
+               icon = Cesspool_Icon,
+               clusterOptions = markerClusterOptions())
+  Poznan_with_Cesspool
+```
+Vignette for sw function. 
+
+- Create map using leaflet. 
+```{r sw}
+  # Leaflet map with custom icon
+
+  SW_final <- sw()
+  
+  SW_Icon <- makeIcon(iconUrl = "https://www.corkdrain.ie/assets/icon4.png",
+                      iconWidth = 25, 
+                      iconHeight = 30,
+                      iconAnchorX = 15, 
+                      iconAnchorY = 25)
+  
+  Poznan_with_SW <- leaflet() %>%
+                    addTiles() %>%  
+                    addMarkers(lat = SW_final$Latitude, 
+                               lng = SW_final$Longitude, 
+                               popup = SW_final$ID,
+                               icon = SW_Icon,
+                               clusterOptions = markerClusterOptions())
+  Poznan_with_SW
+```
+Vignette for area function. 
+
+- Create map using leaflet (first changing data type, so it is possible). 
+```{r area}
+#Function spatial lines => get rid of multipolygons and polygons, so we can use Leaflet
+
+  Areas_basic_info <- area()
+  Area_full_info <- area(T)
+  Area_coord_id <- Area_full_info$Coords
+
+Area_split_data = lapply(unique(Area_coord_id$ID), function(x) {
+  df = as.matrix(Area_coord_id[Area_coord_id$ID == x, c("Longitude", "Latitude") ])
+  polys = Polygons(list(Polygon(df)), ID = x)
+  return(polys)
+})
+
+Area_data_lines = SpatialPolygons(Area_split_data)
+
+# Leaflet map with custom icon 
+
+labels <- sprintf("<strong>%s</strong><br/>",
+                  Areas_basic_info$School_Name) %>% 
+                  lapply(htmltools::HTML)
+
+Area_leaflet_map <- leaflet() %>%
+addTiles() %>%  
+  addPolygons(data = Area_data_lines,
+               weight = 2, 
+               opacity = 1,
+               dashArray = "3",
+               color = "white",
+               smoothFactor = 0.5,
+               fillOpacity = 0.5, 
+                 highlight = highlightOptions(
+                 weight = 5,
+                 color = "#666",
+                 fillOpacity = 0.7,
+                 bringToFront = TRUE),
+                   label = labels,
+                   labelOptions = labelOptions(
+                   style = list("font-weight" = "normal", padding = "3px 8px"),
+                   textsize = "15px",
+                   direction = "auto"))
+Area_leaflet_map
+```
+Vignette for parish function. 
+
+- Create map using leaflet (first changing data type, so it is possible). 
+```{r parish}
+#Function spatial lines => get rid of multipolygons and polygons, so we can use Leaflet
+
+  Parish_basic_info <- parish()
+  Parish_full_info <- parish(T)
+  Parish_coord_id <- Parish_full_info$Coords
+
+Parish_split_data = lapply(unique(Parish_coord_id$ID), function(x) {
+  df = as.matrix(Parish_coord_id[Parish_coord_id$ID == x, c("Longitude", "Latitude") ])
+  polys = Polygons(list(Polygon(df)), ID = x)
+  return(polys)
+})
+
+Parish_data_lines = SpatialPolygons(Parish_split_data)
+
+# Leaflet map with custom icon 
+
+labels <- sprintf("<strong>%s</strong><br/>",
+                  Parish_basic_info$Parish_Name) %>% 
+                  lapply(htmltools::HTML)
+
+Parish_leaflet_map <- leaflet() %>%
+addTiles() %>%  
+  addPolygons(data = Parish_data_lines,
+               weight = 2, 
+               opacity = 1,
+               dashArray = "3",
+               color = "white",
+               smoothFactor = 0.5,
+               fillOpacity = 0.5, 
+                 highlight = highlightOptions(
+                 weight = 5,
+                 color = "#666",
+                 fillOpacity = 0.7,
+                 bringToFront = TRUE),
+                   label = labels,
+                   labelOptions = labelOptions(
+                   style = list("font-weight" = "normal", padding = "3px 8px"),
+                   textsize = "15px",
+                   direction = "auto"))
+                           
+Parish_leaflet_map
+```
+

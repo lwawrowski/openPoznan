@@ -15,6 +15,6 @@ This function check connection to internet.
 Details of usage
 }
 \examples{
-have_ip ()
+have_ip()
 }
 \keyword{keyword}
