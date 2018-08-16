@@ -11,9 +11,6 @@ library(sp)
 # Define UI for application that draws a histogram
 ui <- fluidPage(id="page",
                 title = "OpenPoznan Shiny app",
-   
-  
-            
   
      # Sidebar with a slider input for number of bins 
    div(class="outer",
