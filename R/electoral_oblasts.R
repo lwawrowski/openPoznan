@@ -1,24 +1,24 @@
 #' electoral_oblasts Function
 #'
-#' This function download data about Oblast in Poznan.
+#' This function download data about electoral Oblast in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about Oblast in Poznań
+#' @param coords show basic data about electoral Oblast in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
 #' @format 
 #' \describe{
-#' \item{ID}{factor; ID of Oblast.}
+#' \item{ID}{numeric; ID of Oblast.}
 #' \item{Name}{factor; Name of Oblast in Poznan.}
 #' }
 #' @examples
-#' oblast <- electoral_oblasts(Coord = F)
-#' oblast_coord <- electoral_oblasts(Coord = T)
+#' oblast <- electoral_oblasts(coords = F)
+#' oblast_coord <- electoral_oblasts(coords = T)
 
 
-electoral_oblasts <- function(Coord = F){
+electoral_oblasts <- function(coords = F){
   # obwody rad osiedli
   
   # wczytanie obwod?w rad osiedli
@@ -26,7 +26,9 @@ electoral_oblasts <- function(Coord = F){
   
   
       tryCatch({ # w przypadku baraku internetu wywoła wyjątek
+        
       ob <- fromJSON("http://www.poznan.pl/featureserver/featureserver.cgi/wybory_ro_okregi/")
+      
       }, error = function(err) {
     
       warning("You used bad link!")
@@ -55,7 +57,11 @@ electoral_oblasts <- function(Coord = F){
   
   oblastcoord_id <- map2_df(oblastcoord_df, oblast$id, ~mutate(.x, id=.y))
   
-  if(Coord == T){
+  oblastcoord_id <- data.frame(Longitude=oblastcoord_id$V1,
+                               Latitude=oblastcoord_id$V2,
+                               id=oblastcoord_id$id)
+  
+  if(coords == T){
     result <- oblastcoord_id
   } else {
    result <- oblast_basic_info

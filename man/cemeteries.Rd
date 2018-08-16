@@ -4,15 +4,15 @@
 \alias{cemeteries}
 \title{cemeteries Function}
 \format{\describe{
-\item{ID}{factor; ID of Cemetery in Poznan.}
+\item{ID}{numeric; ID of Cemetery in Poznan.}
 \item{Cemetery_Name}{factor; Name of cemetery in Poznan.}
 \item{Cemetery_Type}{factor; Type of cemetery in Poznan.}
 }}
 \usage{
-cemeteries(Coord = F)
+cemeteries(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about cemetery in Poznań}
+\item{coords}{show basic data about cemetery in Poznań}
 }
 \description{
 This function download data about Cemetery in Poznan.
@@ -21,7 +21,7 @@ This function download data about Cemetery in Poznan.
 Details of usage
 }
 \examples{
-Cemetery <- cemeteries(Coord = F)
-Cemetery_coords <- cemeteries(Coord = T)
+Cemetery <- cemeteries(coords = F)
+Cemetery_coords <- cemeteries(coords = T)
 }
 \keyword{keyword}

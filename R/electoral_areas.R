@@ -1,23 +1,23 @@
 #' electoral_areas Function
 #'
-#' This function download data about Area Electoral in Poznan.
+#' This function download data about electoral areas in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about Area electoral in Poznań
+#' @param coords show basic data about electoral areas in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
-#' \item{ID}{factor; ID of area electoral.}
-#' \item{District_no}{factor; Number of District.}
+#' \item{ID}{numeric; ID of area electoral.}
+#' \item{District_no}{numeric; Number of district.}
 #' }
 #' @examples
-#' Area_Electoral <- electoral_areas(Coord = F)
-#' Area_Electoral_coords <- electoral_areas(Coord = T)
+#' Area_Electoral <- electoral_areas(coords = F)
+#' Area_Electoral_coords <- electoral_areas(coords = T)
 
 
-electoral_areas <- function(Coord = F){
+electoral_areas <- function(coords = F){
   # dane wybory samorzadowe obwody wyborcze 
   
   # wczytanie danych o wyborach samorzadowych
@@ -54,10 +54,13 @@ electoral_areas <- function(Coord = F){
   oblast2_basic_info <- data.frame(ID=oblast2$id,
                                          District_no=oblast2$properties$nr_obwodu)
   
+  oblast2coord_id <- data.frame(Longitude=oblast2coord_id$V1,
+                                Latitude=oblast2coord_id$V2,
+                                id=oblast2coord_id$id)
   
   # z??czenie wszystkich kolumn
   
-  if(Coord == T){
+  if(coords == T){
      result <- oblast2coord_id
     } else {
       result <- oblast2_basic_info

@@ -4,21 +4,21 @@
 \alias{historical_churches}
 \title{historical_churches  Function}
 \format{\describe{
-\item{ID}{factor; ID of church.}
-\item{Code}{factor; code of church in Poznan.}
-\item{Name}{factor; Name of church.}
-\item{Category_builiding}{factor; Category of church in Poznan.}
+\item{ID}{numeric; ID of historical churches .}
+\item{Code}{factor; code of historical church in Poznan.}
+\item{Name}{factor; Name of historical church.}
+\item{Category_builiding}{factor; Category of historical church in Poznan.}
 \item{City}{factor; City.}
 \item{Lang}{factor; Language.}
-\item{Address}{factor; Address of church.}
+\item{Address}{factor; Address of historical church.}
 \item{ID_monument}{factor; ID monument in Poznan.}
-\item{Description}{factor; Description of church.}
+\item{Description}{factor; Description of historical church.}
 }}
 \usage{
-historical_churches(Coord = F)
+historical_churches(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about historical churches in Poznań}
+\item{coords}{show basic data about historical churches in Poznań}
 }
 \description{
 This function download data about historical Churches in Poznan.
@@ -27,7 +27,7 @@ This function download data about historical Churches in Poznan.
 Details of usage
 }
 \examples{
-Church <- historical_churches(Coord = F)
-Church_coord <- historical_churches(Coord = T)
+Church <- historical_churches(coords = F)
+Church_coord <- historical_churches(coords = T)
 }
 \keyword{keyword}

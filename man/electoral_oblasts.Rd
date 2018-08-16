@@ -4,23 +4,23 @@
 \alias{electoral_oblasts}
 \title{electoral_oblasts Function}
 \format{\describe{
-\item{ID}{factor; ID of Oblast.}
+\item{ID}{numeric; ID of Oblast.}
 \item{Name}{factor; Name of Oblast in Poznan.}
 }}
 \usage{
-electoral_oblasts(Coord = F)
+electoral_oblasts(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about Oblast in Poznań}
+\item{coords}{show basic data about electoral Oblast in Poznań}
 }
 \description{
-This function download data about Oblast in Poznan.
+This function download data about electoral Oblast in Poznan.
 }
 \details{
 Details of usage
 }
 \examples{
-oblast <- electoral_oblasts(Coord = F)
-oblast_coord <- electoral_oblasts(Coord = T)
+oblast <- electoral_oblasts(coords = F)
+oblast_coord <- electoral_oblasts(coords = T)
 }
 \keyword{keyword}

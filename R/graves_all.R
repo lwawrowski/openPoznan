@@ -1,17 +1,17 @@
-#' Graves All  Function
+#' graves_all  Function
 #'
-#' This function download data about Graves All in Poznan.
+#' This function download data about all graves in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about Graves All in Poznań
+#' @param coords show basic data about all graves in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom dplyr filter mutate
 #' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
-#' \item{Cemetery_ID}{factor; ID of  Cemetery in Poznan.}
-#' \item{Cemetery_No}{factor; Cemetery number.}
+#' \item{Cemetery_ID}{numeric; ID of  cemetery in Poznan.}
+#' \item{Cemetery_No}{numeric; Cemetery number.}
 #' \item{Date_birth}{factor; Date birth pearson.}
 #' \item{Date_death}{factor; Date death pearson.}
 #' \item{Date_Burial}{factor; Date burial pearson.}
@@ -21,16 +21,16 @@
 #' \item{Grave_Name_Surname}{factor; Name and Surname.}
 #' \item{Field_No}{factor; Field number in cemetery.}
 #' \item{Place_No}{factor; Place number in cemetery.}
-#' \item{Paid}{factor; Paid.}
+#' \item{Paid}{numeric; Paid.}
 #' }
 #' @examples
-#' Grave_All <- graves_all(Coord = F)
-#' Grave_All_coord <- graves_all(Coord = T)
+#' Grave_All <- graves_all(coords = F)
+#' Grave_All_coord <- graves_all(coords = T)
 
 
-graves_all <- function(Coord =F){
+graves_all <- function(coords =F){
   
-  cemeterycoord_id <- getCemetery(Coord = T)
+  cemeterycoord_id <- cemeteries(Coord = T)
   
   
   coords <-cemeterycoord_id %>% mutate(id2=ifelse(id %in% (c(7,8,9,10,11,13,14)), 25, id)) %>%
@@ -63,11 +63,6 @@ graves_all <- function(Coord =F){
     names(b) <- c("x2", "y2")
     
     c <- cbind(a,b)
-    
-    
-    # grave_basic_info_all <- data.frame()
-    # 
-    #    grave_coord_all <- data.frame()
     
     for(j in 1:nrow(c)){
       
@@ -109,8 +104,24 @@ graves_all <- function(Coord =F){
     
   }
   
+  grave_basic_info_final <- data.frame(Cemetery_ID=grave_basic_info_all$cm_id,
+                                       Cemetery_No=grave_basic_info_all$cm_nr,
+                                       Date_birth=grave_basic_info_all$g_date_birth,
+                                       Date_death=grave_basic_info_all$g_date_death,
+                                       Date_burial=grave_basic_info_all$g_date_burial,
+                                       Row_no=grave_basic_info_all$g_row,
+                                       Grave_Name=grave_basic_info_all$g_name,
+                                       Grave_Surname=grave_basic_info_all$g_surname,
+                                       Grave_Name_Surname=grave_basic_info_all$print_surname_name,
+                                       Field_No=grave_basic_info_all$g_field,
+                                       Place_No=grave_basic_info_all$g_place,
+                                       Paid=grave_basic_info_all$paid)
   
-  if(Coord == T) {
+  grave_coord_all <- data.frame(Longitude=grave_coord_all$X1,
+                                Latitude=grave_coord_all$X2,
+                                id=grave_coord_all$id)
+  
+  if(coords == T) {
     result2 <- grave_coord_all
   }else{
     return(grave_basic_info_all)

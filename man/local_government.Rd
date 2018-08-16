@@ -2,18 +2,18 @@
 % Please edit documentation in R/local_government.R
 \name{local_government}
 \alias{local_government}
-\title{Local Government Function}
+\title{local_government Function}
 \format{\describe{
-\item{ID}{factor; ID of District.}
+\item{ID}{numeric; ID of District.}
 \item{AFDP}{factor; Adaptation for disabled pearson.}
-\item{District_no}{factor; Number of district.}
+\item{District_no}{numeric; Number of district.}
 \item{Residence}{factor; Name of Residence. }
 }}
 \usage{
-local_government(Coord = F)
+local_government(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about local government in Poznań}
+\item{coords}{show basic data about local government in Poznań}
 }
 \description{
 This function download data about local government in Poznań.
@@ -22,6 +22,7 @@ This function download data about local government in Poznań.
 Details of usage
 }
 \examples{
-Local_Government <- local_government(Coord = F)
+Local_Government <- local_government(coords = F)
+Local_Government_coords <- Local_Government(coords = T)
 }
 \keyword{keyword}

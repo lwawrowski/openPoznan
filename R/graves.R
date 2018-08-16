@@ -3,15 +3,15 @@
 #' This function download data about graves in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about graves in Poznań
+#' @param coords show basic data about graves in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
 #' @format 
 #' \describe{
-#' \item{Cemetery_ID}{factor; ID of  Cemetery in Poznan.}
-#' \item{Cemetery_No}{factor; Cemetery number.}
+#' \item{Cemetery_ID}{numeric; ID of  cemetery in Poznan.}
+#' \item{Cemetery_No}{numeric; cemetery number.}
 #' \item{Date_birth}{factor; Date birth pearson.}
 #' \item{Date_death}{factor; Date death pearson.}
 #' \item{Date_Burial}{factor; Date burial pearson.}
@@ -21,17 +21,17 @@
 #' \item{Grave_Name_Surname}{factor; Name and Surname.}
 #' \item{Field_No}{factor; Field number in cemetery.}
 #' \item{Place_No}{factor; Place number in cemetery.}
-#' \item{Paid}{factor; Paid.}
+#' \item{Paid}{numeric; Paid.}
 #' }
 #' @examples
-#' Grave <- graves(Coord = F)
-#' Grave_coord <- graves(Coord = T)
+#' Grave <- graves(coords = F)
+#' Grave_coord <- graves(coords = T)
 
 
-graves <- function(Coord = F){ 
+graves <- function(coords = F){ 
   # wczytanie danych groboW
   
-  cementary_final <- getCemetery()
+  cementary_final <- cemeteries()
   
   grave_basic_info_all <- data.frame()
   
@@ -90,8 +90,12 @@ graves <- function(Coord = F){
                                              Field_No=grave_basic_info_all$g_field,
                                              Place_No=grave_basic_info_all$g_place,
                                              Paid=grave_basic_info_all$paid)
+  
+  grave_coord_all <- data.frame(Longitude=grave_coord_all$X1,
+                                Latitude=grave_coord_all$X2,
+                                id=grave_coord_all$id)
 
-  if(Coord == T){
+  if(coords == T){
     result <- grave_coord_all
   } else {
     result <- grave_basic_info_final

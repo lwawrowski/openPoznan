@@ -3,24 +3,24 @@
 #' This function download data about Cemetery in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about cemetery in Poznań
+#' @param coords show basic data about cemetery in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
 #' @format 
 #' \describe{
-#' \item{ID}{factor; ID of Cemetery in Poznan.}
+#' \item{ID}{numeric; ID of Cemetery in Poznan.}
 #' \item{Cemetery_Name}{factor; Name of cemetery in Poznan.}
 #' \item{Cemetery_Type}{factor; Type of cemetery in Poznan.}
 #' }
 #' @examples
-#' Cemetery <- cemeteries(Coord = F)
-#' Cemetery_coords <- cemeteries(Coord = T)
+#' Cemetery <- cemeteries(coords = F)
+#' Cemetery_coords <- cemeteries(coords = T)
 
 # wyszukiwarka cmentarzy 
 
-cemeteries <- function(Coord = F) {
+cemeteries <- function(coords = F) {
   
   # wczytanie danych cmentarzy 
   
@@ -61,7 +61,11 @@ cemeteries <- function(Coord = F) {
   
   cemeterycoord_id <- map2_df(cemeterycoord_df, cemetery$id, ~mutate(.x, id=.y)) %>% distinct()
   
-  if(Coord == T){
+  cemeterycoord_id <- data.frame(Longitude=cemeterycoord_id$V1,
+                                 Latitude=cemeterycoord_id$V2,
+                                 id=cemeterycoord_id$id)
+  
+  if(coords == T){
     result <- cemeterycoord_id
   } else {
     result <- cemetery_basic_info

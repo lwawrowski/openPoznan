@@ -4,19 +4,19 @@
 \alias{paths_walking}
 \title{paths_walking  Function}
 \usage{
-paths_walking(Coord = F)
+paths_walking(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about trail in Poznań}
+\item{coords}{show basic data about paths walking in Poznań}
 }
 \description{
-This function download data about trail in Poznan.
+This function download data about paths walking in Poznan.
 }
 \details{
 Details of usage
 }
 \examples{
-Paths <- paths_walking(Coord = F)
-Paths_coord <- paths_walking(Coord = T)
+Paths <- paths_walking(coords = F)
+Paths_coord <- paths_walking(coords = T)
 }
 \keyword{keyword}

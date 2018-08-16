@@ -4,14 +4,14 @@
 \alias{electoral_circles}
 \title{electoral_circles  Function}
 \format{\describe{
-\item{ID}{factor; ID of circle.}
+\item{ID}{numeric; ID of circle.}
 \item{Name}{factor; Name of circle.}
 }}
 \usage{
-electoral_circles(Coord = F)
+electoral_circles(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about electoral circles of local government in Poznań}
+\item{coords}{show basic data about electoral circles of local government in Poznań}
 }
 \description{
 This function download data about electoral circlesl in Poznan.
@@ -20,7 +20,7 @@ This function download data about electoral circlesl in Poznan.
 Details of usage
 }
 \examples{
-Circle_electoral <- electoral_circles(Coord = F)
-Circle_coord <- electoral_circles(Coord = T)
+Circle_electoral <- electoral_circles(coords = F)
+Circle_coord <- electoral_circles(coords = T)
 }
 \keyword{keyword}

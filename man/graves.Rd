@@ -4,8 +4,8 @@
 \alias{graves}
 \title{graves  Function}
 \format{\describe{
-\item{Cemetery_ID}{factor; ID of  Cemetery in Poznan.}
-\item{Cemetery_No}{factor; Cemetery number.}
+\item{Cemetery_ID}{numeric; ID of  cemetery in Poznan.}
+\item{Cemetery_No}{numeric; cemetery number.}
 \item{Date_birth}{factor; Date birth pearson.}
 \item{Date_death}{factor; Date death pearson.}
 \item{Date_Burial}{factor; Date burial pearson.}
@@ -15,13 +15,13 @@
 \item{Grave_Name_Surname}{factor; Name and Surname.}
 \item{Field_No}{factor; Field number in cemetery.}
 \item{Place_No}{factor; Place number in cemetery.}
-\item{Paid}{factor; Paid.}
+\item{Paid}{numeric; Paid.}
 }}
 \usage{
-graves(Coord = F)
+graves(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about graves in Poznań}
+\item{coords}{show basic data about graves in Poznań}
 }
 \description{
 This function download data about graves in Poznan.
@@ -30,7 +30,7 @@ This function download data about graves in Poznan.
 Details of usage
 }
 \examples{
-Grave <- graves(Coord = F)
-Grave_coord <- graves(Coord = T)
+Grave <- graves(coords = F)
+Grave_coord <- graves(coords = T)
 }
 \keyword{keyword}

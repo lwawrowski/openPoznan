@@ -4,20 +4,19 @@
 \alias{council_districts}
 \title{council_districts  Function}
 \format{\describe{
-\item{ID}{factor; ID of  Estate.}
-\item{Type}{factor; Type of Estate in Poznan.}
+\item{ID}{numeric; ID of council districts.}
 \item{Address}{factor; Address of Residence.}
-\item{Residence}{factor; Residence of Estate in Poznan.}
-\item{Electoral_District}{factor; Electoral District in Poznan.}
+\item{Residence}{factor; Residence of council districts in Poznan.}
+\item{Electoral_District}{factor; Electoral district in Poznan.}
 \item{AFDP}{factor; Adaptation for disabled pearson.}
-\item{Venue_no}{factor; Venue of Estate in Poznan.}
-\item{Distroct_no}{factor; District number in Poznan.}
+\item{Venue_no}{numeric; Venue of council districts in Poznan.}
+\item{Distroct_no}{numeric; District number in Poznan.}
 }}
 \usage{
-council_districts(Coord = F)
+council_districts(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about council districts in Poznań}
+\item{coords}{show basic data about council districts in Poznań}
 }
 \description{
 This function download data about council districts in Poznan.
@@ -26,7 +25,7 @@ This function download data about council districts in Poznan.
 Details of usage
 }
 \examples{
-Estate <- council_districts(Coord = F)
-Estate_coord <- council_districts(Coord = T)
+Estate <- council_districts(coords = F)
+Estate_coord <- council_districts(coords = T)
 }
 \keyword{keyword}

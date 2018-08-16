@@ -2,10 +2,10 @@
 % Please edit documentation in R/graves_all.R
 \name{graves_all}
 \alias{graves_all}
-\title{Graves All  Function}
+\title{graves_all  Function}
 \format{\describe{
-\item{Cemetery_ID}{factor; ID of  Cemetery in Poznan.}
-\item{Cemetery_No}{factor; Cemetery number.}
+\item{Cemetery_ID}{numeric; ID of  cemetery in Poznan.}
+\item{Cemetery_No}{numeric; Cemetery number.}
 \item{Date_birth}{factor; Date birth pearson.}
 \item{Date_death}{factor; Date death pearson.}
 \item{Date_Burial}{factor; Date burial pearson.}
@@ -15,22 +15,22 @@
 \item{Grave_Name_Surname}{factor; Name and Surname.}
 \item{Field_No}{factor; Field number in cemetery.}
 \item{Place_No}{factor; Place number in cemetery.}
-\item{Paid}{factor; Paid.}
+\item{Paid}{numeric; Paid.}
 }}
 \usage{
-graves_all(Coord = F)
+graves_all(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about Graves All in Poznań}
+\item{coords}{show basic data about all graves in Poznań}
 }
 \description{
-This function download data about Graves All in Poznan.
+This function download data about all graves in Poznan.
 }
 \details{
 Details of usage
 }
 \examples{
-Grave_All <- graves_all(Coord = F)
-Grave_All_coord <- graves_all(Coord = T)
+Grave_All <- graves_all(coords = F)
+Grave_All_coord <- graves_all(coords = T)
 }
 \keyword{keyword}

@@ -3,21 +3,21 @@
 #' This function download data about electoral circlesl in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about electoral circles of local government in Poznań
+#' @param coords show basic data about electoral circles of local government in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
 #' @format 
 #' \describe{
-#' \item{ID}{factor; ID of circle.}
+#' \item{ID}{numeric; ID of circle.}
 #' \item{Name}{factor; Name of circle.}
 #' }
 #' @examples
-#' Circle_electoral <- electoral_circles(Coord = F)
-#' Circle_coord <- electoral_circles(Coord = T)
+#' Circle_electoral <- electoral_circles(coords = F)
+#' Circle_coord <- electoral_circles(coords = T)
 
-electoral_circles <- function(Coord = F){
+electoral_circles <- function(coords = F){
   # okragi wyborow rad osiedli
   
   # wczytanie danych rad osiedli
@@ -59,7 +59,11 @@ electoral_circles <- function(Coord = F){
   
   circlecoord_id <- map2_df(circlecoord_df, circle$id, ~mutate(.x, id=.y))
   
-  if(Coord == T){
+  circlecoord_id <- data.frame(Longitude=circlecoord_id$V1,
+                               Latitude=circlecoord_id$V2,
+                               id=circlecoord_id$id)
+  
+  if(coords == T){
     result <- circlecoord_id
   } else {
     result <- circle_final  

@@ -3,27 +3,27 @@
 #' This function download data about historical Churches in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about historical churches in Poznań
+#' @param coords show basic data about historical churches in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
-#' \item{ID}{factor; ID of church.}
-#' \item{Code}{factor; code of church in Poznan.}
-#' \item{Name}{factor; Name of church.}
-#' \item{Category_builiding}{factor; Category of church in Poznan.}
+#' \item{ID}{numeric; ID of historical churches .}
+#' \item{Code}{factor; code of historical church in Poznan.}
+#' \item{Name}{factor; Name of historical church.}
+#' \item{Category_builiding}{factor; Category of historical church in Poznan.}
 #' \item{City}{factor; City.}
 #' \item{Lang}{factor; Language.}
-#' \item{Address}{factor; Address of church.}
+#' \item{Address}{factor; Address of historical church.}
 #' \item{ID_monument}{factor; ID monument in Poznan.}
-#' \item{Description}{factor; Description of church.}
+#' \item{Description}{factor; Description of historical church.}
 #' }
 #' @examples
-#' Church <- historical_churches(Coord = F)
-#' Church_coord <- historical_churches(Coord = T)
+#' Church <- historical_churches(coords = F)
+#' Church_coord <- historical_churches(coords = T)
 
 
-historical_churches <- function(Coord = F){
+historical_churches <- function(coords = F){
   
   # wczytanie danych o kosciolach
   
@@ -50,8 +50,8 @@ historical_churches <- function(Coord = F){
   
   church_coord <- data.frame(matrix(unlist(ch$features$geometry$coordinates),
                                     nrow = nrow(ch$features), byrow = T))
-  colnames(church_coord)[(names(church_coord)=="X1")] <- "V1"
-  colnames(church_coord)[(names(church_coord)=="X2")] <- "V2"
+  colnames(church_coord)[(names(church_coord)=="X1")] <- "Longitude"
+  colnames(church_coord)[(names(church_coord)=="X2")] <- "Latitude"
   
   church_basic_info <- data.frame(ID=church$id,
                                         Code=church$properties$kod,
@@ -66,11 +66,10 @@ historical_churches <- function(Coord = F){
   
   # z??czenie wszystkich kolumn
   
-  church_final <- cbind(church_basic_info,church_coord)
-  if(Coord == T){
+  if(coords == T){
     result <- church_coord
   } else {
-    result <- church_final
+    result <- church_basic_info
   }
   return(result)
 }

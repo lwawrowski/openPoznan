@@ -4,21 +4,21 @@
 \alias{monuments}
 \title{monuments  Function}
 \format{\describe{
-\item{ID}{factor; ID of relikt.}
-\item{Code}{factor; code of relikt. in Poznan.}
-\item{Name}{factor; Name of relikt.}
-\item{Category_builiding}{factor; Category of relikt. in Poznan.}
+\item{ID}{numeric; ID of monument}
+\item{Code}{factor; code of monument in Poznan.}
+\item{Name}{factor; Name of monument}
+\item{Category_builiding}{factor; Category of monument in Poznan.}
 \item{City}{factor; City.}
 \item{Lang}{factor; Language.}
-\item{Address}{factor; Address of relikt.}
+\item{Address}{factor; Address of monument}
 \item{ID_monument}{factor; ID monument in Poznan.}
-\item{Description}{factor; Description of relikt.}
+\item{Description}{factor; Description of monument}
 }}
 \usage{
-monuments(Coord = F)
+monuments(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about monuments in Poznań}
+\item{coords}{show basic data about monuments in Poznań}
 }
 \description{
 This function download data about monuments in Poznan.
@@ -27,7 +27,7 @@ This function download data about monuments in Poznan.
 Details of usage
 }
 \examples{
-relikt. <- monuments(Coord = F)
-relikt._coord <- monuments(Coord = T)
+relikt. <- monuments(coords = F)
+relikt._coord <- monuments(coords = T)
 }
 \keyword{keyword}

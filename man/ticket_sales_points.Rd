@@ -17,19 +17,19 @@
 \item{POS}{factor; Description Class.}
 }}
 \usage{
-ticket_sales_points(Coord = F)
+ticket_sales_points(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about ticket_sales_points in Poznań}
+\item{coords}{show basic data about ticket sales points in Poznań}
 }
 \description{
-This function download data about ticket_sales_points in Poznan.
+This function download data about ticket sales points in Poznan.
 }
 \details{
 Details of usage
 }
 \examples{
-Ticket <- ticket_sales_points(Coord = F)
-Ticket_coord <- ticket_sales_points(Coord = T)
+Ticket <- ticket_sales_points(coords = F)
+Ticket_coord <- ticket_sales_points(coords = T)
 }
 \keyword{keyword}

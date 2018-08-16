@@ -1,9 +1,9 @@
 #' ticket_sales_points  Function
 #'
-#' This function download data about ticket_sales_points in Poznan.
+#' This function download data about ticket sales points in Poznan.
 #' @keywords keyword
 #' @export
-#' @param Coord show basic_data about ticket_sales_points in Poznań
+#' @param coords show basic data about ticket sales points in Poznań
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
@@ -21,10 +21,10 @@
 #' \item{POS}{factor; Description Class.}
 #' }
 #' @examples
-#' Ticket <- ticket_sales_points(Coord = F)
-#' Ticket_coord <- ticket_sales_points(Coord = T)
+#' Ticket <- ticket_sales_points(coords = F)
+#' Ticket_coord <- ticket_sales_points(coords = T)
 
-ticket_sales_points <- function(Coord = F) {
+ticket_sales_points <- function(coords = F) {
   # sprzeda biletow
   
   # wczytanie danych biletow 
@@ -53,16 +53,16 @@ ticket_sales_points <- function(Coord = F) {
   
   ticket_coord <- data.frame(matrix(unlist(tick$features$geometry$coordinates),
                                     nrow = nrow(tick$features), byrow = T))
-  colnames(ticket_coord)[(names(ticket_coord)=="X1")] <- "V1"
-  colnames(ticket_coord)[(names(ticket_coord)=="X2")] <- "V2"
+  colnames(ticket_coord)[(names(ticket_coord)=="X1")] <- "Longitude"
+  colnames(ticket_coord)[(names(ticket_coord)=="X2")] <- "Latitude"
   
   
   ticket_basic_info <- data.frame(Opening_Hours=ticket$properties$y_4308_godziny_otwar,
                                         Opening_Hours=ticket$properties$y_4310_godziny_otwar,
-                                        Opening_Hours=ticket$properties$y_4309_godziny_otwar,
                                         Sales_form=ticket$properties$y_4311_forma_sprzeda,
                                         Ticket=ticket$properties$y_4326_bilety_jednor,
                                         Name=ticket$properties$nazwa,
+                                        Opening_Hours=ticket$properties$y_4309_godziny_otwar,
                                         Address=ticket$properties$adres,
                                         City=ticket$properties$miasto,
                                         Lang=ticket$properties$lang,
@@ -75,7 +75,7 @@ ticket_sales_points <- function(Coord = F) {
   
   ticket_final <- cbind(ticket_basic_info, ticket_coord)
   
-  if(Coord == T){
+  if(coords == T){
     result <- ticket_coord
     
   } else {

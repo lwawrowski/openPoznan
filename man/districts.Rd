@@ -6,13 +6,12 @@
 \format{\describe{
 \item{ID}{factor; ID of District.}
 \item{Name}{factor; Name of District.}
-\item{Type}{factor; Type of District.}
 }}
 \usage{
-districts(Coord = F)
+districts(coords = F)
 }
 \arguments{
-\item{Coord}{show basic_data about districts in Poznań}
+\item{coords}{show basic data about districts in Poznań}
 }
 \description{
 This function download data about districts  in Poznan.
@@ -21,7 +20,7 @@ This function download data about districts  in Poznan.
 Details of usage
 }
 \examples{
-District <- districts(Coord = F)
-District_coord <- districts(Coord = T)
+District <- districts(coords = F)
+District_coord <- districts(coords = T)
 }
 \keyword{keyword}
