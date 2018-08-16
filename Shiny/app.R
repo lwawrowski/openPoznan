@@ -4,45 +4,63 @@
 library(shiny)
 library(openPoznan)
 library(leaflet)
+library(shinydashboard)
+
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
    
-   # Application title
-   titlePanel("Datas about Poznan"),
-
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-     sidebarPanel(
-     selectInput( inputId = "data",
-                  label = "Pick :",
-                 c("Ticket vending machine" = "tvm",
-                   "Parking machine" = "pm",
-                   "Stop" = "stop",
-                   "Parish" = "parish",
-                   "Church" = "church",
-                   "School area" = "area",
-                   "Cesspool" = "cesspool",
-                   "Sewage work" = "sw",
-                   "Local Government" = "lg",
-                   "Bike Paths" = "bp",
-                   "Relict" = "relict",
-                   "Cementery" = "cementery",
-                   "Graves" = "graves",
-                   "Poznan districts" = "district",
-                   "Dydactic Paths" = "dp",
-                   "Points with 'ZTM' tickets" = "ticket",
-                   "Hiking trail" = "ht",
-                   "King high road" = "khr"
-                   #dodajemy po przecinku ;) 
-                   )), width = 3)
-      ,
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         leafletOutput(outputId = "llmap", width = "100%", height = "700")
-      )
-   )
+      fluidPage(id="page",
+                title = "OpenPoznan Shiny app",
+            
+  
+     # Sidebar with a slider input for number of bins 
+   div(class="outer",
+       
+       tags$head(
+         includeCSS("styles.css")
+         
+       ),
+       
+       leafletOutput(outputId = "llmap", width = "100%", height = "100%"),
+       
+       absolutePanel(
+       selectInput( inputId = "data",
+                    label = "Pick :",
+                   c("Ticket vending machine" = "tvm",
+                     "Parking machine" = "pm",
+                     "Stop" = "stop",
+                     "Parish" = "parish",
+                     "Church" = "church",
+                     "School area" = "area",
+                     "Cesspool" = "cesspool",
+                     "Sewage work" = "sw",
+                     "Local Government" = "lg",
+                     "Bike Paths" = "bp",
+                     "Relict" = "relict",
+                     "Cementery" = "cementery",
+                     "Graves" = "graves",
+                     "Poznan districts" = "district",
+                     "Dydactic Paths" = "dp",
+                     "Points with 'ZTM' tickets" = "ticket",
+                     "Hiking trail" = "ht",
+                     "King high road" = "khr"
+                     #dodajemy po przecinku ;) 
+                     )), id = "controls", 
+                         class = "panel panel-default",
+                         fixed = TRUE,
+                         draggable = TRUE, 
+                         top = 60, 
+                         left = "auto", 
+                         right = 20, 
+                         bottom = "auto",
+                         width = 330, 
+                         height = "auto")
+  
+          
+        
+     )
+    )
 )
 
 
