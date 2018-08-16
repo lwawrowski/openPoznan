@@ -13,6 +13,7 @@ ui <- fluidPage(
 
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
+     sidebarPanel(
      selectInput( inputId = "data",
                   label = "Pick :",
                  c("Ticket vending machine" = "tvm",
@@ -34,12 +35,12 @@ ui <- fluidPage(
                    "Hiking trail" = "ht",
                    "King high road" = "khr"
                    #dodajemy po przecinku ;) 
-                   ))
+                   )), width = 3)
       ,
       
       # Show a plot of the generated distribution
       mainPanel(
-         leafletOutput(outputId = "llmap", width = "100%", height = "400")
+         leafletOutput(outputId = "llmap", width = "100%", height = "700")
       )
    )
 )
