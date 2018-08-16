@@ -12,9 +12,10 @@ library(sp)
 ui <- fluidPage(id="page",
                 title = "OpenPoznan Shiny app",
                 
+      column(6,offset = 4,         
       titlePanel(title = "openPoznan interactive map",
                  windowTitle = "openPoznan App"
-      ),
+      )),
   
      # Sidebar with a slider input for number of bins 
    div(class="outer",
