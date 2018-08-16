@@ -31,11 +31,7 @@ address_example <- addresses()
 head(address_example)
 ```
 
-<<<<<<< HEAD
 ## Create map using gg plot, and put path on map.
-=======
-##Create map using gg plot, and put path on map.
->>>>>>> refs/remotes/origin/kamil
 
 ```{r pressure, echo=FALSE}
 
@@ -51,11 +47,7 @@ head(property_cto_example)
 
 ```
 
-<<<<<<< HEAD
 ## Create map using gg plot, and put points on Poznan map.
-=======
-##Create map using gg plot, and put points on Poznan map.
->>>>>>> refs/remotes/origin/kamil
 
 ```{r}
 get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
@@ -78,11 +70,7 @@ head(property_fs_example)
 
 ```
 
-<<<<<<< HEAD
 ## Create map using gg plot, and put points on Poznan map.
-=======
-##Create map using gg plot, and put points on Poznan map.
->>>>>>> refs/remotes/origin/kamil
 
 ```{r}
 get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
@@ -118,7 +106,6 @@ ggplot(data = lsdp_coord_id,
 
 
 ## Vignette for local_spatial_dev_plans_called function.
-
 ```{r}
 lsdpc_example <- local_spatial_dev_plans_called()
 head(lsdpc_example)
