@@ -1,8 +1,8 @@
 Package: openPoznan
-Title: Download open data from Pozna?
-Version: 0.0.0.9000
-Authors@R: person("?ukasz", "Wawrowski", email = "lukasz.wawrowski@ue.poznan.pl", role = c("aut", "cre"))
-Description: Download open data from Pozna?
+Title: Download open data from Poznan
+Version: 0.0.0.9100
+Authors@R: c(person("Lukasz", "Wawrowski", email = "lukasz.wawrowski@ue.poznan.pl", role = c("aut", "cre")), person("Wojciech", "Dopieralski", role="aut"), person("Konrad", "Jadwizyc", role="aut"), person("Kamil", "Nowak", role="aut"))
+Description: Download open data from Poznan
 Depends: R (>= 3.4.0)
 License: MIT
 Encoding: UTF-8
