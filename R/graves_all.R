@@ -30,7 +30,7 @@
 
 graves_all <- function(coords =F){
   
-  cemeterycoord_id <- cemeteries(Coord = T)
+  cemeterycoord_id <- cemeteries(coords = T)
   
   
   coords <-cemeterycoord_id %>% mutate(id2=ifelse(id %in% (c(7,8,9,10,11,13,14)), 25, id)) %>%
