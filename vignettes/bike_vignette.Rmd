@@ -167,6 +167,18 @@ data_table_final %>%
 
 ```
 
+## Analysis of the sum of bicycles on 6 selected bicycle stations
+
+```{r}
+data_table_final %>%
+  filter(id%in%c("6151","6152","6128","6114","2191","6148"))%>%
+  group_by(id,date) %>%
+  count() %>%
+   mutate(timePeriod = floor_date(dmy_hm(date), "30minutes")) %>%
+  group_by(id,timePeriod)%>%
+    summarise(sum=sum(n)) %>%
+  ggplot(aes(x=timePeriod, y=sum)) + geom_line() + facet_wrap(~ id, ncol = 2)
+```
 
 
 
