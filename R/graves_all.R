@@ -51,11 +51,11 @@ graves_all <- function(coords =F){
     cm_i <- coords %>% filter(id2 == cm_unique_id[i])
     
     
-    min_x1 <- min(cm_i$V1)
-    max_x1 <- max(cm_i$V1)
+    min_x1 <- min(cm_i$Longitude)
+    max_x1 <- max(cm_i$Longitude)
     
-    min_y1 <- min(cm_i$V2) 
-    max_y1 <- max(cm_i$V2) 
+    min_y1 <- min(cm_i$Latitude) 
+    max_y1 <- max(cm_i$Latitude) 
     
     a <- expand.grid(x1=seq(min_x1,max_x1,length.out = 10),
                      y1=seq(min_y1,max_y1,length.out = 10))
