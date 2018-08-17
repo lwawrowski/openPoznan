@@ -3,10 +3,12 @@ Title: Download open data from Pozna?
 Version: 0.0.0.9000
 Authors@R: person("?ukasz", "Wawrowski", email = "lukasz.wawrowski@ue.poznan.pl", role = c("aut", "cre"))
 Description: Download open data from Pozna?
-Depends: R (>= 3.5.0)
-License: What license is it under?
+Depends: R (>= 3.4.0)
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
-Suggests: knitr
-Imports:XML,dplyr,jsonlite,purrr,tidyr
+Suggests: knitr,
+    rmarkdown
+Imports: jsonlite, purrr, dplyr, curl, textclean, XML, tidyr
+VignetteBuilder: knitr
