@@ -64,9 +64,8 @@ electoral_circles <- function(coords = F){
                                id=circlecoord_id$id)
   
   if(coords == T){
-    result <- circlecoord_id
+    result <- list(area=circle_final, coord=circlecoord_id)
   } else {
-    result <- circle_final  
+    return(circle_final)
   }  
-  return(result)
 }  

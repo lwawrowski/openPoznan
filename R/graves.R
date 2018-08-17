@@ -95,8 +95,9 @@ graves <- function(coords = F){
                                 Latitude=grave_coord_all$X2,
                                 id=grave_coord_all$id)
 
+  grave_coord_all_fine <- cbind(grave_coord_all, grave_basic_info_final)
   if(coords == T){
-    result <- grave_coord_all
+    result <- grave_coord_all_fine
   } else {
     result <- grave_basic_info_final
   }

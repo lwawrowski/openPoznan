@@ -66,9 +66,10 @@ cemeteries <- function(coords = F) {
                                  id=cemeterycoord_id$id)
   
   if(coords == T){
-    result <- cemeterycoord_id
+    result <- list(Area=cemetery_basic_info,
+                  coord=cemeterycoord_id)
+    
   } else {
-    result <- cemetery_basic_info
+  return(cemetery_basic_info)
   }
-  return(result)
 }

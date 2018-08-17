@@ -65,9 +65,10 @@ historical_churches <- function(coords = F){
 
   
   # z??czenie wszystkich kolumn
+  church_All <- cbind(church_basic_info,church_coord)
   
   if(coords == T){
-    result <- church_coord
+    result <- church_All
   } else {
     result <- church_basic_info
   }

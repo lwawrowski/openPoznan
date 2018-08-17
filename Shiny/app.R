@@ -38,14 +38,18 @@ ui <- fluidPage(id="page",
                      "Sewage work" = "sw",
                      "Local Government" = "lg",
                      "Bike Paths" = "bp",
-                     "Relict" = "relict",
-                     "Cementery" = "cementery",
+                     "Dydactic Paths" = "dp",
+                     "walking Paths" = "wp",
+                     "Monument" = "Monument",
+                     "Historical church" = "hischurch",
+                     "Cementery" = "cemetery",
                      "Graves" = "graves",
                      "Poznan districts" = "district",
-                     "Dydactic Paths" = "dp",
                      "Points with 'ZTM' tickets" = "ticket",
-                     "Hiking trail" = "ht",
-                     "King high road" = "khr"
+                     "Royal imperial route" = "rir",
+                     "Council district" = "council",
+                     "Electoral area" = "elearea",
+                     "Electoral circle" = "circle"
                      #dodajemy po przecinku ;) 
                      )), id = "controls", 
                          class = "panel panel-default",
@@ -146,7 +150,7 @@ server <- function(input, output) {
        Points <- FALSE
        basic_info <- school_basic_areas()
        pick_data <- school_basic_areas(T)
-       Area_coord_id <- pick_data$Coords
+       Area_coord_id <- pick_data$result
        
        Area_split_data = lapply(unique(Area_coord_id$ID), function(x) {
          df = as.matrix(Area_coord_id[Area_coord_id$ID == x, c("Longitude", "Latitude") ])
@@ -387,7 +391,7 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
        
-     } else if (input$data == "relict") {
+     } else if (input$data == "Monument") {
        
        Points <- TRUE
        point_data <- monuments(coords = T)
@@ -398,6 +402,122 @@ server <- function(input, output) {
                                iconHeight = 30,
                                iconAnchorX = 15,
                                iconAnchorY = 25)
+       
+     } else if (input$data == "hischurch") {
+       Points <- TRUE
+       point_data <- historical_churches(coords = T)
+       marker_name <- point_data$Name
+       
+       Custom_icon <- makeIcon(iconUrl = "http://www.stickpng.com/assets/images/5a018f9d7ca233f48ba6271a.png",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorX = 15,
+                               iconAnchorY = 25)
+     } else if (input$data == "cemetery") {
+      
+      Points <- FALSE
+      basic_info <- cemeteries(coords = F)
+      point_data <- cemeteries(coords = T)
+      cemetery_coord <- point_data$coord
+      
+      Cemetery_split_data = lapply(unique(cemetery_coord$id), function(x) {
+        df = as.matrix(cemetery_coord[cemetery_coord$id == x, c("Longitude", "Latitude") ])
+        polys = Polygons(list(Polygon(df)), ID = x)
+        return(polys)
+       })
+   
+   poly_data = SpatialPolygons(Cemetery_split_data)
+   
+   labels <- sprintf("<strong>%s</strong><br/>",
+                     basic_info$Cemetery_Name) %>% 
+     lapply(htmltools::HTML)
+   
+     } else if (input$data == "graves") {
+       Points <- TRUE
+       point_data <- graves(coords = T)
+       
+       Custom_icon <- makeIcon(iconUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/cemetery-367830362729accc-512x512.png",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorX = 15,
+                               iconAnchorY = 25)
+       
+     } else if (input$data == "district") {
+       
+       Points <- FALSE 
+       basic_info <- districts(coords = F)
+       point_data <- districts(coords = T)
+       distric_coord <- point_data$coord
+       
+       District_split_data = lapply(unique(distric_coord$id), function(x) {
+         df = as.matrix(distric_coord[distric_coord$id == x, c("Longitude", "Latitude") ])
+         polys = Polygons(list(Polygon(df)), ID = x)
+         return(polys)
+       })
+       poly_data = SpatialPolygons(District_split_data)
+       
+       labels <- sprintf("<strong>%s</strong><br/>",
+                         basic_info$Name) %>% 
+         lapply(htmltools::HTML)
+       
+     } else if (input$data == "ticket") {
+       
+       Points <- TRUE
+       point_data <- ticket_sales_points(coords = T)
+       marker_name <- point_data$Name
+       
+       Custom_icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/100/100130.svg",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorX = 15,
+                               iconAnchorY = 25)
+       
+     } else if (input$data == "council") {
+       
+       Points <- TRUE
+       point_data <- council_districts(coords = T)
+       marker_name <- point_data$Electoral_District
+       
+       Custom_icon <- makeIcon(iconUrl = "https://static.thenounproject.com/png/743167-200.png",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorX = 15,
+                               iconAnchorY = 25)
+     } else if (input$data == "elearea") {
+       
+       Points <- FALSE
+       basic_info <- electoral_areas(coords = F)
+       point_data <- electoral_areas(coords = T)
+       Electoral_coord <- point_data$coord
+       
+       Electoral_split_data = lapply(unique(Electoral_coord$id), function(x) {
+         df = as.matrix(Electoral_coord[Electoral_coord$id == x, c("Longitude", "Latitude") ])
+         polys = Polygons(list(Polygon(df)), ID = x)
+         return(polys)
+       })
+       poly_data = SpatialPolygons(Electoral_split_data)
+       
+       labels <- sprintf("<strong>%s</strong><br/>",
+                         basic_info$ID) %>% 
+         lapply(htmltools::HTML)
+       
+     } else if (input$data == "circle") {
+       
+       Points <- FALSE
+       basic_info <- electoral_circles(coords = F)
+       point_data <- electoral_circles(coords = T)
+       Circle_coord <- point_data$coord
+       
+       Circle_split_data = lapply(unique(Circle_coord$id), function(x) {
+         df = as.matrix(Circle_coord[Circle_coord$id == x, c("Longitude", "Latitude") ])
+         polys = Polygons(list(Polygon(df)), ID = x)
+         return(polys)
+       })
+       poly_data = SpatialPolygons(Circle_split_data)
+       
+       labels <- sprintf("<strong>%s</strong><br/>",
+                         basic_info$ID) %>% 
+         lapply(htmltools::HTML)
      }
 
         if(Points == TRUE) {

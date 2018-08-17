@@ -76,7 +76,7 @@ ticket_sales_points <- function(coords = F) {
   ticket_final <- cbind(ticket_basic_info, ticket_coord)
   
   if(coords == T){
-    result <- ticket_coord
+    result <- ticket_final
     
   } else {
     result <- ticket_basic_info

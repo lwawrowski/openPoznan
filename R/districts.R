@@ -60,9 +60,9 @@ districts <- function(coords = F) {
                                  id=districtcoord_id$id)
   
   if(coords == T) {
-    result <- districtcoord_id
+    result <- list(area=districtcoord_id,coord=districtcoord_id)
+    
   }else{
-    result <- district_basic_info
-  }
-  return(result)
-} 
+  return(district_basic_info)
+ } 
+}
