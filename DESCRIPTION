@@ -10,5 +10,5 @@ LazyData: true
 RoxygenNote: 6.1.0
 Suggests: knitr,
     rmarkdown
-Imports: jsonlite, purrr, dplyr, curl, textclean
+Imports: jsonlite, purrr, dplyr, curl, textclean, XML, tidyr
 VignetteBuilder: knitr
