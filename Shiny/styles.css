@@ -12,7 +12,7 @@ input[type="number"] {
 
 div.outer {
   position: fixed;
-  top: 55px;
+  top: 49px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -21,14 +21,24 @@ div.outer {
 }
 
 /* Customize fonts */
-body, label, input, button, select { 
+body, input, button, select { 
   font-family: 'Arial', Helvetica, sans-serif;
   font-weight: 200;
-  font-size: 200;
   color: white;
-  background-color: #3366ff;
+  background-color: #2a8cf8;
 }
-h1, h2, h3, h4 { font-weight: 400; }
+
+label {
+ background-color: white;
+   color: black;
+
+}
+
+h1, h2, h3, h4 { 
+  font-size: 30px;
+  margin-top: 10px;
+  
+}
 
 #controls {
   /* Appearance */
