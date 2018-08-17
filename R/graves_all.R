@@ -85,17 +85,17 @@ graves_all <- function(coords =F){
       d <- fromJSON(link)
       
       
-      grave_basic_info_ <- d$features$properties
+      grave_basic_info <- d$features$properties
       
       grave_coord_raw <- d$features$geometry$coordinates
       
-      grave_coord_t <- map(grave_coord_raw, t)
+     
       
       grave_coord_df <- map(grave_coord_t, data.frame)
       
-      grave_coord <- map2_df(grave_coord_df, grave_basic_info_$cm_id, ~ mutate(.x, id= .y))
+      grave_coord <- map2_df(grave_coord_df$raw, grave_basic_info$cm_id, ~ mutate(.x, id= .y))
       
-      grave_basic_info_all <- rbind(grave_basic_info_all, grave_basic_info_)
+      grave_basic_info_all <- rbind(grave_basic_info_all, grave_basic_info)
       
       grave_coord_all <- rbind(grave_coord_all, grave_coord)
       
@@ -124,7 +124,7 @@ graves_all <- function(coords =F){
   if(coords == T) {
     result2 <- grave_coord_all
   }else{
-    return(grave_basic_info_all)
+    result <- grave_basic_info_all
   }
-  
+  return(result)
 }
