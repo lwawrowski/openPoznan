@@ -8,6 +8,7 @@ library(shinydashboard)
 library(sp)
 
 
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(id="page",
                 title = "OpenPoznan Shiny app",
@@ -49,7 +50,8 @@ ui <- fluidPage(id="page",
                      "Royal imperial route" = "rir",
                      "Council district" = "council",
                      "Electoral area" = "elearea",
-                     "Electoral circle" = "circle"
+                     "Electoral circle" = "circle",
+                     "Bike stations" = "bike_stations"
                      #dodajemy po przecinku ;) 
                      )), id = "controls", 
                          class = "panel panel-default",
@@ -518,6 +520,18 @@ server <- function(input, output) {
        labels <- sprintf("<strong>%s</strong><br/>",
                          basic_info$ID) %>% 
          lapply(htmltools::HTML)
+     }
+     else if (input$data == "bike_stations") {
+       
+       Points <- TRUE
+       point_data <- bike_stations()
+       marker_name <- point_data$station
+       
+       Custom_icon <- makeIcon(iconUrl = "https://cdn.onlinewebfonts.com/svg/img_538285.png",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorY = 25)
+       
      }
 
         if(Points == TRUE) {
