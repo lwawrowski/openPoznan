@@ -115,48 +115,6 @@ lsdp_coord_id <- subset(lsdp_coord_id, select = -c(Added_1,
                                                    Added_2))
 
 
-# Tworzenie mapy punktowej na wykresie 
-
-ggplot(data = lsdp_coord_id,
-       aes(x= Longitude,
-           y= Latitude,
-           group=ID)) +
-  geom_polygon(colour = "blue")
-
-
-lsdp_split_data = lapply(unique(lsdp_coord_id$ID), function(x) {
-  df = as.matrix(lsdp_coord_id[lsdp_coord_id$ID == x, c("Longitude", "Latitude") ])
-  polys = Polygons(list(Polygon(df)), ID = x)
-  return(polys)
-})
-
-lsdp_data_lines = SpatialPolygons(lsdp_split_data)
-
-#Leaflet - ladna mapka
-
-
-
-lsdp_leaflet_map <- leaflet() %>%
-  addTiles() %>%  
-  addPolygons(data = lsdp_data_lines,
-              weight = 2, 
-              opacity = 1,
-              dashArray = "3",
-              color = "green",
-              smoothFactor = 0.5,
-              fillOpacity = 0.5, 
-              highlight = highlightOptions(
-                weight = 5,
-                color = "#666",
-                fillOpacity = 0.7,
-                bringToFront = TRUE),
-              labelOptions = labelOptions(
-                style = list("font-weight" = "normal", padding = "3px 8px"),
-                textsize = "15px",
-                direction = "auto"))
-
-lsdp_leaflet_map
-
 if(basic == TRUE){
   return(lsdp_basic_info)
 }

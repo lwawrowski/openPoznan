@@ -51,7 +51,9 @@ ui <- fluidPage(id="page",
                      "Council district" = "council",
                      "Electoral area" = "elearea",
                      "Electoral circle" = "circle",
-                     "Bike stations" = "bike_stations"
+                     "Bike stations" = "bike_stations",
+                     "Local Spatial Development Plans Called" = "lsdpc",
+                     "Local Passed Spatial Development Plans" = "lsdp"
                      #dodajemy po przecinku ;) 
                      )), id = "controls", 
                          class = "panel panel-default",
@@ -531,6 +533,50 @@ server <- function(input, output) {
                                iconWidth = 25,
                                iconHeight = 30,
                                iconAnchorY = 25)
+       
+     }
+     else if(input$data == "lsdpc") {
+       
+       
+       Points <- FALSE
+       basic_info <- local_spatial_dev_plans_called(basic = TRUE)
+       pick_data <- local_spatial_dev_plans_called(basic = FALSE)
+       lsdpc_coord_id <- pick_data
+       
+       lsdpc_split_data = lapply(unique(lsdpc_coord_id$ID), function(x) {
+         df = as.matrix(lsdpc_coord_id[lsdpc_coord_id$ID == x, c("Longitude", "Latitude") ])
+         polys = Polygons(list(Polygon(df)), ID = x)
+         return(polys)
+       })
+       
+       poly_data = SpatialPolygons(lsdpc_split_data)
+       
+       labels <- sprintf("<strong>%s</strong><br/>",
+                         basic_info$lsdpc_location_name) %>% 
+         lapply(htmltools::HTML)
+       
+       
+     }
+     else if(input$data == "lsdp") {
+       
+       
+       Points <- FALSE
+       basic_info <- local_spatial_dev_plans_passed(basic = TRUE)
+       pick_data <- local_spatial_dev_plans_passed(basic = FALSE)
+       lsdp_coord_id <- pick_data
+       
+       lsdp_split_data = lapply(unique(lsdp_coord_id$ID), function(x) {
+         df = as.matrix(lsdp_coord_id[lsdp_coord_id$ID == x, c("Longitude", "Latitude") ])
+         polys = Polygons(list(Polygon(df)), ID = x)
+         return(polys)
+       })
+       
+       poly_data = SpatialPolygons(lsdp_split_data)
+       
+       labels <- sprintf("<strong>%s</strong><br/>",
+                         basic_info$lsdp_location_name) %>% 
+         lapply(htmltools::HTML)
+       
        
      }
 

@@ -105,50 +105,6 @@ local_spatial_dev_plans_called <- function (basic = TRUE) {
                                                      Added_2))
   
   
-  # Tworzenie mapy punktowej na wykresie 
-  
-  ggplot(data = lsdpc_coord_id,
-         aes(x= Longitude,
-             y= Latitude,
-             group=ID)) +
-    geom_polygon(colour = "blue")
-  
-  
-  lsdpc_split_data = lapply(unique(lsdpc_coord_id$ID), function(x) {
-    df = as.matrix(lsdpc_coord_id[lsdpc_coord_id$ID == x, c("Longitude", "Latitude") ])
-    polys = Polygons(list(Polygon(df)), ID = x)
-    return(polys)
-  })
-  
-  lsdpc_data_lines = SpatialPolygons(lsdpc_split_data)
-  
-  #Leaflet - ladna mapka
-  
-  
-  
-  lsdpc_leaflet_map <- leaflet() %>%
-    addTiles() %>%  
-    addPolygons(data = lsdpc_data_lines,
-                weight = 2, 
-                opacity = 1,
-                dashArray = "3",
-                color = "green",
-                smoothFactor = 0.5,
-                fillOpacity = 0.5, 
-                highlight = highlightOptions(
-                  weight = 5,
-                  color = "#666",
-                  fillOpacity = 0.7,
-                  bringToFront = TRUE),
-                labelOptions = labelOptions(
-                  style = list("font-weight" = "normal", padding = "3px 8px"),
-                  textsize = "15px",
-                  direction = "auto"))
-  
-  lsdpc_leaflet_map
-  
-  
-  
   if(basic == TRUE){
     return(lsdpc_basic_info)
   }
