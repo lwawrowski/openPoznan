@@ -426,6 +426,20 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
        
+       
+     } else if (input$data == "bp"){
+       
+       Points <- TRUE
+       point_data <- paths_bike(coords = T)
+       marker_name <- point_data$id2
+       
+       Custom_icon <- makeIcon(iconUrl = "",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorX = 15,
+                               iconAnchorY = 25)
+       
+     
      } else if (input$data == "Monument") {
        
        Points <- TRUE

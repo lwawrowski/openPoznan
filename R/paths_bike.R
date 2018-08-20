@@ -54,7 +54,7 @@ paths_bike <- function(coords = F){
 
   bcoord_id <- data.frame(Longitude=bcoord_id$V1,
                           Latitude=bcoord_id$V2,
-                          id2=bcoord_id$name)
+                          id2=bcoord_id$id2)
   # z??czenie wszystkich kolumn
   
   
