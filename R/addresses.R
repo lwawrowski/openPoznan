@@ -5,7 +5,7 @@
 #' @export
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
-#' @importFrom dplyr mutate
+#' @importFrom dplyr mutate left_join
 #' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
