@@ -54,15 +54,14 @@ paths_bike <- function(coords = F){
 
   bcoord_id <- data.frame(Longitude=bcoord_id$V1,
                           Latitude=bcoord_id$V2,
-                          id2=bcoord_id$id2)
+                          id2=bcoord_id$name)
   # z??czenie wszystkich kolumn
   
-  bikepaths_final <- cbind(bikepaths_basic_info)
+  
   
   if(coords == T){
     result <- bcoord_id
   } else {
-    result <- bikepaths_final
+    return(bikepaths_basic_info)
   }
-  return(result)
 }
