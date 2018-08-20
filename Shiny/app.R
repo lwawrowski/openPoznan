@@ -467,6 +467,7 @@ server <- function(input, output) {
      } else if (input$data == "bp") {
        
        Points <- FALSE
+<<<<<<< HEAD
        Clear_map <- FALSE
        point_data <- paths_bike(coords = T)
        longtitude <- point_data$Longitude
@@ -479,14 +480,23 @@ server <- function(input, output) {
          lng = ~grouped_coords(lng, group),
          lat = ~grouped_coords(lat, group),
          color = pal(1:8), getMapData(map))
+=======
+       mydf <- paths_bike(coords = T)
+       longtitude <- mydf$Longitude
+       latitude <- mydf$Latitude
+       group <- mydf$id2
        
-       grouped_coords <- function(coord, group) {
+       df <- data.frame(group = group, lng = longtitude, lat = latitude)
+>>>>>>> fe0d734bc39b78379e67c494638e3127415b3e18
+       
+       grouped_coords <- function(coord = coord,group = group) {
          data.frame(coord = coord, group = group) %>% 
            group_by(group) %>%
            by_slice(~c(.$coord, NA), .to = "output") %>% 
            .$output %>% 
            unlist()
        }
+<<<<<<< HEAD
 
      } else if (input$data == "bp"){
 
@@ -501,6 +511,24 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
 
+=======
+       pal <- colorFactor("Accent", NULL)
+        m <- leaflet() %>% addTiles() %>% setView(16.92, 52.40, zoom = 11) %>%
+         addPolylines(data = df,
+                      lng = ~grouped_coords(lng, group),
+                      lat = ~grouped_coords(lat, group),
+                      color = pal(1:7))
+
+        paths_split_data = lapply(unique(mydf$id2), function(x) {
+          df_2 = as.matrix(mydf[mydf$id2 == x, c("Longitude", "Latitude") ])
+          polys = Lines(list(lines(df_2)), ID = x)
+          return(polys)
+        })
+       poly_data = SpatialLines(paths_split_data)
+       labels <- sprintf("<strong>%s</strong><br/>",
+                         mydf$id2) %>%
+         lapply(htmltools::HTML)
+>>>>>>> fe0d734bc39b78379e67c494638e3127415b3e18
      } else if (input$data == "Monument") {
 
        Points <- TRUE
