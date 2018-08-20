@@ -446,8 +446,6 @@ server <- function(input, output) {
                                iconHeight = 30,
                                iconAnchorX = 15,
                                iconAnchorY = 25)
-<<<<<<< HEAD
-       
        
      } else if (input$data == "bp") {
        
@@ -471,8 +469,6 @@ server <- function(input, output) {
            .$output %>% 
            unlist()
        }
-     
-=======
 
      } else if (input$data == "bp"){
 
@@ -486,7 +482,6 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
 
->>>>>>> ce7a478707cb5ede860bb6159b7fcd5474ebf1ef
      } else if (input$data == "Monument") {
 
        Points <- TRUE
@@ -546,8 +541,8 @@ server <- function(input, output) {
        point_data <- districts(coords = T)
        distric_coord <- point_data$coord
 
-       District_split_data = lapply(unique(distric_coord$id), function(x) {
-         df = as.matrix(distric_coord[distric_coord$id == x, c("Longitude", "Latitude") ])
+       District_split_data = lapply(unique(point_data$id), function(x) {
+         df = as.matrix(point_data[point_data$id == x, c("Longitude", "Latitude") ])
          polys = Polygons(list(Polygon(df)), ID = x)
          return(polys)
        })
@@ -585,10 +580,9 @@ server <- function(input, output) {
        Points <- FALSE
        basic_info <- electoral_areas(coords = F)
        point_data <- electoral_areas(coords = T)
-       Electoral_coord <- point_data$coord
 
-       Electoral_split_data = lapply(unique(Electoral_coord$id), function(x) {
-         df = as.matrix(Electoral_coord[Electoral_coord$id == x, c("Longitude", "Latitude") ])
+       Electoral_split_data = lapply(unique(point_data$id), function(x) {
+         df = as.matrix(point_data[point_data$id == x, c("Longitude", "Latitude") ])
          polys = Polygons(list(Polygon(df)), ID = x)
          return(polys)
        })
