@@ -427,18 +427,28 @@ server <- function(input, output) {
                                iconAnchorY = 25)
        
        
-     } else if (input$data == "bp"){
+     } else if (input$data == "bp") {
        
-       Points <- TRUE
+       Points <- FALSE
        point_data <- paths_bike(coords = T)
-       marker_name <- point_data$id2
+       longtitude <- point_data$Longitude
+       latitude <- point_data$Latitude
+       group <- point_data$id2
+      
+       df <- data_frame(group = group, lng = longtitude, lat = latitude)
+       pal <- colorFactor("Accent", NULL)
+      leaflet(llmap) %>%  addPolylines(map = llmap,
+         lng = ~grouped_coords(lng, group),
+         lat = ~grouped_coords(lat, group),
+         color = pal(1:8), getMapData(map))
        
-       Custom_icon <- makeIcon(iconUrl = "",
-                               iconWidth = 25,
-                               iconHeight = 30,
-                               iconAnchorX = 15,
-                               iconAnchorY = 25)
-       
+       grouped_coords <- function(coord, group) {
+         data.frame(coord = coord, group = group) %>% 
+           group_by(group) %>%
+           by_slice(~c(.$coord, NA), .to = "output") %>% 
+           .$output %>% 
+           unlist()
+       }
      
      } else if (input$data == "Monument") {
        
