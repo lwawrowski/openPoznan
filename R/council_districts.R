@@ -66,7 +66,7 @@ council_districts <- function(coords = F) {
   estate_final <- cbind(estate_basic_info, estate_coord)
   
   if(coords == T){
-    result <- estate_coord
+    result <- estate_final
   } else {
     result <- estate_basic_info
   }

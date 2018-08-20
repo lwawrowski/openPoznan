@@ -30,7 +30,7 @@
 
 graves_all <- function(coords =F){
   
-  cemeterycoord_id <- cemeteries(Coord = T)
+  cemeterycoord_id <- cemeteries(coords = T)
   
   
   coords <-cemeterycoord_id %>% mutate(id2=ifelse(id %in% (c(7,8,9,10,11,13,14)), 25, id)) %>%
@@ -51,11 +51,11 @@ graves_all <- function(coords =F){
     cm_i <- coords %>% filter(id2 == cm_unique_id[i])
     
     
-    min_x1 <- min(cm_i$V1)
-    max_x1 <- max(cm_i$V1)
+    min_x1 <- min(cm_i$Longitude)
+    max_x1 <- max(cm_i$Longitude)
     
-    min_y1 <- min(cm_i$V2) 
-    max_y1 <- max(cm_i$V2) 
+    min_y1 <- min(cm_i$Latitude) 
+    max_y1 <- max(cm_i$Latitude) 
     
     a <- expand.grid(x1=seq(min_x1,max_x1,length.out = 10),
                      y1=seq(min_y1,max_y1,length.out = 10))
@@ -85,17 +85,17 @@ graves_all <- function(coords =F){
       d <- fromJSON(link)
       
       
-      grave_basic_info_ <- d$features$properties
+      grave_basic_info <- d$features$properties
       
       grave_coord_raw <- d$features$geometry$coordinates
       
-      grave_coord_t <- map(grave_coord_raw, t)
+     
       
       grave_coord_df <- map(grave_coord_t, data.frame)
       
-      grave_coord <- map2_df(grave_coord_df, grave_basic_info_$cm_id, ~ mutate(.x, id= .y))
+      grave_coord <- map2_df(grave_coord_df$raw, grave_basic_info$cm_id, ~ mutate(.x, id= .y))
       
-      grave_basic_info_all <- rbind(grave_basic_info_all, grave_basic_info_)
+      grave_basic_info_all <- rbind(grave_basic_info_all, grave_basic_info)
       
       grave_coord_all <- rbind(grave_coord_all, grave_coord)
       
@@ -124,7 +124,7 @@ graves_all <- function(coords =F){
   if(coords == T) {
     result2 <- grave_coord_all
   }else{
-    return(grave_basic_info_all)
+    result <- grave_basic_info_all
   }
-  
+  return(result)
 }

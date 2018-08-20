@@ -61,9 +61,9 @@ electoral_areas <- function(coords = F){
   # z??czenie wszystkich kolumn
   
   if(coords == T){
-     result <- oblast2coord_id
+     result <- list(area=oblast2_basic_info, coord=oblast2coord_id)
     } else {
-      result <- oblast2_basic_info
+      return(oblast2_basic_info)
     }
-  return(result)
+  
 }
