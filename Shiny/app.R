@@ -450,38 +450,36 @@ server <- function(input, output) {
      } else if (input$data == "bp") {
        
        Points <- FALSE
-       point_data <- paths_bike(coords = T)
-       longtitude <- point_data$Longitude
-       latitude <- point_data$Latitude
-       group <- point_data$id2
-      
-       df <- data_frame(group = group, lng = longtitude, lat = latitude)
-       pal <- colorFactor("Accent", NULL)
-      leaflet(llmap) %>%  addPolylines(map = llmap,
-         lng = ~grouped_coords(lng, group),
-         lat = ~grouped_coords(lat, group),
-         color = pal(1:8), getMapData(map))
+       mydf <- paths_bike(coords = T)
+       longtitude <- mydf$Longitude
+       latitude <- mydf$Latitude
+       group <- mydf$id2
        
-       grouped_coords <- function(coord, group) {
+       df <- data.frame(group = group, lng = longtitude, lat = latitude)
+       
+       grouped_coords <- function(coord = coord,group = group) {
          data.frame(coord = coord, group = group) %>% 
            group_by(group) %>%
            by_slice(~c(.$coord, NA), .to = "output") %>% 
            .$output %>% 
            unlist()
        }
+       pal <- colorFactor("Accent", NULL)
+        m <- leaflet() %>% addTiles() %>% setView(16.92, 52.40, zoom = 11) %>%
+         addPolylines(data = df,
+                      lng = ~grouped_coords(lng, group),
+                      lat = ~grouped_coords(lat, group),
+                      color = pal(1:7))
 
-     } else if (input$data == "bp"){
-
-       Points <- TRUE
-       point_data <- paths_bike(coords = T)
-       marker_name <- point_data$id2
-
-       Custom_icon <- makeIcon(iconUrl = "",
-                               iconWidth = 25,
-                               iconHeight = 30,
-                               iconAnchorX = 15,
-                               iconAnchorY = 25)
-
+        paths_split_data = lapply(unique(mydf$id2), function(x) {
+          df_2 = as.matrix(mydf[mydf$id2 == x, c("Longitude", "Latitude") ])
+          polys = Lines(list(lines(df_2)), ID = x)
+          return(polys)
+        })
+       poly_data = SpatialLines(paths_split_data)
+       labels <- sprintf("<strong>%s</strong><br/>",
+                         mydf$id2) %>%
+         lapply(htmltools::HTML)
      } else if (input$data == "Monument") {
 
        Points <- TRUE
