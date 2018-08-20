@@ -1,5 +1,5 @@
 ---
-title: "vignettes for openPoznan" 
+title: "openPoznan part I" 
 author: "Wojciech Dopieralski" 
 date: "`r Sys.Date()`" 
 output: rmarkdown::html_vignette 
@@ -25,17 +25,19 @@ vignette: >
   library(textclean)
   library(stringdist)
 ```
-Vignette for tvm function. 
 
-- Shows head of TVM data 
+# Ticket vending machines  
+
+Shows head of TVM data 
+
 ```{r tvm head}
-  TVM_example <- tram_bus_stops()
+  TVM_example <- tram_bus_stops() # to chyba nie ta funkcja
 
   head(TVM_example)
 ```
-Vignette for tvm function. 
 
-- Create map using gg plot, and put points on Poznan map. 
+Create map using gg plot, and put points on Poznan map. 
+
 ```{r tvm ggmap, fig.width=10, fig.height=5}
   # Create point map on the graph
 
@@ -53,7 +55,8 @@ Vignette for tvm function.
   
   plot(Poznan_with_TVM)
 ```
-Vignette for pm function. 
+
+# Parking machines
 
 - Create map using gg plot.
 ```{r pm ggmap}

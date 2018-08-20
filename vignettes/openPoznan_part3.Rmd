@@ -1,0 +1,124 @@
+---
+title: "openPoznan part III"
+author: "Kamil Nowak"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+ %\VignetteIndexEntry{Vignette Title}
+ %\VignetteEngine{knitr::rmarkdown}
+ \usepackage[utf8]{inputenc} 
+---
+
+```{r setup, include=FALSE}
+  library(openPoznan)
+  library(jsonlite)
+  library(purrr)
+  library(dplyr)
+  library(ggplot2)
+  library(ggmap)
+  library(leaflet)
+  library(sp)
+  library(rgeos)
+  library(geosphere)
+  library(gmapsdistance)
+  library(XML)
+```
+
+## Vignette for addresses function.
+
+```{r}
+address_example <- addresses()
+head(address_example)
+```
+
+## Create map using gg plot, and put path on map.
+
+```{r pressure, echo=FALSE}
+
+ggplot(data = address_example, aes(x= longitude, y= latitude, group=id)) +
+  geom_path()
+```
+
+## Vignette for properties_current_trade() function.
+
+```{r}
+property_cto_example <- properties_current_trade()
+head(property_cto_example)
+
+```
+
+## Create map using gg plot, and put points on Poznan map.
+
+```{r}
+get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
+
+poznan <- ggmap(get_poznan)
+  
+poznan+geom_point(data = property_cto_example,
+                           aes(x= longitude,
+                               y= latitude,
+                               group=id) ) 
+```
+
+
+
+## Vignette for properties_for_sale function.
+
+```{r}
+property_fs_example <- properties_for_sale()
+head(property_fs_example)
+
+```
+
+## Create map using gg plot, and put points on Poznan map.
+
+```{r}
+get_poznan <- get_map(c(16.916, 52.42), zoom = 11) 
+
+poznan <- ggmap(get_poznan)
+  
+poznan+geom_point(data = property_fs_example,
+                           aes(x= longitude,
+                               y= latitude,
+                               group=id) ) 
+  
+
+
+```
+## Vignette for local_spatial_dev_plans_passed function.
+
+```{r}
+lsdpp_example <- local_spatial_dev_plans_passed()
+head(lsdpp_example)
+
+```
+
+## Create map usign gg plot.
+```{r}
+lsdp_coord_id <- local_spatial_dev_plans_passed(basic = FALSE)
+ggplot(data = lsdp_coord_id,
+       aes(x= Longitude,
+           y= Latitude,
+           group=ID)) +
+  geom_polygon(colour = "blue")
+```
+
+
+
+## Vignette for local_spatial_dev_plans_called function.
+```{r}
+lsdpc_example <- local_spatial_dev_plans_called()
+head(lsdpc_example)
+
+```
+
+## Create map usign gg plot.
+```{r}
+lsdpc_coord_id <- local_spatial_dev_plans_called(basic = FALSE)
+ggplot(data = lsdpc_coord_id,
+       aes(x= Longitude,
+           y= Latitude,
+           group=ID)) +
+  geom_polygon(colour = "blue")
+```
+
