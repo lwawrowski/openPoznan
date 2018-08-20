@@ -57,12 +57,11 @@ paths_bike <- function(coords = F){
                           id2=bcoord_id$id2)
   # z??czenie wszystkich kolumn
   
-  bikepaths_final <- cbind(bikepaths_basic_info)
+  
   
   if(coords == T){
     result <- bcoord_id
   } else {
-    result <- bikepaths_final
+    return(bikepaths_basic_info)
   }
-  return(result)
 }

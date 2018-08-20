@@ -56,7 +56,38 @@ ui <- fluidPage(id="page",
                      "Local Spatial Development Plans Called" = "lsdpc",
                      "Local Passed Spatial Development Plans" = "lsdp"
                      #dodajemy po przecinku ;) 
-                     )), id = "controls", 
+                     )), 
+                         
+       
+       selectInput(inputId = "data",
+                   label = "Point",
+                   c("Stop" = "stap",
+                     "Parking machine" = "pm",
+                     "Ticket vending machine" = "tvm",
+                     "Church" = "church",
+                     "Cesspool" = "cesspool",
+                     "Sewage work" = "sw",
+                     "Local Government" = "lg",
+                     "Monument" = "Monument",
+                     "Historical church" = "hischurch",
+                     "Graves" = "graves",
+                     "Points with 'ZTM' tickets" = "ticket",
+                     "Council district" = "council")),
+       
+       selectInput(inputId = "data",
+                   label = "Area",
+                   c("Parish" = "parish",
+                     "School area" = "area",
+                     "Bike Paths" = "bp",
+                     "Dydactic Paths" = "dp",
+                     "walking Paths" = "wp",
+                     "Cementery" = "cemetery",
+                     "Poznan districts" = "district",
+                     "Royal imperial route" = "rir",
+                     "Electoral area" = "elearea",
+                     "Electoral circle" = "circle")),
+       
+                         id = "controls", 
                          class = "panel panel-default",
                          fixed = TRUE,
                          draggable = TRUE, 
@@ -396,6 +427,20 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
        
+       
+     } else if (input$data == "bp"){
+       
+       Points <- TRUE
+       point_data <- paths_bike(coords = T)
+       marker_name <- point_data$id2
+       
+       Custom_icon <- makeIcon(iconUrl = "",
+                               iconWidth = 25,
+                               iconHeight = 30,
+                               iconAnchorX = 15,
+                               iconAnchorY = 25)
+       
+     
      } else if (input$data == "Monument") {
        
        Points <- TRUE
