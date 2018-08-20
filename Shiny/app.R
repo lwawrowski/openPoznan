@@ -446,7 +446,6 @@ server <- function(input, output) {
                                iconHeight = 30,
                                iconAnchorX = 15,
                                iconAnchorY = 25)
-<<<<<<< HEAD
        
        
      } else if (input$data == "bp") {
@@ -472,7 +471,7 @@ server <- function(input, output) {
            unlist()
        }
      
-=======
+
 
      } else if (input$data == "bp"){
 
@@ -486,7 +485,7 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
 
->>>>>>> ce7a478707cb5ede860bb6159b7fcd5474ebf1ef
+
      } else if (input$data == "Monument") {
 
        Points <- TRUE
