@@ -121,13 +121,13 @@ server <- function(input, output) {
      # if (input$point_data == "empty_point") {
        
        Points <- TRUE
-       
+
        Custom_icon <- makeIcon(iconUrl = "",
                                iconWidth = 25,
                                iconHeight = 30,
                                iconAnchorX = 15,
                                iconAnchorY = 25)
-       
+
        Longitude <- 16.931992
        Latitude <- 52.409538
        point_data <- data.frame(Longitude,Latitude)
@@ -135,6 +135,7 @@ server <- function(input, output) {
        
        
      #} else
+       
        if (input$data == "tvm") {
        
        Points <- TRUE
@@ -446,7 +447,6 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
 
-
      } else if (input$data == "bp"){
 
        Points <- TRUE
@@ -458,7 +458,6 @@ server <- function(input, output) {
                                iconHeight = 30,
                                iconAnchorX = 15,
                                iconAnchorY = 25)
-
 
      } else if (input$data == "Monument") {
 
@@ -482,6 +481,7 @@ server <- function(input, output) {
                                iconHeight = 30,
                                iconAnchorX = 15,
                                iconAnchorY = 25)
+       
      } else if (input$data == "cemetery") {
 
       Points <- FALSE
@@ -620,10 +620,7 @@ server <- function(input, output) {
                          basic_info$lsdpc_location_name) %>%
          lapply(htmltools::HTML)
 
-
-     }
-     else if(input$data == "lsdp") {
-
+       } else if(input$data == "lsdp") {
 
        Points <- FALSE
        basic_info <- local_spatial_dev_plans_passed(basic = TRUE)
