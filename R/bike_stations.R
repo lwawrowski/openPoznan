@@ -1,4 +1,4 @@
-#' bike_station Function
+#' bike_stations Function
 #'
 #' This function download statistic about bike station from NextBike
 #' @keywords keyword
@@ -8,8 +8,8 @@
 #' @format 
 #' \describe{
 #' \item{id}{factor; station id.}
-#' \item{longitude}{numericr; longitude.}
-#' \item{latitude}{numeric; latitude.}
+#' \item{Longitude}{numericr; Longitude.}
+#' \item{Latitude}{numeric; Latitude.}
 #' \item{name}{factor; station name.}
 #' \item{bike_racks}{factor; bike racks.}
 #' \item{free_racks}{factor; free racks.}
@@ -18,8 +18,8 @@
 #' \item{update}{factor; last update.}
 #' }
 #' @examples
-#' bike_station()
-bike_station <- function(){
+#' bike_stations()
+bike_stations <- function(){
   
   NextBike <- fromJSON('http://www.poznan.pl/mim/plan/map_service.html?mtype=pub_transport&co=stacje_rowerowe')
   
@@ -38,8 +38,8 @@ bike_station <- function(){
                                updated=NextBike_features$properties$updated)
   
   colnames(NextBike_final)<-c("id",
-                              "longitude",
-                              "latitude",
+                              "Longitude",
+                              "Latitude",
                               "station",
                               "bike_racks",
                               "free_racks",
