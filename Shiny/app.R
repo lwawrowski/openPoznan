@@ -206,7 +206,7 @@ server <- function(input, output) {
        Points <- FALSE
        basic_info <- school_basic_areas()
        pick_data <- school_basic_areas(T)
-       Area_coord_id <- pick_data$result
+       Area_coord_id <- pick_data$Coords
 
        Area_split_data = lapply(unique(Area_coord_id$ID), function(x) {
          df = as.matrix(Area_coord_id[Area_coord_id$ID == x, c("Longitude", "Latitude") ])
