@@ -8,5 +8,5 @@
 #' \item{Latitude}{numeric; Latitude of church.}
 #' }
 #' @examples
-#' Churches <- churches_data()
+#' churches_data()
 "churches_data"
