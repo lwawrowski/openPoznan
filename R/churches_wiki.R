@@ -19,7 +19,7 @@
 #' \item{Latitude}{numeric; Latitude of church.}
 #' }
 #' @examples
-#' Grave <- churches_wiki()
+#' Churches <- churches_wiki()
 
 churches_wiki <- function () {
 
