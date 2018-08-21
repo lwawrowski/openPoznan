@@ -92,8 +92,7 @@ graves <- function(coords = F){
                                              Paid=grave_basic_info_all$paid)
   
   grave_coord_all <- data.frame(Longitude=grave_coord_all$X1,
-                                Latitude=grave_coord_all$X2,
-                                id=grave_coord_all$id)
+                                Latitude=grave_coord_all$X2)
 
   grave_coord_all_fine <- cbind(grave_coord_all, grave_basic_info_final)
   if(coords == T){
