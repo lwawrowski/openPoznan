@@ -213,6 +213,8 @@ point_data <- transform(Church_mixed_with_Parish, Longitude = as.numeric(Longitu
 
 point_data <- point_data[,-(4:6)]
 
+churches_data <- point_data
+
 return (point_data)
 
 }
