@@ -6,8 +6,12 @@
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
-#' @importFrom dplyr mutate
-#' @importFrom 
+#' @importFrom dplyr mutate distinct join
+#' @importFrom openPoznan parishes
+#' @importFrom read_xml read_html 
+#' @importFrom rvest html_nodes html_text 
+#' @importFrom textclean replace_non_ascii
+#' @importFrom fuzzyjoin stringdist_join
 #' @format 
 #' \describe{
 #' \item{Parish_Name.y}{character; Name of certain Church.}
