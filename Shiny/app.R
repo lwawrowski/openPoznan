@@ -55,10 +55,12 @@ ui <- fluidPage(id="page",
                      "Electoral circle" = "circle",
                      "Bike stations" = "bike_stations",
                      "Local Spatial Development Plans Called" = "lsdpc",
-                     "Local Passed Spatial Development Plans" = "lsdp",
-                     "Clear map" = "clear"
+                     "Local Passed Spatial Development Plans" = "lsdp"
                      #dodajemy po przecinku ;)
                      )),
+       
+       actionButton("clear_button", 
+                    "Clear Map"),
                          
        
        # selectInput(inputId = "point_data",
@@ -104,26 +106,27 @@ ui <- fluidPage(id="page",
      )
 )
 
-
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
    output$llmap <- renderLeaflet({
     
-     
      leaflet() %>%
        addTiles() %>%
        setView(16.92, 52.40, zoom = 11)
    })
    
+   observeEvent(input$clear_button, {
+     
+     leafletProxy("llmap") %>%
+       clearShapes() %>%
+       clearMarkerClusters()
+     
+   })
    
    observe({
      
-     
-     # if (input$point_data == "empty_point") {
-       
        Points <- TRUE
-       Clear_map <- FALSE
 
        Custom_icon <- makeIcon(iconUrl = "",
                                iconWidth = 25,
@@ -136,13 +139,9 @@ server <- function(input, output) {
        point_data <- data.frame(Longitude,Latitude)
        marker_name <- "Poznan"
        
-       
-     #} else
-       
        if (input$data == "tvm") {
        
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- ticket_vending_machines()
        marker_name <- point_data$ID
 
@@ -154,7 +153,6 @@ server <- function(input, output) {
      } else if (input$data == "pm") {
        
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- parking_machines()
        marker_name <- point_data$ID
 
@@ -166,7 +164,6 @@ server <- function(input, output) {
       } else if (input$data == "stop") {
          
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- tram_bus_stops()
        marker_name <- point_data$ID
 
@@ -178,7 +175,6 @@ server <- function(input, output) {
      } else if (input$data == "cesspool") {
 
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- cesspools()
        marker_name <- point_data$ID
 
@@ -191,7 +187,6 @@ server <- function(input, output) {
 
 
        Points <- FALSE
-       Clear_map <- FALSE
        basic_info <- parishes()
        pick_data <- parishes(T)
        Parish_coord_id <- pick_data$Coords
@@ -212,7 +207,6 @@ server <- function(input, output) {
      } else if(input$data == "area") {
 
        Points <- FALSE
-       Clear_map <- FALSE
        basic_info <- school_basic_areas()
        pick_data <- school_basic_areas(T)
        Area_coord_id <- pick_data$Coords
@@ -235,7 +229,6 @@ server <- function(input, output) {
       }  else if (input$data == "sw") {
 
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- sewage_works()
        marker_name <- point_data$ID
 
@@ -247,7 +240,6 @@ server <- function(input, output) {
      } else if(input$data == "church") {
 
        Points <- TRUE
-       Clear_map <- FALSE
 
        #Church List from town hall API
        
@@ -455,7 +447,6 @@ server <- function(input, output) {
      } else if (input$data == "lg") {
 
        Points <- TRUE
-       Clear_map < FALSE
        point_data <- local_government(coords = T)
        marker_name <- point_data$Residence
 
@@ -464,8 +455,20 @@ server <- function(input, output) {
                                iconHeight = 30,
                                iconAnchorX = 15,
                                iconAnchorY = 25)
+
+
+       
+     } else if (input$data == "bp") {
+       
+       Points <- FALSE
+       point_data <- paths_bike(coords = T)
+       longtitude <- point_data$Longitude
+       latitude <- point_data$Latitude
+       group <- point_data$id2
+
       
      } else if (input$data == "bp"){
+
 
        Points <- FALSE
        Clear_map <- FALSE
@@ -477,15 +480,11 @@ server <- function(input, output) {
       s1 <- Lines(list(sl1), ID = NA)
       Poly_data <- SpatialLines(list(s1))
       
-      df <- data.frame(len = sapply(1:length(s1), function(i)))
-      rownames(df) <- sapply(1:length(Poly_data), Poly_data@lines[[i]]@ID)
-      
       Sldf <- SpatialLinesDataFrame(Poly_data, data = df)
-       
+
      } else if (input$data == "Monument") {
 
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- monuments(coords = T)
        marker_name <- point_data$Name
 
@@ -497,7 +496,6 @@ server <- function(input, output) {
 
      } else if (input$data == "hischurch") {
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- historical_churches(coords = T)
        marker_name <- point_data$Name
 
@@ -510,7 +508,6 @@ server <- function(input, output) {
      } else if (input$data == "cemetery") {
 
       Points <- FALSE
-      Clear_map <- FALSE
       basic_info <- cemeteries(coords = F)
       point_data <- cemeteries(coords = T)
       cemetery_coord <- point_data$coord
@@ -530,7 +527,6 @@ server <- function(input, output) {
      } else if (input$data == "graves") {
        
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- graves(coords = T)
 
        Custom_icon <- makeIcon(iconUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/cemetery-367830362729accc-512x512.png",
@@ -542,7 +538,6 @@ server <- function(input, output) {
      } else if (input$data == "district") {
 
        Points <- FALSE
-       Clear_map <- FALSE
        basic_info <- districts(coords = F)
        point_data <- districts(coords = T)
        distric_coord <- point_data$coord
@@ -561,7 +556,6 @@ server <- function(input, output) {
      } else if (input$data == "ticket") {
 
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- ticket_sales_points(coords = T)
        marker_name <- point_data$Name
 
@@ -574,7 +568,6 @@ server <- function(input, output) {
      } else if (input$data == "council") {
 
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- council_districts(coords = T)
        marker_name <- point_data$Electoral_District
 
@@ -586,7 +579,6 @@ server <- function(input, output) {
      } else if (input$data == "elearea") {
 
        Points <- FALSE
-       Clear_map <- FALSE
        basic_info <- electoral_areas(coords = F)
        point_data <- electoral_areas(coords = T)
 
@@ -604,7 +596,6 @@ server <- function(input, output) {
      } else if (input$data == "circle") {
 
        Points <- FALSE
-       Clear_map <- FALSE
        basic_info <- electoral_circles(coords = F)
        point_data <- electoral_circles(coords = T)
        Circle_coord <- point_data$coord
@@ -623,7 +614,6 @@ server <- function(input, output) {
      else if (input$data == "bike_stations") {
 
        Points <- TRUE
-       Clear_map <- FALSE
        point_data <- bike_stations()
        marker_name <- point_data$station
 
@@ -637,7 +627,6 @@ server <- function(input, output) {
 
 
        Points <- FALSE
-       Clear_map <- FALSE
        basic_info <- local_spatial_dev_plans_called(basic = TRUE)
        pick_data <- local_spatial_dev_plans_called(basic = FALSE)
        lsdpc_coord_id <- pick_data
@@ -657,7 +646,6 @@ server <- function(input, output) {
        } else if(input$data == "lsdp") {
 
        Points <- FALSE
-       Clear_map <- FALSE
        basic_info <- local_spatial_dev_plans_passed(basic = TRUE)
        pick_data <- local_spatial_dev_plans_passed(basic = FALSE)
        lsdp_coord_id <- pick_data
@@ -673,14 +661,9 @@ server <- function(input, output) {
        labels <- sprintf("<strong>%s</strong><br/>",
                          basic_info$lsdp_location_name) %>%
          lapply(htmltools::HTML)
-       } else if (input$data == "clear") {
-       
-         Clear_map <- TRUE
-         
-       }
-     
+       } 
 
-        if(Points == TRUE && Clear_map == FALSE) {
+        if(Points == TRUE) {
          leafletProxy("llmap") %>%
          clearMarkerClusters() %>%
          addMarkers(lat = point_data$Latitude,
@@ -688,11 +671,7 @@ server <- function(input, output) {
                 popup = marker_name,
                 icon = Custom_icon,
                 clusterOptions = markerClusterOptions())
-        } else if (Clear_map == TRUE) {
-          leafletProxy("llmap") %>%
-          clearShapes() %>%
-          clearMarkerClusters()
-        } else if (Points == FALSE && Clear_map == FALSE) {
+        } else if (Points == FALSE) {
           leafletProxy("llmap") %>%
           clearShapes() %>%
           addPolygons(data = poly_data,
@@ -714,17 +693,9 @@ server <- function(input, output) {
                         direction = "auto")
                       )
         }
-     
-     
-     
-
-
    })
 
 }
-
-
-
 
 # Run the application 
 shinyApp(ui = ui, server = server)
