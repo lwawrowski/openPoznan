@@ -6,13 +6,44 @@ library(openPoznan)
 library(leaflet)
 library(shinydashboard)
 library(sp)
+library(shinyjs)
 
 
 
 
 # Define UI for application that draws a histogram
+
+#loading content
+appCSS<- "
+  #loading-content {
+    position: absolute;
+    background: #66b9fd;
+    opacity: 0.9;
+    z-index: 100;
+    left: 0;
+    right: 0;
+    height: 100%;
+    text-align: center;
+    color:  #FFFFFF;
+}
+  
+"
+
 ui <- fluidPage(id="page",
                 title = "OpenPoznan Shiny app",
+                useShinyjs(),
+                inlineCSS(appCSS),
+                
+                div(
+                  id="loading-content",
+                  h2("Loading...")
+                ),
+                hidden(
+                  div(
+                    id="app-content"
+                  )
+                ),
+              
                 
       column(6,offset = 4,         
       titlePanel(title = "openPoznan interactive map",
@@ -108,6 +139,9 @@ ui <- fluidPage(id="page",
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  
+  Sys.sleep(1)
+  hide(id = "loading-content", anim = TRUE, animType = "fade")
   
    output$llmap <- renderLeaflet({
     
@@ -456,31 +490,37 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
 
-
        
-     } else if (input$data == "bp") {
-       
-       Points <- FALSE
-       point_data <- paths_bike(coords = T)
-       longtitude <- point_data$Longitude
-       latitude <- point_data$Latitude
-       group <- point_data$id2
-
-      
      } else if (input$data == "bp"){
+       
+       lines <- TRUE
+       
+       grouped_coords <- function(coord = coord,group = group) {
+         data.frame(coord = coord, group = group) %>%
+           group_by(group) %>%
+           by_slice(~c(.$coord, NA), .to = "output") %>%
+           .$output %>%
+           unlist()
+       }
+
+       mydf <- paths_dydactic(coords = T)
+       longtitude <- mydf$Longitude
+       latitude <- mydf$Latitude
+       group <- mydf$id1
+
+       df <- data.frame(group = group, lng = longtitude, lat = latitude)
+       pal <- colorFactor("Accent", NULL)
+       
+      #  Clear_map <- FALSE
+      #  mydf <- paths_bike(coords = T)
+      #  ID <- as.character(mydf$id2)
+      #  mydf2 <- cbind(mydf$Longitude,mydf$Latitude)
+      # 
+      # sl1 <- Line(mydf2)
+      # s1 <- Lines(list(sl1), ID = NA)
+      # Poly_data = SpatialLines(list(s1), proj4string = CRS(as.character(NA)))
 
 
-       Points <- FALSE
-       Clear_map <- FALSE
-       mydf <- paths_bike(coords = T)
-       ID <- as.character(mydf$id2)
-       mydf2 <- cbind(mydf$Longitude,mydf$Latitude)
-      
-      sl1 <- Line(mydf2)
-      s1 <- Lines(list(sl1), ID = NA)
-      Poly_data <- SpatialLines(list(s1))
-      
-      Sldf <- SpatialLinesDataFrame(Poly_data, data = df)
 
      } else if (input$data == "Monument") {
 
@@ -678,13 +718,13 @@ server <- function(input, output) {
                       weight = 2,
                       opacity = 1,
                       dashArray = "3",
-                      color = "white",
+                      color = "blue",
                       smoothFactor = 0.5,
                       fillOpacity = 0.5,
                       highlight = highlightOptions(
                         weight = 5,
                         color = "#666",
-                        fillOpacity = 0.7,
+                        fillOpacity = 0.2,
                         bringToFront = TRUE),
                        label = labels,
                        labelOptions = labelOptions(
@@ -692,6 +732,14 @@ server <- function(input, output) {
                         textsize = "15px",
                         direction = "auto")
                       )
+        } else if (lines == TRUE) {
+          leafletProxy("llmap") %>% 
+            clearshapes() %>% 
+            addPolylines(data = Poly_data,
+                         ng = ~grouped_coords(lng, group),
+                         lat = ~grouped_coords(lat, group),
+                         color = pal(1:6))
+                         
         }
    })
 
