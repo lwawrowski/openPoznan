@@ -1,0 +1,203 @@
+---
+title: "vignette_for_bikes"
+author: "Kamil Nowak"
+date: "10 sierpnia 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(openPoznan)
+library(ggmap)
+library(gmapsdistance)
+library(sp)
+library(lubridate)
+
+  # library(jsonlite)
+  # library(purrr)
+  # library(plyr)
+  # library(dplyr)
+  # library(ggplot2)
+  # library(leaflet)
+  # library(rgeos)
+  # library(geosphere)
+  
+  # library(XML)
+  # library(sqldf)
+  # library(lubridate)
+```
+
+## Vignette for bike_station function.
+
+```{r}
+bike_station_example <- bike_stations()
+head(bike_station_example)
+```
+
+## Create map using gg plot, and put points on Poznan map.
+
+```{r}
+get_poznan <- get_map(c(16.916, 52.42), zoom = 12)
+poznan <- ggmap(get_poznan)
+
+poznan + geom_point(data=bike_station_example, aes(x=Longitude, y=Latitude))  +
+  ylab("") + xlab("")
+```
+## Calculates the shortest distance between stations
+
+Co dokładnie jest liczone - krótko opisz.
+
+```{r}
+
+bike_station_example <- bike_station_example %>%
+  mutate(id=1:nrow(bike_station_example))
+
+bike_station_sp <- bike_station_example
+coordinates(bike_station_sp) <- ~Longitude + Latitude
+
+dist <- geosphere::distm(bike_station_sp)
+min_dist <- apply(dist, 1, function(x) order(x, decreasing=F)[2])
+
+bike_station_dist <- cbind(bike_station_example, bike_station_example[min_dist,], 
+                       apply(dist, 1, function(x) sort(x, decreasing=F)[2]))
+colnames(bike_station_dist) <- c(colnames(bike_station_example), 
+                             paste0("n_", colnames(bike_station_example)), "straight_distance")
+
+bike_station_dist_2 <- bike_station_dist %>%
+  select(station, straight_distance) %>%
+  arrange(desc(straight_distance))
+
+head(bike_station_dist_2, n = 10)
+
+```
+
+```{r}
+bike_station_dist_2 %>%
+  arrange(straight_distance) %>%
+  head(n=10)
+```
+
+
+## Vignette for bikes_current function.
+
+```{r}
+bikes_current_example <- bikes_current()
+head(bikes_current_example)
+```
+## Vignette for bikes_period function.
+
+```{r}
+data_table_final <- bikes_period("10-08-2018 14:50","10-08-2018 15:10")
+head(data_table_final)
+```
+
+```{r}
+
+data_table_final <- openPoznan::bikes_data
+
+data_table_final %>%
+  filter(id=="6151") %>%
+  group_by(date) %>%
+  count() %>%
+  ggplot(aes(x=n)) + geom_histogram(binwidth = 1)
+```
+## Number of bikes
+```{r}
+
+ data_table_final%>%
+  distinct(number)%>%
+  count()
+```
+
+## Number of bike stations
+```{r}
+ data_table_final%>%
+  distinct(id)%>%
+  count()
+```
+
+
+## Number of bike type
+```{r}
+ data_table_final%>%
+  group_by(bike_type)%>%
+  distinct(number)%>%
+  count()
+```
+## Number of rented bikes
+```{r}
+example  <- data_table_final %>%
+  group_by(date) %>%
+  count() %>%
+  mutate(n_rent=1066-n)
+
+example
+
+```
+
+```{r}
+
+ggplot(data = example, aes(n_rent)) + geom_histogram(binwidth = 10)
+
+
+```
+
+
+## Median rental bikes from each hour
+
+```{r}
+median <- example %>%
+    mutate(timePeriod = floor_date(dmy_hm(date), "30minutes")) %>%
+  group_by(timePeriod) %>%
+  summarise(med=median(n_rent))
+
+median
+```
+## The most rented bikes
+```{r}
+arrange(median,desc(mean))
+
+```
+
+## The sum of bike rentals from each hour
+
+```{r}
+example %>%
+  mutate(timePeriod = floor_date(dmy_hm(date), "60minutes")) %>%
+  group_by(timePeriod) %>%
+  summarise(sum=sum(n_rent)) %>%
+  ggplot(aes(x=timePeriod, y=sum)) + geom_line() 
+
+```
+
+## Change in the average number of bikes at the station with id 6151
+```{r}
+data_table_final %>%
+  filter(id=="6151")%>%
+  group_by(date) %>%
+  count() %>%
+   mutate(timePeriod = floor_date(dmy_hm(date), "60minutes")) %>%
+  group_by(timePeriod)%>%
+    summarise(med=median(n)) %>%
+  ggplot(aes(x=timePeriod, y=med)) + geom_line() 
+
+
+
+
+```
+
+## Analysis of the sum of bicycles on 6 selected bicycle stations
+
+```{r}
+data_table_final %>%
+  filter(id%in%c("6151","6152","6128","6114","2191","6148"))%>%
+  group_by(id,date) %>%
+  count() %>%
+   mutate(timePeriod = floor_date(dmy_hm(date), "60minutes")) %>%
+  group_by(id,timePeriod)%>%
+    summarise(sum=sum(n)) %>%
+  ggplot(aes(x=timePeriod, y=sum)) + geom_line() + facet_wrap(~ id, ncol = 2)
+```
+
+
+

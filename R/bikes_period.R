@@ -7,7 +7,7 @@
 #' @export
 #' @details Details of usage 
 #' @import XML
-#' @importFrom purrr map map2_df
+#' @importFrom purrr map map2_df map_lgl
 #' @importFrom dplyr mutate id
 #' @importFrom tidyr fill
 #' @format 

@@ -1,0 +1,57 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(tidyverse)
+
+graves <- readRDS("../data/graves.rds")
+```
+
+# Date of birth analysis
+
+```{r}
+date_birth_n <- graves %>%
+  group_by(g_date_birth) %>%
+  count()
+
+date_birth_n %>%
+  arrange(desc(n)) %>%
+  head(n=10)
+```
+
+Pierwszy i drugi wiersz to ewidentnie braki danych. Potem widać także, że jak znany był tylko rok to przypisywali 1-stycznia. W związku z tym sensownie będzie zamienić tę kolumnę na datę i wyodrębnić tylko rok. Przedstaw na wykresie jak kształtowała się liczba grobów w zależności od roku urodzenia.
+
+To samo zrób dla daty śmierci i pogrzebu.
+
+Sprawdź dla ilu grobów kompletna jest data urodzenia i śmierci/śmierci i pogrzebu/urodzenia, śmierci i pogrzebu.
+
+# Counts at cementaries
+
+```{r}
+
+ggplot(graves, aes(as.factor(cm_id))) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+    geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
+                   y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.5) +
+  xlab("Cementary id") + 
+  ylab("Percent") + 
+  scale_y_continuous(labels=scales::percent) +
+  theme_bw()
+```
+
+Zamiast id daj nazwę cmentarza.
+
+Sprawdz jak wygląda częstość zmiennej paid i g_size.

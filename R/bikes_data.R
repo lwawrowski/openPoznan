@@ -1,9 +1,6 @@
-#' data_bikes Function
+#' bikes_data Function
 #'
 #' This function load data about bikes.
-#' @keywords keyword
-#' @export
-#' @details Details of usage 
 #' @format 
 #' \describe{
 #' \item{number}{character; bike number.}
@@ -21,8 +18,5 @@
 #' \item{date}{factor; date.}
 #' }
 #' @examples
-#' data_bikes()
-data_bikes <- function(){
-load("data/bikes.RData")
-  return(data_table_final)
-}
+#' bikes_data()
+"bikes_data"
