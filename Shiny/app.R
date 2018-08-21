@@ -8,9 +8,6 @@ library(shinydashboard)
 library(sp)
 library(shinyjs)
 
-
-
-
 # Define UI for application that draws a histogram
 
 #loading content
@@ -28,7 +25,6 @@ appCSS<- "
 }
   
 "
-
 ui <- fluidPage(id="page",
                 title = "OpenPoznan Shiny app",
                 useShinyjs(),
@@ -277,11 +273,8 @@ server <- function(input, output) {
 
        #Church List from town hall API
        
-       library(rvest)
-       library(fuzzyjoin)
-       library(textclean)
-       library(dplyr)
-
+       data <- openPoznan::churches_data
+       
        basic_info <- parishes()
 
        Church <- distinct(basic_info, Parish_Name)
