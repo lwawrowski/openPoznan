@@ -694,7 +694,7 @@ server <- function(input, output) {
          lapply(htmltools::HTML)
        } 
 
-        if(Points == TRUE && Clear_map == FALSE) {
+        if(Points == TRUE) {
          leafletProxy("llmap") %>%
          clearMarkerClusters() %>%
          addMarkers(lat = point_data$Latitude,
@@ -702,7 +702,7 @@ server <- function(input, output) {
                 popup = marker_name,
                 icon = Custom_icon,
                 clusterOptions = markerClusterOptions())
-        } else if (Points == FALSE && Clear_map == FALSE) {
+        } else if (Points == FALSE) {
           leafletProxy("llmap") %>%
           clearShapes() %>%
           addPolygons(data = poly_data,
