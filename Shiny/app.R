@@ -510,27 +510,45 @@ server <- function(input, output) {
      } else if (input$data == "bp"){
        
        lines <- TRUE
+       Points <- FALSE
+       Clear_map <- FALSE
+       mydf <- paths_bike(coords = T)
+       longtitude <- mydf$Longitude
+       latitude <- mydf$Latitude
+       group <- mydf$id2
 
+       df <- data.frame(group = group, lng = longtitude, lat = latitude)
+       
+       labels <- sprintf("<strong>%s</strong><br/>",mydf$id2) %>% lapply(htmltools::HTML)
+       
+     } else if (input$data == "dp") {
+       lines <- TRUE
+       Points <- FALSE
+       Clear_map <- FALSE
+       
        mydf <- paths_dydactic(coords = T)
        longtitude <- mydf$Longitude
        latitude <- mydf$Latitude
        group <- mydf$id1
-
+       
        df <- data.frame(group = group, lng = longtitude, lat = latitude)
        
+       labels <- sprintf("<strong>%s</strong><br/>",mydf$id1) %>% lapply(htmltools::HTML)
        
-      #  Clear_map <- FALSE
-      #  lines <- TRUE
-      #  mydf <- paths_bike(coords = T)
-      #  ID <- as.character(mydf$id2)
-      #  mydf2 <- cbind(mydf$Longitude,mydf$Latitude)
-      # 
-      # sl1 <- Line(mydf2)
-      # s1 <- Lines(list(sl1), ID = NA)
-      # Poly_data = SpatialLines(list(df), proj4string = CRS(as.character(NA)))
-
-
-
+     } else if (input$data == "wp") {
+       lines <- TRUE
+       Points <- FALSE
+       Clear_map <- FALSE
+       
+       mydf <- paths_walking(coords = T)
+       longtitude <- mydf$Longitude
+       latitude <- mydf$Latitude
+       group <- mydf$id3
+       
+       df <- data.frame(group = group, lng = longtitude, lat = latitude)
+       
+       labels <- sprintf("<strong>%s</strong><br/>",mydf$id3) %>% lapply(htmltools::HTML)
+    
      } else if (input$data == "Monument") {
 
        Points <- TRUE
@@ -751,11 +769,11 @@ server <- function(input, output) {
               unlist()
           }
           leafletProxy("llmap") %>% 
-            clearshapes() %>% 
             addPolylines(data = df,
                          lng = ~grouped_coords(lng, group),
                          lat = ~grouped_coords(lat, group),
-                         color = pal(1:6))
+                         color = pal(1:7),
+                         label = labels)
                          
         }
    })
