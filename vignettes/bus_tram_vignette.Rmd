@@ -1,0 +1,68 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(tidyverse)
+
+bt <- openPoznan::tram_bus_stops()
+```
+
+# Trams analysis
+
+- na jakich przystankach jest najwięcej tramwajów
+- na jakich najmniej
+- jakie linie zatrzymują się na największej liczbie przystanków
+- jakie na najmniejszej
+- jak wygląda rozkład przestrzenny
+- tramwaj nocny
+- autobus za tramwaj
+
+```{r}
+bt_tram <- bt %>%
+  head(n=20) %>%
+  separate(Stop_Headsigns, into=paste0("stop",1:8))
+
+bt_tram_id <- bt_tram %>%
+  select(ID, stop1:stop8) %>%
+  gather(stop, line, -ID) %>%
+  filter(!is.na(line))
+
+bt_tram_id %>%
+  group_by(line) %>%
+  count() %>%
+  arrange(desc(n))
+
+```
+
+```{r}
+bt_tram_id %>%
+  group_by(ID) %>%
+  count() %>%
+  arrange(desc(n))
+
+```
+
+# Buses analysis
+
+## Day lines 
+
+```{r}
+
+```
+
+## Night lines
+
+## Out of Poznan
