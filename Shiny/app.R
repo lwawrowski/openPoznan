@@ -315,7 +315,6 @@ server <- function(input, output) {
                                iconAnchorX = 15,
                                iconAnchorY = 25)
 
-       
      } else if (input$data == "bp"){
        
        lines <- TRUE
@@ -327,7 +326,6 @@ server <- function(input, output) {
 
        df <- data.frame(group = group, lng = longtitude, lat = latitude)
        
-       
       #  Clear_map <- FALSE
       #  lines <- TRUE
       #  mydf <- paths_bike(coords = T)
@@ -337,8 +335,6 @@ server <- function(input, output) {
       # sl1 <- Line(mydf2)
       # s1 <- Lines(list(sl1), ID = NA)
       # Poly_data = SpatialLines(list(df), proj4string = CRS(as.character(NA)))
-
-
 
      } else if (input$data == "Monument") {
 
