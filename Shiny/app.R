@@ -7,14 +7,16 @@ library(leaflet)
 library(shinydashboard)
 library(sp)
 library(shinyjs)
+library(purrrlyr)
+library(dplyr)
 
 # Define UI for application that draws a histogram
 
 #loading content
-appCSS<- "
+appCSS <- "
   #loading-content {
     position: absolute;
-    background: #66b9fd;
+    background: black;
     opacity: 0.9;
     z-index: 100;
     left: 0;
@@ -24,6 +26,26 @@ appCSS<- "
     color:  #FFFFFF;
 }
   
+"
+myCSS <- "
+#loading-contener {
+  position: relative;
+
+}
+# loading-spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  margin-top: -33px;
+  margin-left: -33px;
+
+}
+
+#plot.recalclatind {
+
+  z-index: -2;
+}
 "
 ui <- fluidPage(id="page",
                 title = "OpenPoznan Shiny app",
@@ -49,7 +71,7 @@ ui <- fluidPage(id="page",
      # Sidebar with a slider input for number of bins 
    div(class="outer",
        
-       tags$head(
+       tags$head(tags$style(HTML(myCSS)),
          includeCSS("styles.css")
        ),
        
@@ -88,6 +110,7 @@ ui <- fluidPage(id="page",
        
        actionButton("clear_button", 
                     "Clear Map"),
+                   
                          
        
        # selectInput(inputId = "point_data",
@@ -130,7 +153,7 @@ ui <- fluidPage(id="page",
                          bottom = "auto",
                          width = 330, 
                          height = "auto")
-     )
+       )
 )
 
 # Define server logic required to draw a histogram
@@ -157,7 +180,7 @@ server <- function(input, output) {
    observe({
      
        Points <- TRUE
-
+      lines <- FALSE
        Custom_icon <- makeIcon(iconUrl = "",
                                iconWidth = 25,
                                iconHeight = 30,
@@ -487,14 +510,6 @@ server <- function(input, output) {
      } else if (input$data == "bp"){
        
        lines <- TRUE
-       
-       grouped_coords <- function(coord = coord,group = group) {
-         data.frame(coord = coord, group = group) %>%
-           group_by(group) %>%
-           by_slice(~c(.$coord, NA), .to = "output") %>%
-           .$output %>%
-           unlist()
-       }
 
        mydf <- paths_dydactic(coords = T)
        longtitude <- mydf$Longitude
@@ -502,16 +517,17 @@ server <- function(input, output) {
        group <- mydf$id1
 
        df <- data.frame(group = group, lng = longtitude, lat = latitude)
-       pal <- colorFactor("Accent", NULL)
+       
        
       #  Clear_map <- FALSE
+      #  lines <- TRUE
       #  mydf <- paths_bike(coords = T)
       #  ID <- as.character(mydf$id2)
       #  mydf2 <- cbind(mydf$Longitude,mydf$Latitude)
       # 
       # sl1 <- Line(mydf2)
       # s1 <- Lines(list(sl1), ID = NA)
-      # Poly_data = SpatialLines(list(s1), proj4string = CRS(as.character(NA)))
+      # Poly_data = SpatialLines(list(df), proj4string = CRS(as.character(NA)))
 
 
 
@@ -696,7 +712,7 @@ server <- function(input, output) {
          lapply(htmltools::HTML)
        } 
 
-        if(Points == TRUE) {
+        if(Points == TRUE & lines == FALSE) {
          leafletProxy("llmap") %>%
          clearMarkerClusters() %>%
          addMarkers(lat = point_data$Latitude,
@@ -704,7 +720,7 @@ server <- function(input, output) {
                 popup = marker_name,
                 icon = Custom_icon,
                 clusterOptions = markerClusterOptions())
-        } else if (Points == FALSE) {
+        } else if (Points == FALSE & lines == FALSE) {
           leafletProxy("llmap") %>%
           clearShapes() %>%
           addPolygons(data = poly_data,
@@ -725,11 +741,19 @@ server <- function(input, output) {
                         textsize = "15px",
                         direction = "auto")
                       )
-        } else if (lines == TRUE) {
+        } else if (Points == FALSE & lines == TRUE) {
+          pal <- colorFactor("Accent", NULL)
+          grouped_coords <- function(coord = coord,group = group) {
+            data.frame(coord = coord, group = group) %>%
+              group_by(group) %>%
+              by_slice(~c(.$coord, NA), .to = "output") %>%
+              .$output %>%
+              unlist()
+          }
           leafletProxy("llmap") %>% 
             clearshapes() %>% 
-            addPolylines(data = Poly_data,
-                         ng = ~grouped_coords(lng, group),
+            addPolylines(data = df,
+                         lng = ~grouped_coords(lng, group),
                          lat = ~grouped_coords(lat, group),
                          color = pal(1:6))
                          
