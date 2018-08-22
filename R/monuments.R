@@ -22,7 +22,7 @@
 #' relikt. <- monuments(coords = F)
 #' relikt._coord <- monuments(coords = T)
 
-monuments <- function(coords = F){
+monuments <- function(){
   # turystyka 
   # zabytki
   
@@ -69,10 +69,6 @@ monuments <- function(coords = F){
   # z??czenie wszystkich kolumn
   relikt_coord_all <- cbind(relikt_coord, relikt_basic_info)
   
-  if(coords == T){
-    result <- relikt_coord_all
-  } else {
-    result <- relikt_basic_info
-  }
-  return(result)
+ 
+  return(relikt_coord_all)
 }

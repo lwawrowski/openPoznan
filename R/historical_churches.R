@@ -23,7 +23,7 @@
 #' Church_coord <- historical_churches(coords = T)
 
 
-historical_churches <- function(coords = F){
+historical_churches <- function(){
   
   # wczytanie danych o kosciolach
   
@@ -67,10 +67,6 @@ historical_churches <- function(coords = F){
   # z??czenie wszystkich kolumn
   church_All <- cbind(church_basic_info,church_coord)
   
-  if(coords == T){
-    result <- church_All
-  } else {
-    result <- church_basic_info
-  }
-  return(result)
+ 
+  return(church_All)
 }
