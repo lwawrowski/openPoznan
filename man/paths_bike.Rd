@@ -6,23 +6,22 @@
 \format{\describe{
 \item{ID}{numeric; ID of all bike paths in Poznan.}
 \item{Name}{character; Name of bike paths.}
-\item{Lenght}{character; Lenght of bike paths}
+\item{Length}{character; Length of bike paths}
 \item{Description}{character; Description of bike paths}
+\item{Longitude}{numeric; Longitude of bike paths.}
+\item{Latitude}{numeric; Latitude of bike paths.}
 }}
 \usage{
 paths_bike(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about bike paths in Poznań}
+\item{coords}{show basic data about bike paths in Poznań. When set TRUE shows coords of bike paths.}
 }
 \description{
 This function download data about bike Paths in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
-Bike_Paths <- paths_bike(coords = F)
-Area_Electoral_coords <- paths_bike(coords = T)
+paths_bike <- paths_bike(coords = F)
+paths_bike_coords <- paths_bike(coords = T)
 }
 \keyword{keyword}

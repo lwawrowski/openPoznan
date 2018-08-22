@@ -16,21 +16,16 @@
 \item{Field_No}{factor; Field number in cemetery.}
 \item{Place_No}{factor; Place number in cemetery.}
 \item{Paid}{numeric; Paid.}
+\item{Longitude}{numeric; Longitude of Grave.}
+\item{Latitude}{numeric; Latitude of Grave.}
 }}
 \usage{
-graves(coords = F)
-}
-\arguments{
-\item{coords}{show basic data about graves in Poznań}
+graves()
 }
 \description{
 This function download data about graves in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
-Grave <- graves(coords = F)
-Grave_coord <- graves(coords = T)
+Grave <- graves()
 }
 \keyword{keyword}

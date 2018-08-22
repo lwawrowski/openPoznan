@@ -23,6 +23,8 @@ graves <- readRDS("../data/graves.rds")
 # Date of birth analysis
 
 ```{r}
+library(ggplot2)
+library(plotly)
 date_birth_n <- graves %>%
   group_by(g_date_birth) %>%
   count()
@@ -30,6 +32,8 @@ date_birth_n <- graves %>%
 date_birth_n %>%
   arrange(desc(n)) %>%
   head(n=10)
+
+plot_ly(date_birth_n, x = ~g_date_birth, y = ~n)
 ```
 
 Pierwszy i drugi wiersz to ewidentnie braki danych. Potem widać także, że jak znany był tylko rok to przypisywali 1-stycznia. W związku z tym sensownie będzie zamienić tę kolumnę na datę i wyodrębnić tylko rok. Przedstaw na wykresie jak kształtowała się liczba grobów w zależności od roku urodzenia.

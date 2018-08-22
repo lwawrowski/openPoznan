@@ -7,21 +7,21 @@
 \item{ID}{numeric; ID of Cemetery in Poznan.}
 \item{Cemetery_Name}{factor; Name of cemetery in Poznan.}
 \item{Cemetery_Type}{factor; Type of cemetery in Poznan.}
+\item{Longitude}{numeric; Longitude of cemetery site.}
+\item{Latitude}{numeric; Latitude of cemetery site.}
 }}
 \usage{
 cemeteries(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about cemetery in Poznań}
+\item{coords}{show basic data about cemetery in Poznań. When set TRUE shows coords of cemetery.}
 }
 \description{
 This function download data about Cemetery in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
 Cemetery <- cemeteries(coords = F)
 Cemetery_coords <- cemeteries(coords = T)
+coords <- Cemetery_coords$coord
 }
 \keyword{keyword}

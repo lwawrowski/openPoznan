@@ -8,18 +8,17 @@
 \item{Name}{factor; Name of dydactic paths in Poznan.}
 \item{Length}{factor; Length of dydactic paths.}
 \item{Description}{factor; Description of dydactic paths in Poznan.}
+\item{Longitude}{numeric; Longitude of dydactic paths.}
+\item{Latitude}{numeric; Latitude of dydactic paths.}
 }}
 \usage{
 paths_dydactic(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about dydactic pathsin Poznań}
+\item{coords}{show basic data about dydactic paths in Poznań. When set TRUE shows coords of dydactic paths.}
 }
 \description{
 This function download data about dydactic paths  in Poznan.
-}
-\details{
-Details of usage
 }
 \examples{
 Dydactic_Paths <- paths_dydactic(coords = F)

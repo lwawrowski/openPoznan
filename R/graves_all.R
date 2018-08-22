@@ -3,8 +3,7 @@
 #' This function download data about all graves in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about all graves in Poznań
-#' @details Details of usage 
+#' @param coords show basic data about all graves in Poznań. When set TRUE shows coords of all graves
 #' @importFrom jsonlite fromJSON 
 #' @importFrom dplyr filter mutate
 #' @importFrom purrr map map2_df
@@ -22,6 +21,8 @@
 #' \item{Field_No}{factor; Field number in cemetery.}
 #' \item{Place_No}{factor; Place number in cemetery.}
 #' \item{Paid}{numeric; Paid.}
+#' \item{Longitude}{numeric; Longitude of Grave.}
+#' \item{Latitude}{numeric; Latitude of Grave.}
 #' }
 #' @examples
 #' Grave_All <- graves_all(coords = F)

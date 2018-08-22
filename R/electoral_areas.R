@@ -3,7 +3,7 @@
 #' This function download data about electoral areas in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about electoral areas in Poznań
+#' @param coords show basic data about electoral areas in Poznań.  When set TRUE shows coords of electoral areas.
 #' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
@@ -11,10 +11,13 @@
 #' \describe{
 #' \item{ID}{numeric; ID of area electoral.}
 #' \item{District_no}{numeric; Number of district.}
+#' \item{Longitude}{numeric; Longitude of area electoral.}
+#' \item{Latitude}{numeric; Latitude of area electoral.}
 #' }
 #' @examples
 #' Area_Electoral <- electoral_areas(coords = F)
-#' Area_Electoral_coords <- electoral_areas(coords = T)
+#' Areas <- electoral_areas(coords = T)
+#' coord <- Areas$coord
 
 
 electoral_areas <- function(coords = F){
@@ -63,6 +66,7 @@ electoral_areas <- function(coords = F){
   if(coords == T){
      result <- list(area=oblast2_basic_info, coord=oblast2coord_id)
     } else {
+      
       return(oblast2_basic_info)
     }
   

@@ -3,8 +3,6 @@
 #' This function download data about local government in Poznań.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about local government in Poznań
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
@@ -12,13 +10,14 @@
 #' \item{AFDP}{factor; Adaptation for disabled pearson.}
 #' \item{District_no}{numeric; Number of district.}
 #' \item{Residence}{factor; Name of Residence. }
+#' \item{Longitude}{numeric; Longitude of the polls.}
+#' \item{Latitude}{numeric; Latitude of the polls.} 
 #' }
 #' @examples
-#' Local_Government <- local_government(coords = F)
-#' Local_Government_coords <- Local_Government(coords = T)
+#' Local_Government <- local_government()
 
 
- local_government <- function(coords = F){
+ local_government <- function(){
   # dane wyborzcze samorzadowe 
   
   # wczytanie danych o wyborach samorzadowych
@@ -58,11 +57,8 @@
   
   gov_final <- cbind(gov_basic_info, gov_coord)
   
-  if(coords == T){
-      result <- gov_final
-    } else {
-      result <- gov_basic_info
-    }
-  return(result)
+    
+    
+  return(gov_final)
 }
 

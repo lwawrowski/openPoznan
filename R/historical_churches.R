@@ -3,8 +3,6 @@
 #' This function download data about historical Churches in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about historical churches in Poznań
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
@@ -17,10 +15,12 @@
 #' \item{Address}{factor; Address of historical church.}
 #' \item{ID_monument}{factor; ID monument in Poznan.}
 #' \item{Description}{factor; Description of historical church.}
+#' \item{Longitude}{numeric; Longitude of historical church.}
+#' \item{Latitude}{numeric; Latitude of historical church.}
 #' }
 #' @examples
-#' Church <- historical_churches(coords = F)
-#' Church_coord <- historical_churches(coords = T)
+#' Church <- historical_churches()
+#' Church_coord <- historical_churches()
 
 
 historical_churches <- function(){

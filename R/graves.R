@@ -3,8 +3,6 @@
 #' This function download data about graves in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about graves in Poznań
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
@@ -22,13 +20,14 @@
 #' \item{Field_No}{factor; Field number in cemetery.}
 #' \item{Place_No}{factor; Place number in cemetery.}
 #' \item{Paid}{numeric; Paid.}
+#' \item{Longitude}{numeric; Longitude of Grave.}
+#' \item{Latitude}{numeric; Latitude of Grave.}
 #' }
 #' @examples
-#' Grave <- graves(coords = F)
-#' Grave_coord <- graves(coords = T)
+#' Grave <- graves()
 
 
-graves <- function(coords = F){ 
+graves <- function(){ 
   # wczytanie danych groboW
   
   cementary_final <- cemeteries()
@@ -95,10 +94,6 @@ graves <- function(coords = F){
                                 Latitude=grave_coord_all$X2)
 
   grave_coord_all_fine <- cbind(grave_coord_all, grave_basic_info_final)
-  if(coords == T){
-    result <- grave_coord_all_fine
-  } else {
-    result <- grave_basic_info_final
-  }
-  return(result)
+  
+  return(grave_coord_all_fine)
 }

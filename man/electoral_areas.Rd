@@ -6,12 +6,14 @@
 \format{\describe{
 \item{ID}{numeric; ID of area electoral.}
 \item{District_no}{numeric; Number of district.}
+\item{Longitude}{numeric; Longitude of area electoral.}
+\item{Latitude}{numeric; Latitude of area electoral.}
 }}
 \usage{
 electoral_areas(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about electoral areas in Poznań}
+\item{coords}{show basic data about electoral areas in Poznań.  When set TRUE shows coords of electoral areas.}
 }
 \description{
 This function download data about electoral areas in Poznan.
@@ -21,6 +23,7 @@ Details of usage
 }
 \examples{
 Area_Electoral <- electoral_areas(coords = F)
-Area_Electoral_coords <- electoral_areas(coords = T)
+Areas <- electoral_areas(coords = T)
+coord <- Areas$coord
 }
 \keyword{keyword}

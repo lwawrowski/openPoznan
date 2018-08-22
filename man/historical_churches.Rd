@@ -13,21 +13,17 @@
 \item{Address}{factor; Address of historical church.}
 \item{ID_monument}{factor; ID monument in Poznan.}
 \item{Description}{factor; Description of historical church.}
+\item{Longitude}{numeric; Longitude of historical church.}
+\item{Latitude}{numeric; Latitude of historical church.}
 }}
 \usage{
-historical_churches(coords = F)
-}
-\arguments{
-\item{coords}{show basic data about historical churches in Poznań}
+historical_churches()
 }
 \description{
 This function download data about historical Churches in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
-Church <- historical_churches(coords = F)
-Church_coord <- historical_churches(coords = T)
+Church <- historical_churches()
+Church_coord <- historical_churches()
 }
 \keyword{keyword}

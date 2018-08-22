@@ -3,8 +3,7 @@
 #' This function download data about electoral Oblast in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about electoral Oblast in Poznań
-#' @details Details of usage 
+#' @param coords show basic data about electoral Oblast in Poznań. When set TRUE shows coords of schools area.
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
@@ -12,6 +11,8 @@
 #' \describe{
 #' \item{ID}{numeric; ID of Oblast.}
 #' \item{Name}{factor; Name of Oblast in Poznan.}
+#' \item{Longitude}{numeric; Longitude of Oblast.}
+#' \item{Latitude}{numeric; Latitude of Oblast.}
 #' }
 #' @examples
 #' oblast <- electoral_oblasts(coords = F)

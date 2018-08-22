@@ -3,20 +3,21 @@
 #' This function download data about bike Paths in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about bike paths in Poznań
-#' @details Details of usage 
+#' @param coords show basic data about bike paths in Poznań. When set TRUE shows coords of bike paths.
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @format 
 #' \describe{
 #' \item{ID}{numeric; ID of all bike paths in Poznan.}
 #' \item{Name}{character; Name of bike paths.}
-#' \item{Lenght}{character; Lenght of bike paths}
+#' \item{Length}{character; Length of bike paths}
 #' \item{Description}{character; Description of bike paths}
+#' \item{Longitude}{numeric; Longitude of bike paths.}
+#' \item{Latitude}{numeric; Latitude of bike paths.}
 #' }
 #' @examples
-#' Bike_Paths <- paths_bike(coords = F)
-#' Area_Electoral_coords <- paths_bike(coords = T)
+#' paths_bike <- paths_bike(coords = F)
+#' paths_bike_coords <- paths_bike(coords = T)
 
 paths_bike <- function(coords = F){
   # szlaki rowerowe
@@ -49,7 +50,7 @@ paths_bike <- function(coords = F){
   
   bikepaths_basic_info <- data.frame(ID=bikepaths$id,
                                            Name=bikepaths$properties$name,
-                                           Lenght=bikepaths$properties$length,
+                                           Length=bikepaths$properties$length,
                                            Description=bikepaths$properties$desc)
 
   bcoord_id <- data.frame(Longitude=bcoord_id$V1,
