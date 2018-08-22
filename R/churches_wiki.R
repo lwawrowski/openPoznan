@@ -3,7 +3,6 @@
 #' This function download data about churches in Poznan.
 #' @keywords keyword
 #' @export
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate distinct left_join

@@ -3,8 +3,7 @@
 #' This function download data about parishes in Poznań
 #' @keywords keyword
 #' @export
-#' @details Details of usage 
-#' @param coords shows basic_data about parishes. When set TRUE shows coords of Parishes
+#' @param coords shows basic_data about parishes. When set TRUE shows coords of Parishes.
 #' @importFrom jsonlite fromJSON 
 #' @importFrom dplyr mutate
 #' @importFrom purrr map map2_df
@@ -12,8 +11,8 @@
 #' \describe{
 #' \item{ID}{character; ID of parish.}
 #' \item{Parish_Name}{factor; Number of sewage work.}
-#' \item{Longitude}{numeric; Longitude of parish site.}
-#' \item{Latitude}{numeric; Latitude of parish site.}
+#' \item{Longitude}{numeric; Longitude of parish site. Available only if coords is set TRUE.}
+#' \item{Latitude}{numeric; Latitude of parish site. Available only if coords is set TRUE.}
 #' }
 #' @examples
 #' 

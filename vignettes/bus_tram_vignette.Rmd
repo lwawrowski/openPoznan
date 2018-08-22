@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 )
 
 library(tidyverse)
+library (stringr)
 
 bt <- openPoznan::tram_bus_stops()
 ```
@@ -26,32 +27,135 @@ bt <- openPoznan::tram_bus_stops()
 - na jakich najmniej
 - jakie linie zatrzymują się na największej liczbie przystanków
 - jakie na najmniejszej
-- jak wygląda rozkład przestrzenny
+- jak wygląda rozkład przestrzenny #przy pomocy leafleta nanieś kółka na mapie na podstawie id
 - tramwaj nocny
 - autobus za tramwaj
 
 ```{r}
-bt_tram <- bt %>%
-  head(n=20) %>%
-  separate(Stop_Headsigns, into=paste0("stop",1:8))
 
-bt_tram_id <- bt_tram %>%
-  select(ID, stop1:stop8) %>%
+Number_of_string <- str_count(bt$Stop_Headsigns, ",") + 1
+
+Max_number_of_machines <- max(Number_of_string)
+
+bt_machines <- bt %>%
+  separate(Stop_Headsigns, into=paste0("stop",1:Max_number_of_machines))
+
+bt_machines_id <- bt_machines %>%
+  select(ID, 4:(Max_number_of_machines+3)) %>%
   gather(stop, line, -ID) %>%
-  filter(!is.na(line))
+  filter(!is.na(line)) 
 
-bt_tram_id %>%
+bt_tram <- bt_machines %>%
+  select(ID,Route_Type, 4:(Max_number_of_machines+3)) %>%
+  gather(stop, line, -ID, -Route_Type) %>%
+  filter(Route_Type == 0) %>%
+  filter(!is.na(line)) %>%
+  mutate(line = gsub('T',"0.",line)) %>% 
+  transform(line = as.numeric(line)) 
+
+#max tram number in town 
+
+  max_day_tram <- bt_tram %>%
+  filter(line < 100) %>%     #wstaw tu minimalny numer autobusu! 
+  summarise(max = max(line)) %>%
+  .$max
+  
+#min tram number in towe 
+  
+  min_day_tram <- bt_tram %>%
+  filter(line < 100) %>%     #wstaw tu minimalny numer autobusu! 
+  summarise(min = min(line)) %>%
+  .$min 
+    
+# Bus for trams 
+  
+  whole_number <- function (x) {
+    x %% 1 == 0
+  }
+  
+  bus_for_trams <- bt_tram %>%
+                   filter(whole_number(line) == FALSE)
+  
+# Night Trams
+  
+  night_trams <- bt_tram %>%
+  filter(line > 100) #wstaw tu minimalny numer autobusu! 
+
+  
+
+  
+
+
+
+
+
+#Max stops for 1 machine
+  
+bt_machines_id %>%
   group_by(line) %>%
   count() %>%
   arrange(desc(n))
 
 ```
 
+
 ```{r}
-bt_tram_id %>%
+
+# Max number of machines on 1 stop
+
+bt_machines_id %>%
   group_by(ID) %>%
+  mutate(line = gsub('T',"0.",line)) %>%
   count() %>%
   arrange(desc(n))
+
+# Max number of tram on 1 stop 
+
+bt_machines_id %>%
+  filter(line < 30) %>%
+  group_by(ID) %>%
+  mutate(line = gsub('T',"0.",line)) %>%
+  count() %>%
+  arrange(desc(n))
+
+```
+
+```{r}
+
+# Min stops of 1 machine
+
+bt_machines_id %>%
+  group_by(line) %>%
+  count() %>%
+  arrange(n)
+
+# Min stops of 1 tram
+
+a <- bt_machines_id %>%
+  group_by(line) %>%
+  gsub('T',"0,",line) 
+  
+  count() %>%
+  arrange(n)
+
+
+
+
+```
+
+```{r}
+
+
+bt_machines_id %>%
+  group_by(ID) %>%
+  count() %>%
+  arrange(n)
+
+
+
+```
+
+```{r}
 
 ```
 
