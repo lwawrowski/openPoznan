@@ -28,14 +28,12 @@ appCSS <- "
   
 "
 myCSS <- "
-#loading-contener {
+#gif-contener {
   position: relative;
 
 }
 # loading-spinner {
   position: absolute;
-  left: 50%;
-  top: 50%;
   z-index: -1;
   margin-top: -33px;
   margin-left: -33px;
@@ -71,7 +69,7 @@ ui <- fluidPage(id="page",
      # Sidebar with a slider input for number of bins 
    div(class="outer",
        
-       tags$head(tags$style(HTML(myCSS)),
+       tags$head(tags$style(),
          includeCSS("styles.css")
        ),
        
@@ -80,6 +78,7 @@ ui <- fluidPage(id="page",
        absolutePanel(
        selectInput( inputId = "data",
                     label = "Pick :",
+                    
                    c("Ticket vending machine" = "tvm",
                      "Parking machine" = "pm",
                      "Stop" = "stop",
@@ -110,39 +109,7 @@ ui <- fluidPage(id="page",
        
        actionButton("clear_button", 
                     "Clear Map"),
-                   
-                         
-       
-       # selectInput(inputId = "point_data",
-       #             label = "Pick point type data",
-       #             c("Nothink" = "empty_point",
-       #               "Stop" = "stop",
-       #               "Parking machine" = "pm",
-       #               "Ticket vending machine" = "tvm",
-       #               "Church" = "church",
-       #               "Cesspool" = "cesspool",
-       #               "Sewage work" = "sw",
-       #               "Local Government" = "lg",
-       #               "Monument" = "Monument",
-       #               "Historical church" = "hischurch",
-       #               "Graves" = "graves",
-       #               "Points with 'ZTM' tickets" = "ticket",
-       #               "Council district" = "council")),
-       # 
-       # selectInput(inputId = "area_data",
-       #             label = "Area",
-       #             c("Nothink" = "empty_area",
-       #               "Parish" = "parish",
-       #               "School area" = "area",
-       #               "Bike Paths" = "bp",
-       #               "Dydactic Paths" = "dp",
-       #               "walking Paths" = "wp",
-       #               "Cementery" = "cemetery",
-       #               "Poznan districts" = "district",
-       #               "Royal imperial route" = "rir",
-       #               "Electoral area" = "elearea",
-       #               "Electoral circle" = "circle")),
-       
+                  
                          id = "controls", 
                          class = "panel panel-default",
                          fixed = TRUE,
@@ -163,6 +130,13 @@ server <- function(input, output) {
   hide(id = "loading-content", anim = TRUE, animType = "fade")
   
    output$llmap <- renderLeaflet({
+     
+     progress <- shiny::Progress$new()
+     on.exit(progress$close())
+     progress$set(message = "Clear Map", value = 0)
+     
+     input$clear_button
+     Sys.sleep(1)
     
      leaflet() %>%
        addTiles() %>%
@@ -178,6 +152,10 @@ server <- function(input, output) {
    })
    
    observe({
+     
+     progress <- shiny::Progress$new()
+     on.exit(progress$close())
+     progress$set(message = "Waiting", value = 10)
      
        Points <- TRUE
       lines <- FALSE
@@ -330,6 +308,7 @@ server <- function(input, output) {
        labels <- sprintf("<strong>%s</strong><br/>",mydf$id2) %>% lapply(htmltools::HTML)
        
      } else if (input$data == "dp") {
+       
        lines <- TRUE
        Points <- FALSE
        Clear_map <- FALSE
@@ -356,23 +335,11 @@ server <- function(input, output) {
        df <- data.frame(group = group, lng = longtitude, lat = latitude)
        
        labels <- sprintf("<strong>%s</strong><br/>",mydf$id3) %>% lapply(htmltools::HTML)
-    
-
-      #  Clear_map <- FALSE
-      #  lines <- TRUE
-      #  mydf <- paths_bike(coords = T)
-      #  ID <- as.character(mydf$id2)
-      #  mydf2 <- cbind(mydf$Longitude,mydf$Latitude)
-      # 
-      # sl1 <- Line(mydf2)
-      # s1 <- Lines(list(sl1), ID = NA)
-      # Poly_data = SpatialLines(list(df), proj4string = CRS(as.character(NA)))
-
 
      } else if (input$data == "Monument") {
 
        Points <- TRUE
-       point_data <- monuments(coords = T)
+       point_data <- monuments()
        marker_name <- point_data$Name
 
        Custom_icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/png/512/8/8154.png",
@@ -383,7 +350,7 @@ server <- function(input, output) {
 
      } else if (input$data == "hischurch") {
        Points <- TRUE
-       point_data <- historical_churches(coords = T)
+       point_data <- historical_churches()
        marker_name <- point_data$Name
 
        Custom_icon <- makeIcon(iconUrl = "http://www.stickpng.com/assets/images/5a018f9d7ca233f48ba6271a.png",
@@ -443,7 +410,7 @@ server <- function(input, output) {
      } else if (input$data == "ticket") {
 
        Points <- TRUE
-       point_data <- ticket_sales_points(coords = T)
+       point_data <- ticket_sales_points()
        marker_name <- point_data$Name
 
        Custom_icon <- makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/100/100130.svg",

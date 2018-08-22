@@ -24,7 +24,7 @@
 #' Ticket <- ticket_sales_points(coords = F)
 #' Ticket_coord <- ticket_sales_points(coords = T)
 
-ticket_sales_points <- function(coords = F) {
+ticket_sales_points <- function() {
   # sprzeda biletow
   
   # wczytanie danych biletow 
@@ -58,28 +58,22 @@ ticket_sales_points <- function(coords = F) {
   
   
   ticket_basic_info <- data.frame(Opening_Hours=ticket$properties$y_4308_godziny_otwar,
-                                        Opening_Hours=ticket$properties$y_4310_godziny_otwar,
+                                        Opening_Hours_2=ticket$properties$y_4310_godziny_otwar,
                                         Sales_form=ticket$properties$y_4311_forma_sprzeda,
                                         Ticket=ticket$properties$y_4326_bilety_jednor,
                                         Name=ticket$properties$nazwa,
-                                        Opening_Hours=ticket$properties$y_4309_godziny_otwar,
+                                        Opening_Hours_3=ticket$properties$y_4309_godziny_otwar,
                                         Address=ticket$properties$adres,
                                         City=ticket$properties$miasto,
                                         Lang=ticket$properties$lang,
                                         PEKA_Card=ticket$properties$y_4327_peka__karta_n,
                                         ID_Class=ticket$properties$id_klasy,
-                                        Description=ticket$properties$opis,
-                                        POS=ticket$properties$opis_klasy)
+                                        Description=ticket$properties$opis)
   
   # z??czenie wszystkich kolumn
   
   ticket_final <- cbind(ticket_basic_info, ticket_coord)
   
-  if(coords == T){
-    result <- ticket_final
-    
-  } else {
-    result <- ticket_basic_info
-  }
-  return(result)
+  
+  return(ticket_final)
 }
