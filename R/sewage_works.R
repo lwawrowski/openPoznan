@@ -3,7 +3,6 @@
 #' This function download data about sewage works in Poznań.
 #' @keywords keyword
 #' @export
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{

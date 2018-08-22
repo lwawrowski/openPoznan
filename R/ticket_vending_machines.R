@@ -3,7 +3,6 @@
 #' This function download data about ticket vending machines in Poznań
 #' @keywords keyword
 #' @export
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #'@importFrom textclean replace_html
 #' @format 

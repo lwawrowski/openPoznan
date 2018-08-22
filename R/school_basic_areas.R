@@ -3,7 +3,6 @@
 #' This function download data about basic school areas in Poznań.
 #' @keywords keyword
 #' @export
-#' @details Details of usage 
 #' @param coords shows basic_data about schools area. When set TRUE shows coords of schools area.
 #' @importFrom jsonlite fromJSON 
 #' @importFrom dplyr mutate
@@ -16,8 +15,8 @@
 #' \item{Shape}{factor; }
 #' \item{PK}{factor; Shows type of school with number.}
 #' \item{School_Name}{factor; Name of school area.}
-#' \item{Longitude}{numeric; Longitude of parish site.}
-#' \item{Latitude}{numeric; Latitude of parish site.}
+#' \item{Longitude}{numeric; Longitude of school area. Available only if coords is set TRUE.}
+#' \item{Latitude}{numeric; Latitude of school area. Available only if coords is set TRUE.}
 #' }
 #' @examples
 #' 
