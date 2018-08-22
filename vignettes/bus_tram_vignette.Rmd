@@ -45,9 +45,45 @@ bt_machines_id <- bt_machines %>%
   gather(stop, line, -ID) %>%
   filter(!is.na(line)) 
 
+bt_tram <- bt_machines %>%
+  select(ID,Route_Type, 4:(Max_number_of_machines+3)) %>%
+  gather(stop, line, -ID, -Route_Type) %>%
+  filter(Route_Type == 0) %>%
+  filter(!is.na(line)) %>%
+  mutate(line = gsub('T',"0.",line)) %>% 
+  transform(line = as.numeric(line)) 
+
 #max tram number in town 
 
+  max_day_tram <- bt_tram %>%
+  filter(line < 100) %>%     #wstaw tu minimalny numer autobusu! 
+  summarise(max = max(line)) %>%
+  .$max
+  
+#min tram number in towe 
+  
+  min_day_tram <- bt_tram %>%
+  filter(line < 100) %>%     #wstaw tu minimalny numer autobusu! 
+  summarise(min = min(line)) %>%
+  .$min 
+    
+# Bus for trams 
+  
+  whole_number <- function (x) {
+    x %% 1 == 0
+  }
+  
+  bus_for_trams <- bt_tram %>%
+                   filter(whole_number(line) == FALSE)
+  
+# Night Trams
+  
+  night_trams <- bt_tram %>%
+  filter(line > 100) #wstaw tu minimalny numer autobusu! 
 
+  
+
+  
 
 
 
