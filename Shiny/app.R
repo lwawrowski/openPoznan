@@ -341,7 +341,6 @@ server <- function(input, output) {
        
        df <- data.frame(group = group, lng = longtitude, lat = latitude)
        
-<<<<<<< HEAD
        labels <- sprintf("<strong>%s</strong><br/>",mydf$id1) %>% lapply(htmltools::HTML)
        
      } else if (input$data == "wp") {
@@ -358,7 +357,7 @@ server <- function(input, output) {
        
        labels <- sprintf("<strong>%s</strong><br/>",mydf$id3) %>% lapply(htmltools::HTML)
     
-=======
+
       #  Clear_map <- FALSE
       #  lines <- TRUE
       #  mydf <- paths_bike(coords = T)
@@ -369,7 +368,7 @@ server <- function(input, output) {
       # s1 <- Lines(list(sl1), ID = NA)
       # Poly_data = SpatialLines(list(df), proj4string = CRS(as.character(NA)))
 
->>>>>>> ea37dcd2e0fb8db219e4519cf2ec4550e4d2857f
+
      } else if (input$data == "Monument") {
 
        Points <- TRUE
