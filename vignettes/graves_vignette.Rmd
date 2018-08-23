@@ -25,6 +25,8 @@ graves <- readRDS("../data/graves.rds")
 ```{r}
 library(ggplot2)
 library(plotly)
+library(stats)
+
 date_birth_n <- graves %>%
   group_by(g_date_birth) %>%
   count()
@@ -53,9 +55,99 @@ ggplot(graves, aes(as.factor(cm_id))) +
   xlab("Cementary id") + 
   ylab("Percent") + 
   scale_y_continuous(labels=scales::percent) +
+  names(c("Miłostowo","Junikowo","Lubowska","zabytkowy Jeżycki",
+          "Wielkopolan","Górczyn","Żołnierzy Brytyjskich","Garnizonowy",
+          "Bohaterów Polskich","Św. Wojciecha","Prawosławny","Samotna",
+          "Bohaterów Radzieckich","Bohaterów Radzieckich","Chrobrego",
+          "Spławie","Podolany","Krzesiny","Kiekrz","Naramowice"))+
   theme_bw()
 ```
 
 Zamiast id daj nazwę cmentarza.
 
 Sprawdz jak wygląda częstość zmiennej paid i g_size.
+
+
+
+```{r}
+grave_size <- graves %>% select(c(paid,g_size)) %>% count(paid,g_size) %>% slice(2:25) %>% na.omit(paid,g_size)
+
+no_paid_graves <- grave_size %>% filter(paid == -1) %>% arrange(g_size) %>% slice(2:13)
+
+paid_graves <- grave_size %>% filter(paid == 1) %>% slice(2:5)
+
+unknown <- grave_size %>% filter(paid == 0)
+
+size <- graves %>% count(g_size) %>% na.omit(g_size) %>% slice(3:15)
+
+ggplot(data = size, aes(as.factor(g_size)))+
+  geom_col(aes(x=g_size,y=n))+
+ xlab("Grave size")+
+  ylab("number")
+
+##### 
+
+ggplot(data = paid_graves, aes(as.factor(g_size))) +
+  geom_col(aes(x=g_size,y=n)) +
+  geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
+                   y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.4)+
+  xlab("Grave size")+
+  ylab("number of payments")
+
+ggplot(data = unknown, aes(as.factor(g_size))) +
+  geom_col(data = unknown, aes(x=g_size,y=n))+
+  geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
+                   y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.5)+
+  xlab("Grave size") +
+  ylab("number of payments")
+
+ggplot(data = no_paid_graves, aes(as.factor(g_size))) +
+  geom_col(aes(x=g_size,y=n)) +
+  geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
+                   y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.4)+
+  xlab("Grave size")+
+  ylab("number of payments")
+
+```
+Przedstawienie jak wygląda płatność to rozmiaru grobu jako no_paid_graves groby nie opłacone 
+paid_graves groby opłacone unknown wartość paid wynosi 0 więc mogą to być realizacje czekające na zapłatę albo nieznana wartość
+
+
+
+
+```{r}
+# oczyszczanie danych z błędnych danych 
+
+
+data <- graves %>% na.omit(graves) %>% 
+  select(g_date_birth) %>% 
+  arrange(g_date_birth) %>%
+  count(g_date_birth) %>% 
+  slice(3:36788)
+
+data2 <- graves %>% na.omit(graves) %>%
+  select(g_date_death) %>% 
+  count(g_date_death) %>% arrange(g_date_death) %>% slice(5:23907)
+
+data3 <- graves %>% na.omit(graves) %>% 
+  select(g_date_burial) %>% 
+  arrange(g_date_burial) %>% count(g_date_burial) %>% slice(2:21207)
+
+# analiza szeregów czasowych 
+
+
+
+
+```
+
+Podzeliłem dane na grupy daty urodzenia, daty śmierci i daty pochówku 
+po oczyszczeniu danych zostały jeszcze daty typu 1900-01-01, 1800-01-01...itp które też powinny być usunięte 
+potem można podzielić daty co 10 lat i badać zmiany w latach 
+
+
+
+
+
+
+
+
