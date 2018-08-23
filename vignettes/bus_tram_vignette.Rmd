@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library (stringr)
 library(leaflet)
+library(fuzzyjoin)
 
 bt <- openPoznan::tram_bus_stops()
 ```
@@ -285,17 +286,24 @@ Group_by_stop <- bt_machines_leaflet %>%
 
 bt_machines_leaflet_nd <- bt_machines_nd[!duplicated(bt_machines_nd$Stop_Name),]
 
+Similarities <- Group_by_stop %>%
+  stringdist_right_join(bt_machines_leaflet_nd,
+                        by = "Stop_Name",
+                        max_dist = 0,
+                        distance_col = NULL,
+                        method = "osa")
 
+Similarities$Stop_Name.y <- NULL
+Similarities$stop <- NULL
+Similarities$line <- NULL
 
-
-
-leaflet(bt_machines_leaflet) %>%
+leaflet(Similarities) %>%
 addTiles() %>% 
 addCircles(lng = ~Longitude, 
            lat = ~Latitude, 
            weight = 1,
-           radius = sqrt(Group_by_stop$n) * 30,
-           popup = Group_by_stop$Stop_Name)
+           radius = sqrt(Similarities$n) * 30,
+           popup = Similarities$Stop_Name.x)
   
 
 ```
