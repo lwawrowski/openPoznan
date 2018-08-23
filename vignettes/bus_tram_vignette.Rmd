@@ -17,22 +17,23 @@ knitr::opts_chunk$set(
 
 library(tidyverse)
 library (stringr)
+library(leaflet)
+library(fuzzyjoin)
 
 bt <- openPoznan::tram_bus_stops()
 ```
 
 # Trams analysis
 
-- na jakich przystankach jest najwięcej tramwajów
-- na jakich najmniej
-- jakie linie zatrzymują się na największej liczbie przystanków
-- jakie na najmniejszej
+- na jakich przystankach jest najwięcej tramwajów => Mam
+- na jakich najmniej => Mam
+- jakie linie zatrzymują się na największej liczbie przystanków => Mam
+- jakie na najmniejszej => Mam
 - jak wygląda rozkład przestrzenny #przy pomocy leafleta nanieś kółka na mapie na podstawie id
-- tramwaj nocny
-- autobus za tramwaj
+- tramwaj nocny => Mam
+- autobus za tramwaj => Mam
 
-```{r}
-
+```{r basic data}
 Number_of_string <- str_count(bt$Stop_Headsigns, ",") + 1
 
 Max_number_of_machines <- max(Number_of_string)
@@ -53,17 +54,92 @@ bt_tram <- bt_machines %>%
   mutate(line = gsub('T',"0.",line)) %>% 
   transform(line = as.numeric(line)) 
 
+bt_bus <- bt_machines %>%
+  select(ID,Route_Type, Stop_Zone, 4:(Max_number_of_machines+3)) %>%
+  gather(stop, line, -ID, -Route_Type, -Stop_Zone) %>%
+  filter(Route_Type == 3) %>%
+  filter(!is.na(line)) %>%
+  transform(line = as.numeric(line)) 
+
+bt_machines_leaflet <- bt_machines %>%
+  select(ID, Stop_Name, Longitude, Latitude, 4:(Max_number_of_machines+3)) %>%
+  gather(stop, line, -ID, -Stop_Name, -Longitude, -Latitude) %>%
+  filter(!is.na(line)) 
+
+bt_machines_nd <- bt_machines %>%
+  select(Stop_Name,Longitude, Latitude, 4:(Max_number_of_machines+3)) %>%
+  gather(stop, line, -Stop_Name, -Longitude, -Latitude ) %>%
+  filter(!is.na(line))
+
+  #Min bus number => Using zones
+  
+  #From all 
+
+  min_bus <- bt_bus %>%
+  summarise(min = min(line)) %>%
+  .$min 
+  
+  #Zone A
+  
+  min_bus_A <- bt_bus %>%
+  filter(Stop_Zone == "A") %>%
+  summarise(min = min(line)) %>%
+  .$min 
+  
+  #Zone B
+  
+  min_bus_B <- bt_bus %>%
+  filter(Stop_Zone == "B") %>%
+  summarise(min = min(line)) %>%
+  .$min 
+  
+  #Zone C
+  
+  min_bus_C <- bt_bus %>%
+  filter(Stop_Zone == "B") %>%
+  summarise(min = min(line)) %>%
+  .$min 
+  
+  #max bus number => using zones
+  
+  #from all
+  
+  max_bus <- bt_bus %>%
+  summarise(max = max(line)) %>%
+  .$max
+  
+  #From A
+  
+  max_bus_A <- bt_bus %>%
+  filter(Stop_Zone == "A") %>%
+  summarise(max = max(line)) %>%
+  .$max
+  
+  #From B
+  
+  max_bus_B <- bt_bus %>%
+  filter(Stop_Zone == "B") %>%
+  summarise(max = max(line)) %>%
+  .$max
+  
+  #From C
+  
+  max_bus_C <- bt_bus %>%
+  filter(Stop_Zone == "C") %>%
+  summarise(max = max(line)) %>%
+  .$max
+
 #max tram number in town 
 
   max_day_tram <- bt_tram %>%
-  filter(line < 100) %>%     #wstaw tu minimalny numer autobusu! 
+  filter(line < min_bus) %>%     
   summarise(max = max(line)) %>%
   .$max
   
 #min tram number in towe 
   
   min_day_tram <- bt_tram %>%
-  filter(line < 100) %>%     #wstaw tu minimalny numer autobusu! 
+  filter(line < min_bus) %>%     
   summarise(min = min(line)) %>%
   .$min 
     
@@ -80,26 +156,11 @@ bt_tram <- bt_machines %>%
   
   night_trams <- bt_tram %>%
   filter(line > 100) #wstaw tu minimalny numer autobusu! 
-
   
-
-  
-
-
-
-
-
-#Max stops for 1 machine
-  
-bt_machines_id %>%
-  group_by(line) %>%
-  count() %>%
-  arrange(desc(n))
-
 ```
 
 
-```{r}
+```{r Max_using_ID}
 
 # Max number of machines on 1 stop
 
@@ -111,16 +172,23 @@ bt_machines_id %>%
 
 # Max number of tram on 1 stop 
 
-bt_machines_id %>%
-  filter(line < 30) %>%
+bt_tram %>%
   group_by(ID) %>%
   mutate(line = gsub('T',"0.",line)) %>%
   count() %>%
   arrange(desc(n))
 
+# Max number of bus on 1 stop 
+
+  bt_bus %>%
+  group_by(ID) %>%
+  count() %>%
+  arrange(desc(n))
+
+
 ```
 
-```{r}
+```{r Min_using_line}
 
 # Min stops of 1 machine
 
@@ -131,42 +199,158 @@ bt_machines_id %>%
 
 # Min stops of 1 tram
 
-a <- bt_machines_id %>%
+  bt_tram %>%
   group_by(line) %>%
-  gsub('T',"0,",line) 
+  count() %>%
+  arrange(n)
   
+# Min stops of 1 bus
+  
+  bt_bus %>%
+  group_by(line) %>%
   count() %>%
   arrange(n)
 
 
-
-
 ```
 
-```{r}
+```{r Min_using_ID}
 
+# Min machines on 1 stop
 
 bt_machines_id %>%
   group_by(ID) %>%
   count() %>%
   arrange(n)
 
+#Min tram on 1 stop
+
+  bt_tram %>%
+  group_by(ID) %>%
+  count() %>%
+  arrange(n)
+
+#Min bus on 1 stop
+  
+  bt_bus %>%
+  group_by(ID) %>%
+  count() %>%
+  arrange(n)
+
+```
+
+
+```{r Max_using_line}
+
+#Max stops for 1 machine
+  
+bt_machines_id %>%
+  group_by(line) %>%
+  count() %>%
+  arrange(desc(n))
+
+#Max stops for 1 tram
+  
+  bt_tram %>%
+  group_by(line) %>%
+  count() %>%
+  arrange(desc(n))
+  
+#Max stops for 1 bus
+
+   bt_bus %>%
+  group_by(line) %>%
+  count() %>%
+  arrange(desc(n))
 
 
 ```
+
+
+
+```{r}
+
+#leaflet with circles
+
+#Funkcja ta liczy przystanki w dwie strony (tzn. Na przystanku z ID PONA71 i PONA72 (Polna) zatrzymuje się tylko tramwaj nr 2 i jest policzony dwa razy.)
+
+Group_by_stop <- bt_machines_leaflet %>%
+  group_by(Stop_Name) %>%
+  mutate(line = gsub('T',"0.",line)) %>%
+  count() %>%
+  arrange(desc(n))
+
+bt_machines_leaflet_nd <- bt_machines_nd[!duplicated(bt_machines_nd$Stop_Name),]
+
+Similarities <- Group_by_stop %>%
+  stringdist_right_join(bt_machines_leaflet_nd,
+                        by = "Stop_Name",
+                        max_dist = 0,
+                        distance_col = NULL,
+                        method = "osa")
+
+Similarities$Stop_Name.y <- NULL
+Similarities$stop <- NULL
+Similarities$line <- NULL
+
+leaflet(Similarities) %>%
+addTiles() %>% 
+addCircles(lng = ~Longitude, 
+           lat = ~Latitude, 
+           weight = 1,
+           radius = ~sqrt(Similarities$n) * 25,
+           popup = ~Similarities$Stop_Name.x)
+
+
+
+
+
+
+  
+
+```
+
+
+```{r}
+# Usuwa duplikaty jeżdżące na danym przystanku 
+
+bt_machines_leaflet_nd_line <- bt_machines_nd[!duplicated(bt_machines_nd[c(1,5)]),]
+
+Group_by_stop_nd_line<- bt_machines_leaflet_nd_line  %>%
+  group_by(Stop_Name) %>%
+  mutate(line = gsub('T',"0.",line)) %>%
+  count() %>%
+  arrange(desc(n))
+
+Similarities_nd_line <- Group_by_stop_nd_line %>%
+  stringdist_right_join(bt_machines_leaflet_nd,
+                        by = "Stop_Name",
+                        max_dist = 0,
+                        distance_col = NULL,
+                        method = "osa")
+
+Similarities_nd_line$Stop_Name.y <- NULL
+Similarities_nd_line$stop <- NULL
+Similarities_nd_line$line <- NULL
+
+leaflet(Similarities_nd_line) %>%
+addTiles() %>% 
+addCircles(lng = ~Longitude, 
+           lat = ~Latitude, 
+           weight = 1,
+           radius = ~sqrt(Similarities$n) * 25,
+           popup = ~Similarities$Stop_Name.x)
+
+
+```
+
 
 ```{r}
 
 ```
 
-# Buses analysis
-
-## Day lines 
 
 ```{r}
 
 ```
 
-## Night lines
-
-## Out of Poznan
