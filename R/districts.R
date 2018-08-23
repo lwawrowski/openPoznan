@@ -3,8 +3,7 @@
 #' This function download data about districts  in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about districts in Poznań
-#' @details Details of usage 
+#' @param coords show basic data about districts in Poznań. When set TRUE shows coords of District area.
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate 
@@ -12,10 +11,13 @@
 #' \describe{
 #' \item{ID}{factor; ID of District.}
 #' \item{Name}{factor; Name of District.}
+#' \item{Longitude}{numeric; Longitude of District. site.}
+#' \item{Latitude}{numeric; Latitude of District. site.}
 #' }
 #' @examples
 #' District <- districts(coords = F)
 #' District_coord <- districts(coords = T)
+#' coords <- District_coord$coord
 
 districts <- function(coords = F) {
   # samorzady pomocnicze 

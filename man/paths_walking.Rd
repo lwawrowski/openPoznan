@@ -7,13 +7,10 @@
 paths_walking(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about paths walking in Poznań}
+\item{coords}{show basic data about paths walking in Poznań. When set TRUE shows coords of walking paths}
 }
 \description{
 This function download data about paths walking in Poznan.
-}
-\details{
-Details of usage
 }
 \examples{
 Paths <- paths_walking(coords = F)

@@ -6,21 +6,21 @@
 \format{\describe{
 \item{ID}{factor; ID of District.}
 \item{Name}{factor; Name of District.}
+\item{Longitude}{numeric; Longitude of District. site.}
+\item{Latitude}{numeric; Latitude of District. site.}
 }}
 \usage{
 districts(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about districts in Poznań}
+\item{coords}{show basic data about districts in Poznań. When set TRUE shows coords of District area.}
 }
 \description{
 This function download data about districts  in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
 District <- districts(coords = F)
 District_coord <- districts(coords = T)
+coords <- District_coord$coord
 }
 \keyword{keyword}

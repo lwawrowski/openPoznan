@@ -14,22 +14,16 @@
 \item{PEKKA_Card}{factor; Card.}
 \item{ID_Class}{factor; ID of Class.}
 \item{Description}{factor; Decsription.}
-\item{POS}{factor; Description Class.}
+\item{Longitude}{numeric; Longitude of sales points.}
+\item{Latitude}{numeric; Latitude of sales points.}
 }}
 \usage{
-ticket_sales_points(coords = F)
-}
-\arguments{
-\item{coords}{show basic data about ticket sales points in Poznań}
+ticket_sales_points()
 }
 \description{
 This function download data about ticket sales points in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
-Ticket <- ticket_sales_points(coords = F)
-Ticket_coord <- ticket_sales_points(coords = T)
+Ticket <- ticket_sales_points()
 }
 \keyword{keyword}

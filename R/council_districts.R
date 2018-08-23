@@ -3,24 +3,24 @@
 #' This function download data about council districts in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about council districts in Poznań
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
-#' \item{ID}{numeric; ID of council districts.}
+#' \item{ID}{numeric; ID of the polls.}
 #' \item{Address}{factor; Address of Residence.}
 #' \item{Residence}{factor; Residence of council districts in Poznan.}
 #' \item{Electoral_District}{factor; Electoral district in Poznan.}
 #' \item{AFDP}{factor; Adaptation for disabled pearson.}
 #' \item{Venue_no}{numeric; Venue of council districts in Poznan.}
 #' \item{Distroct_no}{numeric; District number in Poznan.}
+#' \item{Longitude}{numeric; Longitude of the polls.}
+#' \item{Latitude}{numeric; Latitude of the polls.}
 #' }
 #' @examples
-#' Estate <- council_districts(coords = F)
-#' Estate_coord <- council_districts(coords = T)
+#' the polls <- council_districts()
 
-council_districts <- function(coords = F) {
+
+council_districts <- function() {
   # dane wyborcze rad osiedli 
   
   # wczytanie danych rad osiedli
@@ -65,10 +65,6 @@ council_districts <- function(coords = F) {
   
   estate_final <- cbind(estate_basic_info, estate_coord)
   
-  if(coords == T){
-    result <- estate_final
-  } else {
-    result <- estate_basic_info
-  }
-  return(result)
+  
+  return(estate_final)
 }

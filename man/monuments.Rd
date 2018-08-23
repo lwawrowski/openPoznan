@@ -13,21 +13,16 @@
 \item{Address}{factor; Address of monument}
 \item{ID_monument}{factor; ID monument in Poznan.}
 \item{Description}{factor; Description of monument}
+\item{Longitude}{numeric; Longitude of monument.}
+\item{Latitude}{numeric; Latitude of monument.}
 }}
 \usage{
-monuments(coords = F)
-}
-\arguments{
-\item{coords}{show basic data about monuments in Poznań}
+monuments()
 }
 \description{
 This function download data about monuments in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
-relikt. <- monuments(coords = F)
-relikt._coord <- monuments(coords = T)
+relikt. <- monuments()
 }
 \keyword{keyword}

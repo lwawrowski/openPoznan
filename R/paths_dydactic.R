@@ -3,8 +3,7 @@
 #' This function download data about dydactic paths  in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about dydactic pathsin Poznań
-#' @details Details of usage 
+#' @param coords show basic data about dydactic paths in Poznań. When set TRUE shows coords of dydactic paths.
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
@@ -14,6 +13,8 @@
 #' \item{Name}{factor; Name of dydactic paths in Poznan.}
 #' \item{Length}{factor; Length of dydactic paths.}
 #' \item{Description}{factor; Description of dydactic paths in Poznan.}
+#' \item{Longitude}{numeric; Longitude of dydactic paths.}
+#' \item{Latitude}{numeric; Latitude of dydactic paths.}
 #' }
 #' @examples
 #' Dydactic_Paths <- paths_dydactic(coords = F)

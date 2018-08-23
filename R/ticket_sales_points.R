@@ -3,8 +3,6 @@
 #' This function download data about ticket sales points in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about ticket sales points in Poznań
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
@@ -18,11 +16,11 @@
 #' \item{PEKKA_Card}{factor; Card.}
 #' \item{ID_Class}{factor; ID of Class.}
 #' \item{Description}{factor; Decsription.}
-#' \item{POS}{factor; Description Class.}
+#' \item{Longitude}{numeric; Longitude of sales points.}
+#' \item{Latitude}{numeric; Latitude of sales points.}
 #' }
 #' @examples
-#' Ticket <- ticket_sales_points(coords = F)
-#' Ticket_coord <- ticket_sales_points(coords = T)
+#' Ticket <- ticket_sales_points()
 
 ticket_sales_points <- function() {
   # sprzeda biletow

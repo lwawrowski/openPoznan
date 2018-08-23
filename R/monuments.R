@@ -3,8 +3,6 @@
 #' This function download data about monuments in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about monuments in Poznań
-#' @details Details of usage 
 #' @importFrom jsonlite fromJSON 
 #' @format 
 #' \describe{
@@ -17,10 +15,11 @@
 #' \item{Address}{factor; Address of monument}
 #' \item{ID_monument}{factor; ID monument in Poznan.}
 #' \item{Description}{factor; Description of monument}
+#' \item{Longitude}{numeric; Longitude of monument.}
+#' \item{Latitude}{numeric; Latitude of monument.}
 #' }
 #' @examples
-#' relikt. <- monuments(coords = F)
-#' relikt._coord <- monuments(coords = T)
+#' relikt. <- monuments()
 
 monuments <- function(){
   # turystyka 

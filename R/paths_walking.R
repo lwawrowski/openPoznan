@@ -3,8 +3,7 @@
 #' This function download data about paths walking in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about paths walking in Poznań
-#' @details Details of usage 
+#' @param coords show basic data about paths walking in Poznań. When set TRUE shows coords of walking paths
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
@@ -12,8 +11,10 @@
 #' \describe{
 #' \item{ID}{numeric; ID of Paths in Poznan.}
 #' \item{Name}{factor; Name of Paths in Poznan.}
-#' \item{Lenght{factor; Lenght.}
+#' \item{Length{factor; Length.}
 #' \item{Description}{factor; Description Paths in Poznan.}
+#' \item{Longitude}{numeric; Longitude of walking paths.}
+#' \item{Latitude}{numeric; Latitude of walking paths.}
 #' }
 #' @examples
 #' Paths <- paths_walking(coords = F)
@@ -44,7 +45,7 @@ paths_walking <- function(coords = F){
   
   paths_basic_info <- data.frame(ID=paths$id,
                                        Name=paths$properties$name,
-                                       Lenght=paths$properties$length,
+                                       Length=paths$properties$length,
                                        Description=paths$properties$desc)
 
   

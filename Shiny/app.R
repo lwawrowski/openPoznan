@@ -284,7 +284,7 @@ server <- function(input, output) {
      } else if (input$data == "lg") {
 
        Points <- TRUE
-       point_data <- local_government(coords = T)
+       point_data <- local_government()
        marker_name <- point_data$Residence
 
        Custom_icon <- makeIcon(iconUrl = "https://static.thenounproject.com/png/743167-200.png",
@@ -335,6 +335,20 @@ server <- function(input, output) {
        df <- data.frame(group = group, lng = longtitude, lat = latitude)
        
        labels <- sprintf("<strong>%s</strong><br/>",mydf$id3) %>% lapply(htmltools::HTML)
+       
+     } else if (input$data == "rir") {
+       lines <- TRUE
+       Points <- FALSE
+       Clear_map <- FALSE
+       
+       mydf <- royal_imperial_route()
+       longtitude <- mydf$Longitude
+       latitude <- mydf$Latitude
+       group <- mydf$id
+       
+       df <- data.frame(group = group, lng = longtitude, lat = latitude)
+       
+       labels <- sprintf("<strong>%s</strong><br/>",mydf$id) %>% lapply(htmltools::HTML)
 
      } else if (input$data == "Monument") {
 
@@ -381,7 +395,7 @@ server <- function(input, output) {
      } else if (input$data == "graves") {
        
        Points <- TRUE
-       point_data <- graves(coords = T)
+       point_data <- graves()
 
        Custom_icon <- makeIcon(iconUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/cemetery-367830362729accc-512x512.png",
                                iconWidth = 25,
@@ -396,8 +410,8 @@ server <- function(input, output) {
        point_data <- districts(coords = T)
        distric_coord <- point_data$coord
 
-       District_split_data = lapply(unique(point_data$id), function(x) {
-         df = as.matrix(point_data[point_data$id == x, c("Longitude", "Latitude") ])
+       District_split_data = lapply(unique(distric_coord$id), function(x) {
+         df = as.matrix(distric_coord[distric_coord$id == x, c("Longitude", "Latitude") ])
          polys = Polygons(list(Polygon(df)), ID = x)
          return(polys)
        })
@@ -422,7 +436,7 @@ server <- function(input, output) {
      } else if (input$data == "council") {
 
        Points <- TRUE
-       point_data <- council_districts(coords = T)
+       point_data <- council_districts()
        marker_name <- point_data$Electoral_District
 
        Custom_icon <- makeIcon(iconUrl = "https://static.thenounproject.com/png/743167-200.png",
@@ -435,9 +449,10 @@ server <- function(input, output) {
        Points <- FALSE
        basic_info <- electoral_areas(coords = F)
        point_data <- electoral_areas(coords = T)
-
-       Electoral_split_data = lapply(unique(point_data$id), function(x) {
-         df = as.matrix(point_data[point_data$id == x, c("Longitude", "Latitude") ])
+       Area_coord <- point_data$coord
+      
+       Electoral_split_data = lapply(unique(Area_coord$id), function(x) {
+         df = as.matrix(Area_coord[Area_coord$id == x, c("Longitude", "Latitude") ])
          polys = Polygons(list(Polygon(df)), ID = x)
          return(polys)
        })

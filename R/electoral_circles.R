@@ -3,8 +3,7 @@
 #' This function download data about electoral circlesl in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about electoral circles of local government in Poznań
-#' @details Details of usage 
+#' @param coords show basic data about electoral circles of local government in Poznań. When set TRUE shows coords of schools area.
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate
@@ -12,10 +11,13 @@
 #' \describe{
 #' \item{ID}{numeric; ID of circle.}
 #' \item{Name}{factor; Name of circle.}
+#' \item{Longitude}{numeric; Longitude of circle.}
+#' \item{Latitude}{numeric; Latitude of circle.}
 #' }
 #' @examples
 #' Circle_electoral <- electoral_circles(coords = F)
 #' Circle_coord <- electoral_circles(coords = T)
+#' coords <- Circle_coord$coord
 
 electoral_circles <- function(coords = F){
   # okragi wyborow rad osiedli
@@ -66,6 +68,7 @@ electoral_circles <- function(coords = F){
   if(coords == T){
     result <- list(area=circle_final, coord=circlecoord_id)
   } else {
+    
     return(circle_final)
   }  
 }  

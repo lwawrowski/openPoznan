@@ -6,18 +6,17 @@
 \format{\describe{
 \item{ID}{numeric; ID of Oblast.}
 \item{Name}{factor; Name of Oblast in Poznan.}
+\item{Longitude}{numeric; Longitude of Oblast.}
+\item{Latitude}{numeric; Latitude of Oblast.}
 }}
 \usage{
 electoral_oblasts(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about electoral Oblast in Poznań}
+\item{coords}{show basic data about electoral Oblast in Poznań. When set TRUE shows coords of schools area.}
 }
 \description{
 This function download data about electoral Oblast in Poznan.
-}
-\details{
-Details of usage
 }
 \examples{
 oblast <- electoral_oblasts(coords = F)

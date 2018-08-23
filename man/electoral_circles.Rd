@@ -6,21 +6,21 @@
 \format{\describe{
 \item{ID}{numeric; ID of circle.}
 \item{Name}{factor; Name of circle.}
+\item{Longitude}{numeric; Longitude of circle.}
+\item{Latitude}{numeric; Latitude of circle.}
 }}
 \usage{
 electoral_circles(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about electoral circles of local government in Poznań}
+\item{coords}{show basic data about electoral circles of local government in Poznań. When set TRUE shows coords of schools area.}
 }
 \description{
 This function download data about electoral circlesl in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
 Circle_electoral <- electoral_circles(coords = F)
 Circle_coord <- electoral_circles(coords = T)
+coords <- Circle_coord$coord
 }
 \keyword{keyword}

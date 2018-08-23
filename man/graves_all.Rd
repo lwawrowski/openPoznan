@@ -16,18 +16,17 @@
 \item{Field_No}{factor; Field number in cemetery.}
 \item{Place_No}{factor; Place number in cemetery.}
 \item{Paid}{numeric; Paid.}
+\item{Longitude}{numeric; Longitude of Grave.}
+\item{Latitude}{numeric; Latitude of Grave.}
 }}
 \usage{
 graves_all(coords = F)
 }
 \arguments{
-\item{coords}{show basic data about all graves in Poznań}
+\item{coords}{show basic data about all graves in Poznań. When set TRUE shows coords of all graves}
 }
 \description{
 This function download data about all graves in Poznan.
-}
-\details{
-Details of usage
 }
 \examples{
 Grave_All <- graves_all(coords = F)

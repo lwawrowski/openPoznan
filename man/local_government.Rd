@@ -8,21 +8,16 @@
 \item{AFDP}{factor; Adaptation for disabled pearson.}
 \item{District_no}{numeric; Number of district.}
 \item{Residence}{factor; Name of Residence. }
+\item{Longitude}{numeric; Longitude of the polls.}
+\item{Latitude}{numeric; Latitude of the polls.} 
 }}
 \usage{
-local_government(coords = F)
-}
-\arguments{
-\item{coords}{show basic data about local government in Poznań}
+local_government()
 }
 \description{
 This function download data about local government in Poznań.
 }
-\details{
-Details of usage
-}
 \examples{
-Local_Government <- local_government(coords = F)
-Local_Government_coords <- Local_Government(coords = T)
+Local_Government <- local_government()
 }
 \keyword{keyword}

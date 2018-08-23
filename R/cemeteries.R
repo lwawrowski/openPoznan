@@ -3,8 +3,7 @@
 #' This function download data about Cemetery in Poznan.
 #' @keywords keyword
 #' @export
-#' @param coords show basic data about cemetery in Poznań
-#' @details Details of usage 
+#' @param coords show basic data about cemetery in Poznań. When set TRUE shows coords of cemetery.
 #' @importFrom jsonlite fromJSON 
 #' @importFrom purrr map map2_df
 #' @importFrom dplyr mutate distinct
@@ -13,10 +12,13 @@
 #' \item{ID}{numeric; ID of Cemetery in Poznan.}
 #' \item{Cemetery_Name}{factor; Name of cemetery in Poznan.}
 #' \item{Cemetery_Type}{factor; Type of cemetery in Poznan.}
+#' \item{Longitude}{numeric; Longitude of cemetery site.}
+#' \item{Latitude}{numeric; Latitude of cemetery site.}
 #' }
 #' @examples
 #' Cemetery <- cemeteries(coords = F)
 #' Cemetery_coords <- cemeteries(coords = T)
+#' coords <- Cemetery_coords$coord
 
 # wyszukiwarka cmentarzy 
 
