@@ -274,10 +274,6 @@ bt_machines_id %>%
 
 #Funkcja ta liczy przystanki w dwie strony (tzn. Na przystanku z ID PONA71 i PONA72 (Polna) zatrzymuje się tylko tramwaj nr 2 i jest policzony dwa razy.)
 
-
-
-
-
 Group_by_stop <- bt_machines_leaflet %>%
   group_by(Stop_Name) %>%
   mutate(line = gsub('T',"0.",line)) %>%
@@ -302,14 +298,49 @@ addTiles() %>%
 addCircles(lng = ~Longitude, 
            lat = ~Latitude, 
            weight = 1,
-           radius = sqrt(Similarities$n) * 30,
-           popup = Similarities$Stop_Name.x)
+           radius = ~sqrt(Similarities$n) * 25,
+           popup = ~Similarities$Stop_Name.x)
+
+
+
+
+
+
   
 
 ```
 
 
 ```{r}
+# Usuwa duplikaty jeżdżące na danym przystanku 
+
+bt_machines_leaflet_nd_line <- bt_machines_nd[!duplicated(bt_machines_nd[c(1,5)]),]
+
+Group_by_stop_nd_line<- bt_machines_leaflet_nd_line  %>%
+  group_by(Stop_Name) %>%
+  mutate(line = gsub('T',"0.",line)) %>%
+  count() %>%
+  arrange(desc(n))
+
+Similarities_nd_line <- Group_by_stop_nd_line %>%
+  stringdist_right_join(bt_machines_leaflet_nd,
+                        by = "Stop_Name",
+                        max_dist = 0,
+                        distance_col = NULL,
+                        method = "osa")
+
+Similarities_nd_line$Stop_Name.y <- NULL
+Similarities_nd_line$stop <- NULL
+Similarities_nd_line$line <- NULL
+
+leaflet(Similarities_nd_line) %>%
+addTiles() %>% 
+addCircles(lng = ~Longitude, 
+           lat = ~Latitude, 
+           weight = 1,
+           radius = ~sqrt(Similarities$n) * 25,
+           popup = ~Similarities$Stop_Name.x)
+
 
 ```
 
