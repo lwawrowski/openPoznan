@@ -47,16 +47,16 @@ bt_machines_id <- bt_machines %>%
   filter(!is.na(line)) 
 
 bt_tram <- bt_machines %>%
-  select(ID,Route_Type, 4:(Max_number_of_machines+3)) %>%
-  gather(stop, line, -ID, -Route_Type) %>%
+  select(ID,Route_Type, Stop_Name,  4:(Max_number_of_machines+3)) %>%
+  gather(stop, line, -ID, -Route_Type, -Stop_Name) %>%
   filter(Route_Type == 0) %>%
   filter(!is.na(line)) %>%
   mutate(line = gsub('T',"0.",line)) %>% 
   transform(line = as.numeric(line)) 
 
 bt_bus <- bt_machines %>%
-  select(ID,Route_Type, Stop_Zone, 4:(Max_number_of_machines+3)) %>%
-  gather(stop, line, -ID, -Route_Type, -Stop_Zone) %>%
+  select(ID,Route_Type, Stop_Zone, Stop_Name,  4:(Max_number_of_machines+3)) %>%
+  gather(stop, line, -ID, -Route_Type, -Stop_Zone, -Stop_Name) %>%
   filter(Route_Type == 3) %>%
   filter(!is.na(line)) %>%
   transform(line = as.numeric(line)) 
@@ -277,7 +277,7 @@ bt_machines_id %>%
 Group_by_stop <- bt_machines_leaflet %>%
   group_by(Stop_Name) %>%
   mutate(line = gsub('T',"0.",line)) %>%
-  count() %>%
+  count(vars = "line") %>%
   arrange(desc(n))
 
 bt_machines_leaflet_nd <- bt_machines_nd[!duplicated(bt_machines_nd$Stop_Name),]
@@ -292,6 +292,32 @@ Similarities <- Group_by_stop %>%
 Similarities$Stop_Name.y <- NULL
 Similarities$stop <- NULL
 Similarities$line <- NULL
+colnames(Similarities)[which(names(Similarities) == "Stop_Name.x")]  <- "Stop_Name"
+
+Group_by_stop_trams <- bt_tram %>%
+  group_by(Stop_Name) %>%
+  mutate(line = gsub('T',"0.",line)) %>%
+  count(vars = "line") %>%
+  arrange(desc(n))
+
+colnames(Group_by_stop_trams)[which(names(Group_by_stop_trams) == "n")]  <- "Liczba tramwajow"
+
+
+Similarities_tram <- Group_by_stop_trams%>%
+  stringdist_right_join(Similarities,
+                        by = "Stop_Name",
+                        max_dist = 0,
+                        distance_col = NULL,
+                        method = "osa")
+
+Group_by_stop_bus <- bt_bus %>%
+  group_by(Stop_Name) %>%
+  mutate(line = gsub('T',"0.",line)) %>%
+  count(vars = "line") %>%
+  arrange(desc(n))
+
+
+
 
 leaflet(Similarities) %>%
 addTiles() %>% 
@@ -299,7 +325,8 @@ addCircles(lng = ~Longitude,
            lat = ~Latitude, 
            weight = 1,
            radius = ~sqrt(Similarities$n) * 25,
-           popup = ~Similarities$Stop_Name.x)
+           popup = paste("Stop Name:", Similarities$Stop_Name, "<br>",
+                         "Number of Machines:", Similarities$n))
 
 
 
