@@ -272,7 +272,9 @@ bt_machines_id %>%
 
 #leaflet with circles
 
-#Funkcja ta liczy przystanki w dwie strony (tzn. Na przystanku z ID PONA71 i PONA72 (Polna) zatrzymuje się tylko tramwaj nr 2 i jest policzony dwa razy.)
+#This function counts stops in two directions (i.e. At stop with ID PONA71 i PONA72 (Polna) stops only tram number 2 and it's counted twice.)
+
+# Grouping for Machines (buses + trams)
 
 Group_by_stop <- bt_machines_leaflet %>%
   group_by(Stop_Name) %>%
@@ -294,13 +296,15 @@ Similarities$stop <- NULL
 Similarities$line <- NULL
 colnames(Similarities)[which(names(Similarities) == "Stop_Name.x")]  <- "Stop_Name"
 
+#Grouping only for trams 
+
 Group_by_stop_trams <- bt_tram %>%
   group_by(Stop_Name) %>%
   mutate(line = gsub('T',"0.",line)) %>%
   count(vars = "line") %>%
   arrange(desc(n))
 
-colnames(Group_by_stop_trams)[which(names(Group_by_stop_trams) == "n")]  <- "Liczba tramwajow"
+colnames(Group_by_stop_trams)[which(names(Group_by_stop_trams) == "n")]  <- "Liczba_tramwajow"
 
 
 Similarities_tram <- Group_by_stop_trams%>%
@@ -310,23 +314,47 @@ Similarities_tram <- Group_by_stop_trams%>%
                         distance_col = NULL,
                         method = "osa")
 
+colnames(Similarities_tram)[which(names(Similarities_tram) == "Stop_Name.y")]  <- "Stop_Name"
+
+#Grouping only for buses
+
 Group_by_stop_bus <- bt_bus %>%
   group_by(Stop_Name) %>%
   mutate(line = gsub('T',"0.",line)) %>%
   count(vars = "line") %>%
   arrange(desc(n))
 
+colnames(Group_by_stop_bus)[which(names(Group_by_stop_bus) == "n")]  <- "Liczba_autobusów"
 
+#Creating DF with number of Machines, buses and trams at given stop. Then doing some cleaning with DF. 
 
+Similarities_tram_bus <- Group_by_stop_bus %>%
+  stringdist_right_join(Similarities_tram,
+                        by = "Stop_Name",
+                        max_dist = 0,
+                        distance_col = NULL,
+                        method = "osa")
 
-leaflet(Similarities) %>%
+colnames(Similarities_tram_bus)[which(names(Similarities_tram_bus) == "Stop_Name.y")]  <- "Stop_Name"
+colnames(Similarities_tram_bus)[which(names(Similarities_tram_bus) == "n")]  <- "Liczba_Maszyn"
+Similarities_tram_bus[1:2] <- NULL
+Similarities_tram_bus[2:3] <- NULL
+Similarities_tram_bus$vars.y <- NULL
+
+Similarities_tram_bus <- Similarities_tram_bus[,c(3,4,1,2,5,6)]
+
+#Drawing at Leaflet map 
+
+leaflet(Similarities_tram_bus) %>%
 addTiles() %>% 
 addCircles(lng = ~Longitude, 
            lat = ~Latitude, 
            weight = 1,
-           radius = ~sqrt(Similarities$n) * 25,
-           popup = paste("Stop Name:", Similarities$Stop_Name, "<br>",
-                         "Number of Machines:", Similarities$n))
+           radius = ~sqrt(Similarities_tram_bus$Liczba_Maszyn) * 25,
+           popup = paste("Stop Name:", Similarities_tram_bus$Stop_Name, "<br>",
+                         "Number of Machines:", Similarities_tram_bus$Liczba_Maszyn, "<br>",
+                         "Number of Trams:", Similarities_tram_bus$Liczba_tramwajow, "<br>",
+                         "Number of buses", Similarities_tram_bus$Liczba_autobusów))
 
 
 
