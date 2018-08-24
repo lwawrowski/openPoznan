@@ -408,8 +408,21 @@ myMat <- matrix(0, length(nameVals), length(nameVals), dimnames = list(nameVals,
 
 #Count how many stops of given tram coincide with other trams.
 
-Test_1 <- count(bt_tram, bt_tram$Stop_Name, bt_tram$line)
+Test_1 <- count(bt_tram, Stop_Name, line)
 
+nameVals_df <- data.frame(nameVals)
+max_numer_of_stops_for_tram <- data.frame()
+
+for (i in nameVals) {
+
+Max_for_one_tram <- sum (Test_1$line == i)
+
+result <- data.frame(Max_for_one_tram )
+
+max_numer_of_stops_for_tram <- rbind(max_numer_of_stops_for_tram, result)
+}
+
+max_numer_of_stops_for_tram <- cbind(max_numer_of_stops_for_tram, nameVals_df)
 
 ```
 
