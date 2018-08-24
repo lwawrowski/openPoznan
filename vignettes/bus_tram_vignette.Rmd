@@ -404,7 +404,7 @@ nameVals <- sort(unique(unlist(bt_tram[5])))
 
 #Create empty matrix 
 
-myMat <- matrix(0, length(nameVals), length(nameVals), dimnames = list(nameVals, nameVals))
+myMat <- matrix(0, length(nameVals +), length(nameVals), dimnames = list(nameVals, nameVals))
 
 #Count how many stops of given tram coincide with other trams.
 
@@ -423,6 +423,19 @@ max_numer_of_stops_for_tram <- rbind(max_numer_of_stops_for_tram, result)
 }
 
 max_numer_of_stops_for_tram <- cbind(max_numer_of_stops_for_tram, nameVals_df)
+
+#Add Max values to row/col titles, so user can see with is higher. 
+
+MyNames <- paste(nameVals, max_numer_of_stops_for_tram$Test_2, sep=" [")
+MyNames <- paste0(MyNames, ']')  
+
+myMat <- matrix(0, length(MyNames), length(MyNames), dimnames = list(MyNames, MyNames))
+
+#Add max values to main diagonal
+
+myMat[col(myMat) == row(myMat)] <- myMat[col(myMat) == row(myMat)] + max_numer_of_stops_for_tram$Test_2
+
+
 
 ```
 
