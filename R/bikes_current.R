@@ -26,11 +26,12 @@
 #' bikes_current()
 bikes_current <-function(){
   
-  download.file("https://nextbike.net/maps/nextbike-official.xml?city=192","R/bike.xml" )
+  download.file("https://nextbike.net/maps/nextbike-official.xml?city=192","bike.xml" )
   
-  d <- xmlParse("R/bike.xml")
+  d <- xmlParse("bike.xml")
   
   root <- xmlRoot(d)
+  file.remove("bike.xml")
   
   places <- xmlToList(root[[1]][[1]])
   

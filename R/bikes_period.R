@@ -33,8 +33,8 @@
 # example get_bike_place_details_functions("27-07-2018 13:05","28-07-2018 13:05")
 bikes_period <- function(start,end) {
 ## download data about bikes from NextBike every 5 minute.
-#start <- "30-07-2018 8:34"
-#end <- "30-08-2018 8:44"
+start <- "30-07-2018 8:34"
+end <- "30-08-2018 8:44"
   
 time <- difftime(end,start,units = "hours")
 
@@ -64,8 +64,7 @@ if(result == TRUE){
 for (i in 1:n){
   
 x <- format(Sys.time(),"%d-%m-%Y-%H-%M")
-
-download.file("https://nextbike.net/maps/nextbike-official.xml?city=192",paste0("R/NextBike/bike-",x,".xml") )
+download.file("https://nextbike.net/maps/nextbike-official.xml?city=192",paste0("bike-",x,".xml") )
 Sys.sleep(300)
 
 }
@@ -73,12 +72,11 @@ Sys.sleep(300)
 data_table_final <- list()
 data_table2 <- list()
 
-list.xml <- list.files(path = "R/NextBike/", pattern = ".xml")
-
+list.xml <- list.files( pattern = ".xml")
 for(i in 1:length(list.xml)){
 date <- substring(list.xml[i],6,21)
 
-data<-xmlParse(paste0("R/NextBike/",list.xml[i]))
+data<-xmlParse(paste0(list.xml[i]))
 
 data_table<- get_nextbikes(data,date)
 compare_table <- compare::compareEqual(data_table,data_table2) 
@@ -130,6 +128,7 @@ get_nextbikes <-function(data,date){
 
 
 
+file.remove(list.xml)
 
 return(data_table_final)
 
