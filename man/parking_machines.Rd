@@ -16,9 +16,6 @@ parking_machines()
 \description{
 This function download data about parking machines in Poznań
 }
-\details{
-Details of usage
-}
 \examples{
 
 pms <- parking_machines()

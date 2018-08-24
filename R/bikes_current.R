@@ -7,6 +7,7 @@
 #' @import XML
 #' @importFrom purrr map map2_df map_lgl
 #' @importFrom dplyr mutate
+#' @importFrom plyr rbind.fill
 #' @format 
 #' \describe{
 #' \item{number}{character; bike number.}

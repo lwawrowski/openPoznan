@@ -19,9 +19,6 @@ ticket_vending_machines()
 \description{
 This function download data about ticket vending machines in Poznań
 }
-\details{
-Details of usage
-}
 \examples{
 
 tvms <- ticket_vending_machines()

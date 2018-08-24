@@ -17,9 +17,6 @@ sewage_works()
 \description{
 This function download data about sewage works in Poznań.
 }
-\details{
-Details of usage
-}
 \examples{
 
 sws <- sewage_works()

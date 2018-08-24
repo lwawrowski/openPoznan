@@ -18,9 +18,6 @@ tram_bus_stops()
 \description{
 This function download data about stops in Poznań
 }
-\details{
-Details of usage
-}
 \examples{
 
 Stops <- tram_bus_stops() 

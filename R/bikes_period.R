@@ -10,6 +10,7 @@
 #' @importFrom purrr map map2_df map_lgl
 #' @importFrom dplyr mutate id
 #' @importFrom tidyr fill
+#' @importFrom compare compareEqual
 #' @format 
 #' \describe{
 #' \item{number}{character; bike number.}
@@ -61,14 +62,52 @@ if(result == FALSE){
 }
 if(result == TRUE){
   
-for (i in 1:n){
+  for (i in 1:n){
+    
+  x <- format(Sys.time(),"%d-%m-%Y-%H-%M")
+  download.file("https://nextbike.net/maps/nextbike-official.xml?city=192",paste0("bike-",x,".xml") )
+  Sys.sleep(300)
   
-x <- format(Sys.time(),"%d-%m-%Y-%H-%M")
-download.file("https://nextbike.net/maps/nextbike-official.xml?city=192",paste0("bike-",x,".xml") )
-Sys.sleep(300)
-
+  }
 }
-}
+  
+  get_nextbikes <- function(data, date){
+    
+    root <- xmlRoot(data)
+    
+    places <- xmlToList(root[[1]][[1]])
+    
+    # usunięcie attrs
+    
+    places$.attrs <- NULL
+    
+    are_bikes <- map_lgl(places, is.list)
+    station_basic_info <- list()
+    
+    for(i in 1:length(places)){
+      
+      if(are_bikes[[i]]){
+        
+        station <- places[[i]]
+        
+        station_attr <- as.data.frame(t(station$.attrs))
+        station$.attrs <- NULL
+        
+        station_bikes <- map(map(station, t), as.data.frame)
+        station_bikes_id <- map2_df(station_bikes, station_attr$number, ~mutate(.x, id=.y))
+        
+        station_bikes_description <- cbind(station_bikes_id,station_attr)
+        station_basic_info<- data.frame(rbind.fill(station_basic_info,station_bikes_description))
+        
+        
+        
+      }
+      
+    }
+    station_final <- station_basic_info[ -c(4:5,11,15:16,18:21) ] 
+    station_final <- cbind(station_final,date)
+  }
+  
 data_table_final <- list()
 data_table2 <- list()
 
@@ -81,49 +120,10 @@ data<-xmlParse(paste0(list.xml[i]))
 data_table<- get_nextbikes(data,date)
 compare_table <- compare::compareEqual(data_table,data_table2) 
 
-
 if(compare_table$result  == FALSE) {
   data_table_final <- rbind(data_table_final,data_table)
   data_table2 <- data_table 
   }
-}
-get_nextbikes <-function(data,date){
-
-  
-  
-  root <- xmlRoot(data)
-  
-  places <- xmlToList(root[[1]][[1]])
-  
-  # usunięcie attrs
-  
-  places$.attrs <- NULL
-  
-  are_bikes <- map_lgl(places, is.list)
-  station_basic_info <- list()
-  
-  for(i in 1:length(places)){
-    
-    if(are_bikes[[i]]){
-      
-      station <- places[[i]]
-      
-      station_attr <- as.data.frame(t(station$.attrs))
-      station$.attrs <- NULL
-      
-      station_bikes <- map(map(station, t), as.data.frame)
-      station_bikes_id <- map2_df(station_bikes, station_attr$number, ~mutate(.x, id=.y))
-
-      station_bikes_description <- cbind(station_bikes_id,station_attr)
-      station_basic_info<- data.frame(rbind.fill(station_basic_info,station_bikes_description))
-      
-      
-      
-    }
-    
-  }
-  station_final <- station_basic_info[ -c(4:5,11,15:16,18:21) ] 
-  station_final <- cbind(station_final,date)
 }
 
 

@@ -17,9 +17,6 @@ cesspools()
 \description{
 This function download data about cesspools in Poznań.
 }
-\details{
-Details of usage
-}
 \examples{
 Cesspools <- cesspools()
 }

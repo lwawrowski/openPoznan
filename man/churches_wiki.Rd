@@ -14,9 +14,6 @@ churches_wiki()
 \description{
 This function download data about churches in Poznan.
 }
-\details{
-Details of usage
-}
 \examples{
 Churches <- churches_wiki()
 }
