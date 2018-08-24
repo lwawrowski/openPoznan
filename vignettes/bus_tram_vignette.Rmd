@@ -155,7 +155,7 @@ bt_machines_nd <- bt_machines %>%
 # Night Trams
   
   night_trams <- bt_tram %>%
-  filter(line > 100) #wstaw tu minimalny numer autobusu! 
+  filter(line > min_bus) 
   
 ```
 
@@ -304,7 +304,7 @@ Group_by_stop_trams <- bt_tram %>%
   count(vars = "line") %>%
   arrange(desc(n))
 
-colnames(Group_by_stop_trams)[which(names(Group_by_stop_trams) == "n")]  <- "Liczba_tramwajow"
+colnames(Group_by_stop_trams)[which(names(Group_by_stop_trams) == "n")]  <- "Number_of_trams"
 
 
 Similarities_tram <- Group_by_stop_trams%>%
@@ -324,7 +324,7 @@ Group_by_stop_bus <- bt_bus %>%
   count(vars = "line") %>%
   arrange(desc(n))
 
-colnames(Group_by_stop_bus)[which(names(Group_by_stop_bus) == "n")]  <- "Liczba_autobusów"
+colnames(Group_by_stop_bus)[which(names(Group_by_stop_bus) == "n")]  <- "Number_of_buses"
 
 #Creating DF with number of Machines, buses and trams at given stop. Then doing some cleaning with DF. 
 
@@ -336,12 +336,13 @@ Similarities_tram_bus <- Group_by_stop_bus %>%
                         method = "osa")
 
 colnames(Similarities_tram_bus)[which(names(Similarities_tram_bus) == "Stop_Name.y")]  <- "Stop_Name"
-colnames(Similarities_tram_bus)[which(names(Similarities_tram_bus) == "n")]  <- "Liczba_Maszyn"
+colnames(Similarities_tram_bus)[which(names(Similarities_tram_bus) == "n")]  <- "Number_of_Machines"
 Similarities_tram_bus[1:2] <- NULL
 Similarities_tram_bus[2:3] <- NULL
 Similarities_tram_bus$vars.y <- NULL
 
 Similarities_tram_bus <- Similarities_tram_bus[,c(3,4,1,2,5,6)]
+Similarities_tram_bus[is.na(Similarities_tram_bus)] <- 0
 
 #Drawing at Leaflet map 
 
@@ -350,16 +351,11 @@ addTiles() %>%
 addCircles(lng = ~Longitude, 
            lat = ~Latitude, 
            weight = 1,
-           radius = ~sqrt(Similarities_tram_bus$Liczba_Maszyn) * 25,
+           radius = ~sqrt(Similarities_tram_bus$Number_of_Machines) * 25,
            popup = paste("Stop Name:", Similarities_tram_bus$Stop_Name, "<br>",
-                         "Number of Machines:", Similarities_tram_bus$Liczba_Maszyn, "<br>",
-                         "Number of Trams:", Similarities_tram_bus$Liczba_tramwajow, "<br>",
-                         "Number of buses", Similarities_tram_bus$Liczba_autobusów))
-
-
-
-
-
+                         "Number of Machines:", Similarities_tram_bus$Number_of_Machines, "<br>",
+                         "Number of Trams:", Similarities_tram_bus$Number_of_trams, "<br>",
+                         "Number of buses", Similarities_tram_bus$Number_of_buses))
 
   
 
@@ -401,6 +397,19 @@ addCircles(lng = ~Longitude,
 
 
 ```{r}
+
+#Get names for matrix 
+
+nameVals <- sort(unique(unlist(bt_tram[5])))
+
+#Create empty matrix 
+
+myMat <- matrix(0, length(nameVals), length(nameVals), dimnames = list(nameVals, nameVals))
+
+#Count how many stops of given tram coincide with other trams.
+
+Test_1 <- count(bt_tram, bt_tram$Stop_Name, bt_tram$line)
+
 
 ```
 
