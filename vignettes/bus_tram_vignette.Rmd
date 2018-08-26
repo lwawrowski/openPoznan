@@ -404,18 +404,18 @@ nameVals <- sort(unique(unlist(bt_tram[5])))
 
 #Create empty matrix 
 
-myMat <- matrix(0, length(nameVals +), length(nameVals), dimnames = list(nameVals, nameVals))
+myMat <- matrix(0, length(nameVals), length(nameVals), dimnames = list(nameVals, nameVals))
 
 #Count how many stops of given tram coincide with other trams.
 
-Test_1 <- count(bt_tram, Stop_Name, line)
+Tram_list_with_stops_name <- count(bt_tram, Stop_Name, line)
 
 nameVals_df <- data.frame(nameVals)
 max_numer_of_stops_for_tram <- data.frame()
 
 for (i in nameVals) {
 
-Max_for_one_tram <- sum (Test_1$line == i)
+Max_for_one_tram <- sum (Tram_list_with_stops_name$line == i)
 
 result <- data.frame(Max_for_one_tram )
 
@@ -426,14 +426,20 @@ max_numer_of_stops_for_tram <- cbind(max_numer_of_stops_for_tram, nameVals_df)
 
 #Add Max values to row/col titles, so user can see with is higher. 
 
-MyNames <- paste(nameVals, max_numer_of_stops_for_tram$Test_2, sep=" [")
+MyNames <- paste(nameVals, max_numer_of_stops_for_tram$Max_for_one_tram, sep=" [")
 MyNames <- paste0(MyNames, ']')  
 
 myMat <- matrix(0, length(MyNames), length(MyNames), dimnames = list(MyNames, MyNames))
 
 #Add max values to main diagonal
 
-myMat[col(myMat) == row(myMat)] <- myMat[col(myMat) == row(myMat)] + max_numer_of_stops_for_tram$Test_2
+myMat[col(myMat) == row(myMat)] <- myMat[col(myMat) == row(myMat)] + max_numer_of_stops_for_tram$Max_for_one_tram
+
+#ExpandGrid function Tests 
+
+
+Exp_test <- expand.grid(Tram_list_with_stops_name)
+
 
 
 
