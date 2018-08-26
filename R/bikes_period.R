@@ -7,6 +7,7 @@
 #' @export
 #' @details Details of usage 
 #' @import XML
+#' @import lubridate
 #' @importFrom purrr map map2_df map_lgl
 #' @importFrom dplyr mutate id
 #' @importFrom plyr rbind.fill
@@ -34,15 +35,16 @@
 # example get_bike_place_details_functions("27-07-2018 13:05","28-07-2018 13:05")
 bikes_period <- function(start,end) {
   ## download data about bikes from NextBike every 5 minute.
+  int <- dmy_hm(start) %--% dmy_hm(end)
+  time<- int@.Data/60
   
-  time <- difftime(end,start,units = "mins")
   n <- round(as.numeric(time) / 5)
   
   result <- FALSE
   
-  if(n < 0){
+  if(n <= 0){
     
-    Print("Incorrect value")
+    print("Incorrect value")
   }
   else{
     if(result == FALSE){
