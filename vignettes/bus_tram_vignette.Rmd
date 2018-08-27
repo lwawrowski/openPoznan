@@ -437,8 +437,11 @@ myMat[col(myMat) == row(myMat)] <- myMat[col(myMat) == row(myMat)] + max_numer_o
 
 #ExpandGrid function Tests 
 
+Tram_list_with_stops_name_non <- subset(Tram_list_with_stops_name, select = -c(n))
 
-Exp_test <- expand.grid(Tram_list_with_stops_name)
+Exp_test <- expand.grid(unique(Tram_list_with_stops_name_non))
+
+Exp_test2 <- expand.grid(Tram_list_with_stops_name_non)
 
 
 
