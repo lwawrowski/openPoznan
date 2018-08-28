@@ -167,7 +167,7 @@ ggplot(graves_birth_distinct, aes(g_year_birth)) +
 ```{r}
 # usunięcie daty 1900-01-01, która też jest brakiem danych
 
-graves_birth_distinct %>%
+graves_birth_distinct %>% na.omit(graves_birth_distinct) %>%
   filter(g_date_birth != "1900-01-01") %>%
   ggplot(aes(g_year_birth)) +
   geom_bar() +
@@ -177,7 +177,7 @@ graves_birth_distinct %>%
 ```{r}
 # pojedyncze roczniki
 
-graves_birth_distinct %>%
+graves_birth_distinct %>% na.omit(graves_birth_distinct) %>%
   filter(g_date_birth != "1900-01-01") %>%
   ggplot(aes(g_year_birth)) +
   geom_histogram(binwidth = 1) +
@@ -213,7 +213,7 @@ ggplot(graves_death_distinct, aes(g_year_death)) +
 
 
 ```{r}
-graves_death_distinct %>%
+graves_death_distinct %>% na.omit(graves_death_distinct) %>%
   filter(g_date_death != "1900-01-01") %>%
   ggplot(aes(g_year_death)) +
   geom_bar() +
@@ -224,11 +224,11 @@ graves_death_distinct %>%
 ```{r}
 # pojedyncze roczniki
 
-graves_death_distinct %>%
+graves_death_distinct %>% na.omit(graves_death_distinct) %>%
   filter(g_date_death != "1900-01-01") %>%
   ggplot(aes(g_year_death)) +
   geom_histogram(binwidth = 1) +
-  xlim(1850,2018)
+  xlim(1900,2018)
 ```
 
 
@@ -273,6 +273,17 @@ graves_burial_distinct %>% na.omit(graves_burial_distinct) %>%
   ggplot(aes(g_year_burial)) +
   geom_histogram(binwidth = 1) +
   xlim(1850,2018)
+```
+
+
+
+```{r}
+ggplot(data = graves_birth_count_distinct, aes(x=g_year_birth,y=n), color = "red")+
+  geom_col(data = graves_birth_count_distinct, aes(g_year_birth,y=n), color = "red")+
+  geom_col(data = graves_death_count_distinct, aes(g_year_death,y=n), color = "blue")+
+  geom_col(data = graves_burial_count_distinct, aes(g_year_burial,y=n), color = "green")+
+  ylim(0,2000)+
+  xlim(1750,2018)
 ```
 
 
