@@ -40,8 +40,6 @@ date_birth_n %>%
   arrange(desc(n)) %>%
   head(n=10)
 
-# przedstawianie prawie 40 tys. obserwacji na wykresie nie jest najlepszym pomysłem
-plot_ly(date_birth_n, x = ~g_date_birth, y = ~n)
 ```
 
 Pierwszy i drugi wiersz to ewidentnie braki danych. Potem widać także, że jak znany był tylko rok to przypisywali 1-stycznia. W związku z tym sensownie będzie zamienić tę kolumnę na datę i wyodrębnić tylko rok. Przedstaw na wykresie jak kształtowała się liczba grobów w zależności od roku urodzenia.
@@ -52,7 +50,7 @@ Sprawdź dla ilu grobów kompletna jest data urodzenia i śmierci/śmierci i pog
 
 # Counts at cementaries
 
-```{r}
+```{r, fig.height=7}
 cementy <- openPoznan::cemeteries(coords = F)
 
 graves_name <- left_join(graves, cementy, by=c("cm_id"="ID"))
@@ -64,7 +62,8 @@ ggplot(graves_name, aes(as.factor(Cemetery_Name))) +
   xlab("Cementary name") + 
   ylab("Percent") + 
   scale_y_continuous(labels=scales::percent) +
-  theme_bw()
+  theme_bw()+
+  coord_flip()
 ```
 
 Sprawdz jak wygląda częstość zmiennej paid i g_size.
@@ -72,33 +71,6 @@ Sprawdz jak wygląda częstość zmiennej paid i g_size.
 
 
 ```{r}
-
-# Twoja wersja
-grave_size <- graves %>% 
-  select(c(paid,g_size)) %>% 
-  count(paid,g_size) %>% 
-  slice(2:25) %>%  # unikaj czegoś takiego - tzw. magicznych liczb. Nie wiadomo dlaczego akurat jest 2 i 25, a poza tym jak zmieni się cokolwiek w zbiorze to kod nie będzie działał poprawnie.
-  na.omit(paid,g_size)
-
-no_paid_graves <- grave_size %>% filter(paid == -1) %>% arrange(g_size) %>% slice(2:13) %>% mutate(no_paid = g_size)
-
-paid_graves <- grave_size %>% filter(paid == 1) %>% slice(2:5)
-
-unknown <- grave_size %>% filter(paid == 0) %>% slice(2:5)
-
-size <- graves %>% count(g_size) %>% na.omit(g_size) %>% slice(3:15)
-
-ggplot(data = paid_graves, aes(as.factor(g_size)))+
-  geom_col(aes(x=g_size,y=n))+
-  geom_col(data = no_paid_graves, aes(x=no_paid,y=n), color = "red")+
-  geom_col(data = unknown, aes(x=g_size,y=n), color = "blue")+
- xlab("Grave size")+
-  ylab("number")+
-   facet_wrap("paid")
-
-##### 
-
-# moja propozycja
 
 grave_size <- graves %>%
   group_by(paid,g_size) %>%
@@ -214,23 +186,94 @@ graves_birth_distinct %>%
 
 
 ```{r}
-# braki <- graves %>% arrange(g_date_birth) %>% arrange(g_date_death) %>% arrange(g_date_burial) %>%
-#   filter(g_date_death == c("0001-01-01","1900-01-01","1800-01-01") &
-#          g_date_burial == c("0001-01-01","1900-01-01","1800-01-01") &
-#          g_date_burial == c("0001-01-01","1900-01-01","1800-01-01")) %>% distinct()
-# 
-# # braki danych ale nie wszystkie 
-# 
-# plot_ly(data = czyste, x = ~g_date_death)
-# plot_ly(data = czyste, x = ~g_date_birth)
-# plot_ly(data = czyste, x = ~g_date_burial)
-# 
-# install.packages("RSQLite")
-# library(RSQLite)
-# library(sqldf)
-# czyste <- sqldf("DELETE FROM graves where g_date_death IN (select g_date_death from graves where g_date_death = '0001-01-01')")
+graves_death <- graves %>% 
+  filter(g_date_death != "0001-01-01", 1) %>% 
+  mutate(g_date_death=ymd(g_date_death),
+  g_year_death=year(g_date_death))
+
+graves_death_counr <- graves_death %>% 
+  group_by(g_year_death) %>%
+  count()
+
+graves_death_distinct <- graves_death %>%
+  distinct()
+
+
+graves_death_count_distinct <- graves_death_distinct %>%
+  group_by(g_year_death) %>%
+  count()
+
+graves_death_distinct <- graves_death_distinct %>%
+  filter(g_year_death %in% c(100:2018)) 
+
+ggplot(graves_death_distinct, aes(g_year_death)) +
+  geom_bar()
 ```
 
+
+
+```{r}
+graves_death_distinct %>%
+  filter(g_date_death != "1900-01-01") %>%
+  ggplot(aes(g_year_death)) +
+  geom_bar() +
+  xlim(1850,2018)
+```
+
+
+```{r}
+# pojedyncze roczniki
+
+graves_death_distinct %>%
+  filter(g_date_death != "1900-01-01") %>%
+  ggplot(aes(g_year_death)) +
+  geom_histogram(binwidth = 1) +
+  xlim(1850,2018)
+```
+
+
+
+```{r}
+graves_burial <- graves %>% 
+  filter(g_date_burial != "0001-01-01", 1) %>% 
+  mutate(g_date_burial=ymd(g_date_burial),
+         g_year_burial=year(g_date_burial))
+
+graves_burial_count <- graves_burial %>% 
+  group_by(g_date_burial) %>% 
+  count()
+
+graves_burial_distinct <- graves_burial %>%
+  distinct()
+
+graves_burial_count_distinct <- graves_burial_distinct %>%
+  group_by(g_year_burial) %>%
+  count()
+
+graves_burial_distinct <- graves_burial_distinct %>%
+  filter(g_year_burial %in% c(1100:2018)) 
+
+ggplot(graves_burial_distinct, aes(g_date_burial)) +
+  ylim(0,100)+
+  geom_bar()
+```
+
+
+```{r}
+graves_burial_distinct %>% na.omit(graves_burial_distinct) %>%
+  filter(g_date_burial != c("1900-01-01","1945-01-01")) %>%
+  ggplot(aes(g_year_burial)) +
+  geom_bar() +
+  xlim(1850,2018)
+```
+
+```{r}
+graves_burial_distinct %>% na.omit(graves_burial_distinct) %>%
+  filter(g_date_burial != "1900-01-01") %>%
+  ggplot(aes(g_year_burial)) +
+  geom_histogram(binwidth = 1) +
+  xlim(1850,2018)
+```
 
 
 ```{r}
