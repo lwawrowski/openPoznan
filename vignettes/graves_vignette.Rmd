@@ -40,6 +40,7 @@ date_birth_n %>%
   arrange(desc(n)) %>%
   head(n=10)
 
+# przedstawianie prawie 40 tys. obserwacji na wykresie nie jest najlepszym pomysłem
 plot_ly(date_birth_n, x = ~g_date_birth, y = ~n)
 ```
 
@@ -53,20 +54,18 @@ Sprawdź dla ilu grobów kompletna jest data urodzenia i śmierci/śmierci i pog
 
 ```{r}
 cementy <- openPoznan::cemeteries(coords = F)
-cem_id <- cementy$Cemetery_Name
 
+graves_name <- left_join(graves, cementy, by=c("cm_id"="ID"))
 
-ggplot(graves, aes(as.factor(cm_id))) + 
+ggplot(graves_name, aes(as.factor(Cemetery_Name))) + 
   geom_bar(aes(y = (..count..)/sum(..count..))) +
     geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
                    y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.5) +
-  xlab("Cementary id") + 
+  xlab("Cementary name") + 
   ylab("Percent") + 
   scale_y_continuous(labels=scales::percent) +
   theme_bw()
 ```
-
-Zamiast id daj nazwę cmentarza.
 
 Sprawdz jak wygląda częstość zmiennej paid i g_size.
 
@@ -74,7 +73,12 @@ Sprawdz jak wygląda częstość zmiennej paid i g_size.
 
 ```{r}
 
-grave_size <- graves %>% select(c(paid,g_size)) %>% count(paid,g_size) %>% slice(2:25) %>% na.omit(paid,g_size)
+# Twoja wersja
+grave_size <- graves %>% 
+  select(c(paid,g_size)) %>% 
+  count(paid,g_size) %>% 
+  slice(2:25) %>%  # unikaj czegoś takiego - tzw. magicznych liczb. Nie wiadomo dlaczego akurat jest 2 i 25, a poza tym jak zmieni się cokolwiek w zbiorze to kod nie będzie działał poprawnie.
+  na.omit(paid,g_size)
 
 no_paid_graves <- grave_size %>% filter(paid == -1) %>% arrange(g_size) %>% slice(2:13) %>% mutate(no_paid = g_size)
 
@@ -94,11 +98,24 @@ ggplot(data = paid_graves, aes(as.factor(g_size)))+
 
 ##### 
 
+# moja propozycja
+
+grave_size <- graves %>%
+  group_by(paid,g_size) %>%
+  count() %>%
+  filter(g_size != "", !is.na(g_size))
+
+ggplot(grave_size, aes(x=as.numeric(g_size), y=n)) + 
+  geom_col() +
+  facet_wrap(~ paid) +
+  xlab("Grave size") +
+  ylab("number")
+
 ```
+
+
 Przedstawienie jak wygląda płatność to rozmiaru grobu jako no_paid_graves groby nie opłacone 
 paid_graves groby opłacone unknown wartość paid wynosi 0 więc mogą to być realizacje czekające na zapłatę albo nieznana wartość
-
-
 
 
 ```{r}
@@ -135,6 +152,65 @@ plot_ly(data = data3, x = ~g_date_burial, y = ~n)
 Podzeliłem dane na grupy daty urodzenia, daty śmierci i daty pochówku 
 po oczyszczeniu danych zostały jeszcze daty typu 1900-01-01, 1800-01-01...itp które też powinny być usunięte 
 potem można podzielić daty co 10 lat i badać zmiany w latach 
+
+
+```{r}
+
+graves_birth <- graves %>%
+  filter(g_date_birth != "0001-01-01", 1) %>%
+  mutate(g_date_birth=ymd(g_date_birth), # zamiana na datę w formacie ymd z pakietu lubridate
+         g_year_birth=year(g_date_birth)) # wydobycie roku
+
+graves_birth_count <- graves_birth %>%
+  group_by(g_year_birth) %>%
+  count()
+
+# w roku urodzenia wystęuje wartość 1 aż 16 razy - po sprawdzeniu zbioru graves_birth okazuje się, że jedna osoba występuje tam 16 razy - czyli w zbiorze występują duplikaty
+
+graves_birth_distinct <- graves_birth %>%
+  distinct()
+
+graves_birth_count_distinct <- graves_birth_distinct %>%
+  group_by(g_year_birth) %>%
+  count()
+
+# usuwamy nieprawidłowe wartości
+
+graves_birth_distinct <- graves_birth_distinct %>%
+  filter(g_year_birth %in% c(1000:2018)) # lata urodzenia w przedziale od 1000 do 2018
+
+ggplot(graves_birth_distinct, aes(g_year_birth)) +
+  geom_bar()
+
+```
+
+
+```{r}
+ggplot(graves_birth_distinct, aes(g_year_birth)) +
+  geom_bar() +
+  xlim(1850,2018)
+
+```
+
+```{r}
+# usunięcie daty 1900-01-01, która też jest brakiem danych
+
+graves_birth_distinct %>%
+  filter(g_date_birth != "1900-01-01") %>%
+  ggplot(aes(g_year_birth)) +
+  geom_bar() +
+  xlim(1850,2018)
+```
+
+```{r}
+# pojedyncze roczniki
+
+graves_birth_distinct %>%
+  filter(g_date_birth != "1900-01-01") %>%
+  ggplot(aes(g_year_birth)) +
+  geom_histogram(binwidth = 1) +
+  xlim(1850,2018)
+```
 
 
 ```{r}
