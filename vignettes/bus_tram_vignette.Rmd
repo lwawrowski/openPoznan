@@ -437,11 +437,7 @@ myMat[col(myMat) == row(myMat)] <- myMat[col(myMat) == row(myMat)] + max_numer_o
 
 #ExpandGrid function Tests 
 
-Tram_list_with_stops_name_non <- subset(Tram_list_with_stops_name, select = -c(n))
 
-Exp_test <- expand.grid(unique(Tram_list_with_stops_name_non))
-
-Exp_test2 <- expand.grid(Tram_list_with_stops_name_non)
 
 
 
@@ -458,7 +454,7 @@ similarities_percent <- expand.grid(line1 = unique(bt_tram$line), line2 = unique
 
 for(i in 1:nrow(similarities_percent)){
   
-  # i <- 2
+  #i <- 2
 
   stops_line1 <- bt_tram %>%
     filter(line==similarities_percent$line1[i]) %>%
@@ -479,6 +475,11 @@ for(i in 1:nrow(similarities_percent)){
 
 similarities_percent <- similarities_percent %>%
   mutate(stops_percent = stops_common/stops_sum*100)
+
+
+Test_1 <- unique(apply(similarities_percent, 1, sort))
+
+similarities_percent <- similarities_percent[!duplicated(similarities_percent[c(1,2)]),]
 
 ```
 
