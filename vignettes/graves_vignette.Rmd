@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Vignette Graves"
+author: "Konrad Jadwiżyc"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -16,16 +16,25 @@ knitr::opts_chunk$set(
 )
 
 library(tidyverse)
+library(ggplot2)
+library(plotly)
+library(stats)
+library(lubridate)
+library(ggplot2)
+library(plotly)
+library(stats)
+library(lubridate)
+library(sqldf)
+library(forecast)
 
 graves <- readRDS("../data/graves.rds")
+
+graves <- graves %>% distinct()
 ```
 
 # Date of birth analysis
 
 ```{r}
-library(ggplot2)
-library(plotly)
-library(stats)
 
 date_birth_n <- graves %>%
   group_by(g_date_birth) %>%
@@ -34,104 +43,84 @@ date_birth_n <- graves %>%
 date_birth_n %>%
   arrange(desc(n)) %>%
   head(n=10)
-
-plot_ly(date_birth_n, x = ~g_date_birth, y = ~n)
 ```
 
-Pierwszy i drugi wiersz to ewidentnie braki danych. Potem widać także, że jak znany był tylko rok to przypisywali 1-stycznia. W związku z tym sensownie będzie zamienić tę kolumnę na datę i wyodrębnić tylko rok. Przedstaw na wykresie jak kształtowała się liczba grobów w zależności od roku urodzenia.
-
-To samo zrób dla daty śmierci i pogrzebu.
-
-Sprawdź dla ilu grobów kompletna jest data urodzenia i śmierci/śmierci i pogrzebu/urodzenia, śmierci i pogrzebu.
 
 # Counts at cementaries
 
-```{r}
+```{r, fig.height=7, fig.width=10}
+cementy <- openPoznan::cemeteries(coords = F)
 
-ggplot(graves, aes(as.factor(cm_id))) + 
+graves_name <- left_join(graves, cementy, by=c("cm_id"="ID"))
+
+graves_name <- graves_name %>% distinct()
+
+ggplot(graves_name, aes(as.factor(Cemetery_Name))) + 
   geom_bar(aes(y = (..count..)/sum(..count..))) +
     geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
-                   y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.5) +
-  xlab("Cementary id") + 
+                   y= (..count..)/sum(..count..)), size=3, stat= "count", hjust = -.5) +
+  xlab("Cementary name") + 
   ylab("Percent") + 
   scale_y_continuous(labels=scales::percent) +
-  names(c("Miłostowo","Junikowo","Lubowska","zabytkowy Jeżycki",
-          "Wielkopolan","Górczyn","Żołnierzy Brytyjskich","Garnizonowy",
-          "Bohaterów Polskich","Św. Wojciecha","Prawosławny","Samotna",
-          "Bohaterów Radzieckich","Bohaterów Radzieckich","Chrobrego",
-          "Spławie","Podolany","Krzesiny","Kiekrz","Naramowice"))+
-  theme_bw()
+  theme_bw()+
+  coord_flip()
 ```
 
-Zamiast id daj nazwę cmentarza.
-
-Sprawdz jak wygląda częstość zmiennej paid i g_size.
 
 
 
-```{r}
-grave_size <- graves %>% select(c(paid,g_size)) %>% count(paid,g_size) %>% slice(2:25) %>% na.omit(paid,g_size)
+# Paid and Graves size
+```{r, fig.height=5, fig.width=8}
 
-no_paid_graves <- grave_size %>% filter(paid == -1) %>% arrange(g_size) %>% slice(2:13)
+grave_size <- graves %>%
+  group_by(paid,g_size) %>%
+  count() %>%
+  filter(g_size != "", !is.na(g_size))
 
-paid_graves <- grave_size %>% filter(paid == 1) %>% slice(2:5)
-
-unknown <- grave_size %>% filter(paid == 0)
-
-size <- graves %>% count(g_size) %>% na.omit(g_size) %>% slice(3:15)
-
-ggplot(data = size, aes(as.factor(g_size)))+
-  geom_col(aes(x=g_size,y=n))+
- xlab("Grave size")+
+ggplot(grave_size, aes(x=as.numeric(g_size), y=n)) + 
+  geom_col() +
+  facet_wrap(~ paid) +
+  xlab("Grave size") +
   ylab("number")
 
-##### 
-
-ggplot(data = paid_graves, aes(as.factor(g_size))) +
-  geom_col(aes(x=g_size,y=n)) +
-  geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
-                   y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.4)+
-  xlab("Grave size")+
-  ylab("number of payments")
-
-ggplot(data = unknown, aes(as.factor(g_size))) +
-  geom_col(data = unknown, aes(x=g_size,y=n))+
-  geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
-                   y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.5)+
-  xlab("Grave size") +
-  ylab("number of payments")
-
-ggplot(data = no_paid_graves, aes(as.factor(g_size))) +
-  geom_col(aes(x=g_size,y=n)) +
-  geom_text(aes(label = scales::percent((..count..)/sum(..count..)),
-                   y= (..count..)/sum(..count..)), size=3, stat= "count", vjust = -.4)+
-  xlab("Grave size")+
-  ylab("number of payments")
-
 ```
-Przedstawienie jak wygląda płatność to rozmiaru grobu jako no_paid_graves groby nie opłacone 
-paid_graves groby opłacone unknown wartość paid wynosi 0 więc mogą to być realizacje czekające na zapłatę albo nieznana wartość
 
 
-
-
-```{r}
+# clean data
+```{r, fig.height=5, fig.width=8}
 # oczyszczanie danych z błędnych danych 
 
 
-data <- graves %>% na.omit(graves) %>% 
+data <- graves %>% filter(g_date_birth != "0001-01-01", 1) %>% filter(g_date_birth != "1900-01-01", 1) %>% 
   select(g_date_birth) %>% 
   arrange(g_date_birth) %>%
   count(g_date_birth) %>% 
-  slice(3:36788)
+   mutate(g_date_birth=ymd(g_date_birth), # zamiana na datę w formacie ymd z pakietu lubridate
+         g_year_birth=year(g_date_birth)) %>% distinct()
 
-data2 <- graves %>% na.omit(graves) %>%
+plot_ly(data = data, x = ~g_date_birth, y = ~n, type = "bar") %>%
+layout(xaxis = list(range = c("1800","2018")))
+
+data2 <- graves %>%filter(g_date_death != "0001-01-01", 1) %>% 
+  filter(g_date_death != "1900-01-01", 1) %>% 
+  filter(g_date_death != "1945-01-01", 1) %>%
   select(g_date_death) %>% 
-  count(g_date_death) %>% arrange(g_date_death) %>% slice(5:23907)
+  count(g_date_death) %>% arrange(g_date_death) %>%
+mutate(g_date_death=ymd(g_date_death), # zamiana na datę w formacie ymd z pakietu lubridate
+         g_year_birth=year(g_date_death)) %>% distinct()
 
-data3 <- graves %>% na.omit(graves) %>% 
+plot_ly(data = data2, x = ~g_date_death, y = ~n, type = "bar") %>% 
+  layout(xaxis = list(range = c("1800","2018")))
+
+
+data3 <- graves %>% filter(g_date_burial != "0001-01-01", 1) %>%
   select(g_date_burial) %>% 
-  arrange(g_date_burial) %>% count(g_date_burial) %>% slice(2:21207)
+  arrange(g_date_burial) %>% count(g_date_burial) %>%
+mutate(g_date_burial=ymd(g_date_burial), # zamiana na datę w formacie ymd z pakietu lubridate
+         g_year_birth=year(g_date_burial)) %>% distinct()
+
+plot_ly(data = data3, x = ~g_date_burial, y = ~n, type = "bar") %>%
+ layout(xaxis = list(range = c("1800","2018")))
 
 # analiza szeregów czasowych 
 
@@ -140,14 +129,282 @@ data3 <- graves %>% na.omit(graves) %>%
 
 ```
 
-Podzeliłem dane na grupy daty urodzenia, daty śmierci i daty pochówku 
-po oczyszczeniu danych zostały jeszcze daty typu 1900-01-01, 1800-01-01...itp które też powinny być usunięte 
-potem można podzielić daty co 10 lat i badać zmiany w latach 
+# datatime analysis
+# birth
+```{r, fig.height=5, fig.width=8}
+
+graves_birth <- graves %>%
+  filter(g_date_birth != "0001-01-01", 1) %>%
+  mutate(g_date_birth=ymd(g_date_birth), # zamiana na datę w formacie ymd z pakietu lubridate
+         g_year_birth=year(g_date_birth)) # wydobycie roku
+
+graves_birth_count <- graves_birth %>%
+  group_by(g_year_birth) %>%
+  count()
+
+# w roku urodzenia wystęuje wartość 1 aż 16 razy - po sprawdzeniu zbioru graves_birth okazuje się, że jedna osoba występuje tam 16 razy - czyli w zbiorze występują duplikaty
+
+graves_birth_distinct <- graves_birth %>%
+  distinct()
+
+graves_birth_count_distinct <- graves_birth_distinct %>%
+  group_by(g_year_birth) %>%
+  count()
+
+# usuwamy nieprawidłowe wartości
+
+graves_birth_distinct <- graves_birth_distinct %>%
+  filter(g_year_birth %in% c(1000:2018)) # lata urodzenia w przedziale od 1000 do 2018
+
+ggplot(graves_birth_distinct, aes(g_year_birth)) +
+  geom_bar()
+
+```
+
+
+```{r, fig.height=5, fig.width=8}
+ggplot(graves_birth_distinct, aes(g_year_birth)) +
+  geom_bar() +
+  xlim(1850,2018)
+
+```
+# usunięcie daty 1900-01-01, która też jest brakiem danych
+```{r, fig.height=5, fig.width=8}
+# usunięcie daty 1900-01-01, która też jest brakiem danych
+
+graves_birth_distinct %>% na.omit(graves_birth_distinct) %>%
+  filter(g_date_birth != "1900-01-01") %>%
+  ggplot(aes(g_year_birth)) +
+  geom_bar() +
+  xlim(1850,2018)
+```
+# pojedyncze roczniki
+```{r, fig.height=5, fig.width=8}
+# pojedyncze roczniki
+
+graves_birth_distinct %>% na.omit(graves_birth_distinct) %>%
+  filter(g_date_birth != "1900-01-01") %>%
+  ggplot(aes(g_year_birth)) +
+  geom_histogram(binwidth = 1) +
+  xlim(1850,2018)
+```
+
+# death
+```{r, fig.height=5, fig.width=8}
+graves_death <- graves %>% 
+  filter(g_date_death != "0001-01-01", 1) %>% 
+  mutate(g_date_death=ymd(g_date_death),
+  g_year_death=year(g_date_death))
+
+graves_death_counr <- graves_death %>% 
+  group_by(g_year_death) %>%
+  count()
+
+graves_death_distinct <- graves_death %>%
+  distinct()
+
+
+graves_death_count_distinct <- graves_death_distinct %>%
+  group_by(g_year_death) %>%
+  count()
+
+graves_death_distinct <- graves_death_distinct %>%
+  filter(g_year_death %in% c(100:2018)) 
+
+ggplot(graves_death_distinct, aes(g_year_death)) +
+  geom_bar()
+```
 
 
 
+```{r, fig.height=5, fig.width=8}
+graves_death_distinct %>% na.omit(graves_death_distinct) %>%
+  filter(g_date_death != "1900-01-01") %>%
+  ggplot(aes(g_year_death)) +
+  geom_bar() +
+  xlim(1850,2018)
+```
+
+
+```{r, fig.height=5, fig.width=8}
+# pojedyncze roczniki
+
+graves_death_distinct %>% na.omit(graves_death_distinct) %>%
+  filter(g_date_death != "1900-01-01") %>%
+  ggplot(aes(g_year_death)) +
+  geom_histogram(binwidth = 1) +
+  xlim(1900,2018)
+```
+
+# burial 
+
+```{r, fig.height=5, fig.width=8}
+graves_burial <- graves %>% 
+  filter(g_date_burial != "0001-01-01", 1) %>% 
+  mutate(g_date_burial=ymd(g_date_burial),
+         g_year_burial=year(g_date_burial))
+
+graves_burial_count <- graves_burial %>% 
+  group_by(g_date_burial) %>% 
+  count()
+
+graves_burial_distinct <- graves_burial %>%
+  distinct()
+
+graves_burial_count_distinct <- graves_burial_distinct %>%
+  group_by(g_year_burial) %>%
+  count()
+
+graves_burial_distinct <- graves_burial_distinct %>%
+  filter(g_year_burial %in% c(1100:2018)) 
+
+ggplot(graves_burial_distinct, aes(g_date_burial)) +
+  ylim(0,100)+
+  geom_bar()
+```
+
+
+```{r, fig.height=5, fig.width=8}
+graves_burial_distinct %>% na.omit(graves_burial_distinct) %>%
+  filter(g_date_burial != c("1900-01-01","1945-01-01")) %>%
+  ggplot(aes(g_year_burial)) +
+  geom_bar() +
+  xlim(1850,2018)
+```
+
+```{r, fig.height=5, fig.width=8}
+graves_burial_distinct %>% na.omit(graves_burial_distinct) %>%
+  filter(g_date_burial != "1900-01-01") %>%
+  ggplot(aes(g_year_burial)) +
+  geom_histogram(binwidth = 1) +
+  xlim(1850,2018)
+```
+
+# all birth, death, burial
+
+```{r, fig.height=5, fig.width=8}
+ggplot(data = graves_birth_count_distinct, aes(x=g_year_birth,y=n), color = "red")+
+  geom_col(data = graves_birth_count_distinct, aes(g_year_birth,y=n), color = "red")+
+  geom_col(data = graves_death_count_distinct, aes(g_year_death,y=n), color = "blue")+
+  geom_col(data = graves_burial_count_distinct, aes(g_year_burial,y=n), color = "green")+
+  ylim(0,2000)+
+  xlim(1750,2018)
+```
+
+
+```{r}
+datatime <- data2 %>% mutate(year = year(g_date_death)) %>% 
+  ggplot(aes(x = year, y = n)) +
+  geom_col()+
+  xlim(1910,1921)
+datatime2 <- data2 %>% mutate(year = year(g_date_death)) %>% 
+  ggplot(aes(x = year, y = n)) +
+  geom_col()+
+  xlim(1920,1931)
+datatime3 <- data2 %>% mutate(year = year(g_date_death)) %>% 
+  ggplot(aes(x = year, y = n)) +
+  geom_col()+
+  xlim(1930,1941)
+datatime
+datatime2
+datatime3
+```
+
+
+# datatime analysis cemetery no 4 "Zabytkowy Jeżycki"
+```{r, fig.height=5, fig.width=8}
+
+choice_cm_4 <- graves_death %>% select(c(cm_id,g_year_death)) %>%
+  count(g_year_death,cm_id) 
+  
+clean_cm_4 <- choice_cm_4 %>% 
+  filter(cm_id == 4) %>%
+  arrange(g_year_death) %>% filter(g_year_death >= "1999", g_year_death <= "2016")
+ 
+
+plot_ly(data = clean_cm_4, x = ~g_year_death, y = ~n, type = "scatter", mode = "lines+markers")
+
+plot(clean_cm_4$n, main = "zgony")
+
+boxplot(clean_cm_4$n)
+
+mean_4 <- mean(clean_cm_4$n)
+stat_4 <- t(summary(clean_cm_4$n))
+sd_4 <- sd(clean_cm_4$n)
+sd_4
+var_4 <- var(clean_cm_4$n)
+var_4
+
+statystic_4 <- cbind(sd_4,var_4,stat_4)
+statystic_4
+
+acf(clean_cm_4$n)
+pacf(clean_cm_4$n)
+frequency(clean_cm_4$n)
+library(forecast)
+graves.prediction_4 <- ets(clean_cm_4$n)
+graves.prediction.forecast_4 <- forecast(graves.prediction_4)
+plot(graves.prediction_4)
+plot(graves.prediction.forecast_4)
+
+
+log <- (log(clean_cm_4$n))
+plot(log)
+plot(clean_cm_4$n)
+
+
+```
+
+# datatime analysis cemetery no 6 "Górczyn"
+```{r, fig.height=5, fig.width=8}
+choice_cm_6 <- graves_death %>% select(c(cm_id,g_year_death)) %>%
+  count(g_year_death,cm_id) 
+  
+clean_cm_6 <- choice_cm_6 %>% 
+  filter(cm_id == 6) %>%
+  arrange(g_year_death) %>% filter(g_year_death >= "1999", g_year_death <= "2016")
+
+plot_ly(data = clean_cm_6, x = ~g_year_death, y = ~n, type = "scatter", mode = "lines+markers")
+
+plot(clean_cm_6$n, main = "zgony")
+
+boxplot(clean_cm_6$n)
+
+mean_6 <- mean(clean_cm_6$n)
+stat_6 <- t(summary(clean_cm_6$n))
+sd_6 <- sd(clean_cm_6$n)
+sd_6
+var_6 <- var(clean_cm_6$n)
+var_6
+
+statystic_6 <- cbind(sd_6,var_6,stat_6)
+statystic_6
+
+acf(clean_cm_6$n)
+pacf(clean_cm_6$n)
+frequency(clean_cm_6$n)
+graves.prediction_6 <- ets(clean_cm_6$n)
+graves.prediction.forecast_6 <- forecast(graves.prediction_6)
+plot(graves.prediction_6)
+plot(graves.prediction.forecast_6)
 
 
 
+log_6 <- (log(clean_cm_6$n))
+plot(log)
+plot(clean_cm_6$n)
+```
 
+
+# fall birthday on account of I World War and II World War 
+```{r, fig.height=5, fig.width=8}
+choice_cm_2 <- graves_birth %>% select(c(cm_id,g_year_birth)) %>%
+  count(g_year_birth,cm_id) 
+  
+clean_cm_2 <- choice_cm_2 %>% 
+  filter(cm_id == 2) %>%
+  arrange(g_year_birth) %>% filter(g_year_birth >= "1920", g_year_birth <= "1950")
+
+plot_ly(data = clean_cm_2, x = ~g_year_birth, y = ~n, type = "scatter", mode = "lines+markers")
+```
 
