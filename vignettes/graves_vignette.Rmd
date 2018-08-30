@@ -322,7 +322,7 @@ clean_cm_4 <- choice_cm_4 %>%
   arrange(g_year_death) %>% filter(g_year_death >= "1999", g_year_death <= "2016")
  
 
-plot_ly(data = clean_cm_4, x = ~g_year_death, y = ~n, type = "scatter", mode = "markers")
+plot_ly(data = clean_cm_4, x = ~g_year_death, y = ~n, type = "scatter", mode = "lines+markers")
 
 plot(clean_cm_4$n, main = "zgony")
 
@@ -364,7 +364,7 @@ clean_cm_6 <- choice_cm_6 %>%
   filter(cm_id == 6) %>%
   arrange(g_year_death) %>% filter(g_year_death >= "1999", g_year_death <= "2016")
 
-plot_ly(data = clean_cm_6, x = ~g_year_death, y = ~n, type = "scatter", mode = "markers")
+plot_ly(data = clean_cm_6, x = ~g_year_death, y = ~n, type = "scatter", mode = "lines+markers")
 
 plot(clean_cm_6$n, main = "zgony")
 
@@ -389,8 +389,22 @@ plot(graves.prediction_6)
 plot(graves.prediction.forecast_6)
 
 
+
 log_6 <- (log(clean_cm_6$n))
 plot(log)
 plot(clean_cm_6$n)
+```
+
+
+# fall birthday on account of I World War and II World War 
+```{r, fig.height=5, fig.width=8}
+choice_cm_2 <- graves_birth %>% select(c(cm_id,g_year_birth)) %>%
+  count(g_year_birth,cm_id) 
+  
+clean_cm_2 <- choice_cm_2 %>% 
+  filter(cm_id == 2) %>%
+  arrange(g_year_birth) %>% filter(g_year_birth >= "1920", g_year_birth <= "1950")
+
+plot_ly(data = clean_cm_2, x = ~g_year_birth, y = ~n, type = "scatter", mode = "lines+markers")
 ```
 
