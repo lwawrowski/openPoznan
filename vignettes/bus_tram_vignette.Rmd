@@ -19,6 +19,7 @@ library(tidyverse)
 library(stringr)
 library(leaflet)
 library(fuzzyjoin)
+library(corrplot)
 
 bt <- openPoznan::tram_bus_stops()
 ```
@@ -477,9 +478,32 @@ similarities_percent <- similarities_percent %>%
   mutate(stops_percent = stops_common/stops_sum*100)
 
 
-Test_1 <- unique(apply(similarities_percent, 1, sort))
 
-similarities_percent <- similarities_percent[!duplicated(similarities_percent[c(1,2)]),]
+cols = c(1,2)
+newdf = similarities_percent[,cols]
+
+for (i in 1:nrow(similarities_percent)){
+    newdf[i, ] = sort(similarities_percent[i, cols])
+}
+
+similarities_percent <- similarities_percent[!duplicated(newdf),]
+
+# Corrplot
+
+similarities_percent_cor <- similarities_percent[-c(3:4)]
+  
+
+wide = reshape(similarities_percent_cor[,1:3], idvar = c("line1"),
+              timevar="line2", direction = "wide")
+              rownames(wide) = wide$line1
+              wide = wide[,-1]
+              colnames(wide) = sub("stops_percent.", "", colnames(wide))
+              
+wide = as.matrix(wide)    
+
+wide[lower.tri(wide)] <- t(wide)[lower.tri(wide)]
+
+corrplot (wide, is.corr=FALSE, method = "square")
 
 ```
 
