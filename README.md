@@ -22,7 +22,7 @@ This package was created during internship in Department of Statistics at Pozna≈
 ## Installation
 
 ```
-install_github("lwawrowski/openPoznan")
+devtools::install_github("lwawrowski/openPoznan")
 ```
 
 ## Data
