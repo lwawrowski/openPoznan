@@ -55,7 +55,7 @@ ticket_sales_points <- function() {
   colnames(ticket_coord)[(names(ticket_coord)=="X2")] <- "Latitude"
   
   
-  ticket_basic_info <- data.frame(Mon-Fri=ticket$properties$y_4308_godziny_otwar,
+  ticket_basic_info <- data.frame(Mon_Fri=ticket$properties$y_4308_godziny_otwar,
                                         Opening_Hours_2=ticket$properties$y_4310_godziny_otwar,
                                         Sales_form=ticket$properties$y_4311_forma_sprzeda,
                                         Ticket=ticket$properties$y_4326_bilety_jednor,
